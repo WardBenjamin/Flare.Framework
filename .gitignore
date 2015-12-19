@@ -1,0 +1,14 @@
+Flare/Flare.Framework/bin
+Flare/Flare.Framework/bin/*
+Flare/Flare.Framework/obj
+Flare/Flare.Framework/obj/*
+Flare/Flare.Demo/bin
+Flare/Flare.Demo/bin/*
+Flare/Flare.Demo/obj
+Flare/Flare.Demo/obj/*
+Flare/Flare.GUI/bin
+Flare/Flare.GUI/bin/*
+Flare/Flare.GUI/obj
+Flare/Flare.GUI/obj/*
+*/.vs
+*/.vs/*
