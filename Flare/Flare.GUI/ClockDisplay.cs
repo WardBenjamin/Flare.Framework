@@ -13,8 +13,6 @@ namespace Flare.GUI
 {
     public class ClockDisplay
     {
-        private bool first = true;
-
         public FrameClock clock;
         public Vector2 Position;
 
@@ -58,7 +56,6 @@ namespace Flare.GUI
             foreach (Data data in Enum.GetValues(typeof(Data)))
             {
                 TextItems[data] = new Text(font, GetInfo(data), Position + new OpenTK.Vector2(0, dy));
-                //Console.WriteLine("Text Pos: " + (Position + new OpenTK.Vector2(0, dy)));
                 dy += font.MeasureString(data.ToString()).Y;
             }
         }

@@ -10,7 +10,7 @@ namespace Flare.Demo
     {
         static void Main(string[] args)
         {
-            using (var game = new Game())// new Examples.Tutorial.TextRendering())
+            using (var game = new Game())
             {
                 game.Run(60);
             }

@@ -55,7 +55,6 @@ namespace Flare.Framework.Graphics
                 if (text.Position != lastPos)
                 {
                     lastPos = text.Position;
-                    //Console.WriteLine(lastPos);
                     textShader.SetUniform("pos", lastPos);
                 }
                 if (GameBase.TargetSize != lastTarSize)
@@ -67,7 +66,6 @@ namespace Flare.Framework.Graphics
                 {
                     lastTexID = text.Font.Texture.TexID;
                     GL.BindTexture(TextureTarget.Texture2D, lastTexID);
-                    //Console.WriteLine(lastTexID);
                 }
                 
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6 * text.String.Length); // Six verticies for each character

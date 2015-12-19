@@ -64,7 +64,6 @@ namespace Flare.Framework.Graphics
                 if (spr.Position != lastPos)
                 {
                     lastPos = spr.Position;
-                    //Console.WriteLine(lastPos);
                     spriteShader.SetUniform("pos", lastPos);
                 }
                 if (GameBase.TargetSize != lastTarSize)
@@ -76,7 +75,6 @@ namespace Flare.Framework.Graphics
                 {
                     lastTexID = spr.Texture.TexID;
                     GL.BindTexture(TextureTarget.Texture2D, lastTexID);
-                    //Console.WriteLine(lastTexID);
                 }
 
                 GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);

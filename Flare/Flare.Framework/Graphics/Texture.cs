@@ -41,17 +41,14 @@ namespace Flare.Framework.Graphics
         public Texture(Bitmap bitmap)
             : this(bitmap.Width, bitmap.Height)
         {
-            //bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
             BitmapData bmpData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmpData.Width, bmpData.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmpData.Scan0);
             bitmap.UnlockBits(bmpData);
-            //bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
-            //Console.WriteLine("Tex_ID: " + TexID);
         }
 
         ~Texture()
         {
-            //GL.DeleteTexture(TexID);
+            GL.DeleteTexture(TexID);
         }
 
     }

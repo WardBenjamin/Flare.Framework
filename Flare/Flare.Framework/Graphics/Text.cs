@@ -33,7 +33,6 @@ namespace Flare.Framework.Graphics
             Font = font;
             String = str;
             Position = pos;
-            Console.WriteLine(pos);
 
             GenerateInformation();
         }   
@@ -53,8 +52,6 @@ namespace Flare.Framework.Graphics
             int vi = 0, ui = 0; // Vertex index, UV index
             int dx = 0, dy = 0;
 
-            bool firstChar = true;
-
             for (int i = 0; i < length; i++)
             {
                 regions[i] = Font.GetCharacterRegion(String[i]);
@@ -65,12 +62,6 @@ namespace Flare.Framework.Graphics
                     var VTopRight = VTopLeft + new Vector2(regions[i].Rect.Width, 0);
                     var VBottomLeft = VTopLeft + new Vector2(0, regions[i].Rect.Height);
                     var VBottomRight = VTopLeft + new Vector2(regions[i].Rect.Width, regions[i].Rect.Height);
-
-                    /*Console.WriteLine("Verticies: ");
-                    Console.WriteLine("TL: " + VTopLeft);
-                    Console.WriteLine("TR: " + VTopRight);
-                    Console.WriteLine("BL: " + VBottomLeft);
-                    Console.WriteLine("BR: " + VBottomRight);*/
 
                     // Add verticies to array (TL,TR,BL,TR,BL,BR)
                     verticies[vi++] = VTopLeft;
@@ -86,12 +77,6 @@ namespace Flare.Framework.Graphics
                     var UTopRight = UTopLeft + new Vector2(regions[i].Rect.Width * uvCoefficient.X, 0);
                     var UBottomLeft = UTopLeft + new Vector2(0, regions[i].Rect.Height * uvCoefficient.Y);
                     var UBottomRight = UTopLeft + new Vector2(regions[i].Rect.Width * uvCoefficient.X, regions[i].Rect.Height * uvCoefficient.Y);
-
-                    /*Console.WriteLine("UVs: ");
-                    Console.WriteLine("TL: " + UTopLeft);
-                    Console.WriteLine("TR: " + UTopRight);
-                    Console.WriteLine("BL: " + UBottomLeft);
-                    Console.WriteLine("BR: " + UBottomRight);*/
 
                     // Add UVs to array (TL,TR,BL,TR,BL,BR)
                     uvs[ui++] = UTopLeft;
