@@ -48,7 +48,8 @@ namespace Flare.Framework.Graphics
 
         ~Texture()
         {
-            GL.DeleteTexture(TexID);
+            // Commented because of crash on exit when this is included. Why?
+            //GL.DeleteTexture(TexID);
         }
 
     }
