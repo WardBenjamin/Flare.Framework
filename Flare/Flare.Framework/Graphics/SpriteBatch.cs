@@ -66,9 +66,9 @@ namespace Flare.Framework.Graphics
                     lastPos = spr.Position;
                     spriteShader.SetUniform("pos", lastPos);
                 }
-                if (GameBase.TargetSize != lastTarSize)
+                if (Game.TargetSize != lastTarSize)
                 {
-                    lastTarSize = GameBase.TargetSize;
+                    lastTarSize = Game.TargetSize;
                     spriteShader.SetUniform("targetSize", lastTarSize);
                 }
                 if (spr.Texture.TexID != lastTexID)

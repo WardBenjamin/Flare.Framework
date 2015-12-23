@@ -10,11 +10,7 @@ namespace Flare.Demo
     {
         static void Main(string[] args)
         {
-            using (var game = new Game())
-            {
-                game.Run(60);
-            }
-            Console.ReadKey();
+            var demo = new Demo();
         }
     }
 }

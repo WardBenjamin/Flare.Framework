@@ -13,38 +13,35 @@ using Flare.GUI;
 
 namespace Flare.Demo
 {
-    class Game : GameBase
+    class Demo
     {
         private SpriteBatch spriteBatch;
         private Sprite sprite;
         private Text text;
         private ClockDisplay fpsCounter;
 
-        public Game() : base()
+        public Demo()
         {
+            Game.Load += OnLoad;
+            Game.RenderFrame += OnRenderFrame;
+            Game.UpdateFrame += OnUpdateFrame;
+            Game.Run(60.0f);
         }
 
-        protected override void OnLoad(EventArgs e)
+        protected void OnLoad(object sender, EventArgs e)
         {
-            base.OnLoad(e);
             spriteBatch = new SpriteBatch();
             sprite = new Sprite(new Texture(new Bitmap(@"Content/test.png")), new Vector2(256, 0));
             text = new Text(new BitmapFont("Content/arial_test"), "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256));
-            fpsCounter = new ClockDisplay(Clock, new BitmapFont(@"Content/fps_font"), Vector2.Zero);
+            fpsCounter = new ClockDisplay(Game.Clock, new BitmapFont(@"Content/fps_font"), Vector2.Zero);
 
             //clockHUD = new ClockHUD(Width, Height, Vector2.Zero);
-
-            GL.ClearColor(Color.CornflowerBlue);
-            GL.PointSize(5f);
-            GL.Enable(EnableCap.DepthTest);
         }
 
-        protected override void OnRenderFrame(OpenTK.FrameEventArgs e)
+        protected void OnRenderFrame(object sender, FrameEventArgs e)
         {
-            Clock.BeginFrame();
-            base.OnRenderFrame(e);
-            GL.Viewport(0, 0, Width, Height);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            Game.Clock.BeginFrame();
+            Game.Clear(Color.CornflowerBlue);
 
             spriteBatch.Add(sprite);
             spriteBatch.AddString(text);
@@ -53,13 +50,12 @@ namespace Flare.Demo
 
             spriteBatch.Draw(fpsCounter);
 
-            SwapBuffers();
-            Clock.EndFrame();
+            Game.SwapBuffers();
+            Game.Clock.EndFrame();
         }
 
-        protected override void OnUpdateFrame(FrameEventArgs e)
+        protected void OnUpdateFrame(object sender, FrameEventArgs e)
         {
-            base.OnUpdateFrame(e);
         }
     }
 }
