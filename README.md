@@ -19,6 +19,10 @@ Basic samples are located in the Flare.Demo project; at the moment these do not 
 
 #### Features
 
+v1.1.0
+ - Complete API refactor for easier usage
+ - Wrap OpenTK GameWindow class for more transparent use cases (aka you don't have to interact with OpenTK at all if not required).
+
 v1.0.1
  - Rendering hotfix to fix crash on exit
 
