@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,9 @@ namespace Flare.GUI
 {
     public class ClockDisplay
     {
-        public FrameClock clock;
+        public FrameClock Clock;
         public Vector2 Position;
+        public Color Color;
 
         private BitmapFont font;
         private Dictionary<Data, Text> TextItems = new Dictionary<Data, Text>()
@@ -33,9 +35,10 @@ namespace Flare.GUI
 
         public ClockDisplay(FrameClock clock, BitmapFont font, Vector2 position)
         {
-            this.clock = clock;
+            this.Clock = clock;
             this.font = font;
             this.Position = position;
+            this.Color = Color.White;
 
             GenerateText();
         }
@@ -55,7 +58,7 @@ namespace Flare.GUI
             float dy = 0.0f;
             foreach (Data data in Enum.GetValues(typeof(Data)))
             {
-                TextItems[data] = new Text(font, GetInfo(data), Position + new OpenTK.Vector2(0, dy));
+                TextItems[data] = new Text(font, GetInfo(data), Position + new OpenTK.Vector2(0, dy), Color);
                 dy += font.MeasureString(data.ToString()).Y;
             }
         }
@@ -67,25 +70,25 @@ namespace Flare.GUI
             switch (key)
             {
                 case Data.Time:
-                    return String.Format(format, ret, clock.TotalFrameTime) + " (ms)";
+                    return String.Format(format, ret, Clock.TotalFrameTime) + " (ms)";
                 case Data.Frame:
-                    return String.Format(format, ret, clock.TotalFrameCount);
+                    return String.Format(format, ret, Clock.TotalFrameCount);
                 case Data.FPS:
-                    return String.Format(format, ret, clock.FPS);
+                    return String.Format(format, ret, Clock.FPS);
                 case Data.MinFPS:
-                    return String.Format(format, ret, clock.MinFPS);
+                    return String.Format(format, ret, Clock.MinFPS);
                 case Data.AvgFPS:
-                    return String.Format(format, ret, clock.AverageFPS);
+                    return String.Format(format, ret, Clock.AverageFPS);
                 case Data.MaxFPS:
-                    return String.Format(format, ret, clock.MaxFPS);
+                    return String.Format(format, ret, Clock.MaxFPS);
                 case Data.Delta:
-                    return String.Format(format, ret, clock.LastFrameTime) + " (ms)";
+                    return String.Format(format, ret, Clock.LastFrameTime) + " (ms)";
                 case Data.MinDelta:
-                    return String.Format(format, ret, clock.MinFrameTime) + " (ms)";
+                    return String.Format(format, ret, Clock.MinFrameTime) + " (ms)";
                 case Data.AvgDelta:
-                    return String.Format(format, ret, clock.AverageFrameTime) + " (ms)";
+                    return String.Format(format, ret, Clock.AverageFrameTime) + " (ms)";
                 case Data.MaxDelta:
-                    return String.Format(format, ret, clock.MaxFrameTime + " (ms)");
+                    return String.Format(format, ret, Clock.MaxFrameTime + " (ms)");
                 default:
                     return "invalid key";
             }

@@ -32,7 +32,7 @@ namespace Flare.Demo
         {
             spriteBatch = new SpriteBatch();
             sprite = new Sprite(new Texture(new Bitmap(@"Content/test.png")), new Vector2(256, 0));
-            text = new Text(new BitmapFont("Content/arial_test"), "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256));
+            text = new Text(new BitmapFont("Content/arial_test"), "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
             fpsCounter = new ClockDisplay(Game.Clock, new BitmapFont(@"Content/fps_font"), Vector2.Zero);
 
             //clockHUD = new ClockHUD(Width, Height, Vector2.Zero);

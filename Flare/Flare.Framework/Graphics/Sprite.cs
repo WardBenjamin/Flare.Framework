@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 
 namespace Flare.Framework.Graphics
 {
@@ -49,7 +50,7 @@ namespace Flare.Framework.Graphics
             GenerateInformation();
         }
 
-        public Sprite(Texture texture, Vector2 position, Vector2 scale, Vector4 tint)
+        public Sprite(Texture texture, Vector2 position, Vector2 scale)
         {
             VAO = GL.GenVertexArray();
             VBO = GL.GenBuffer();
@@ -58,9 +59,18 @@ namespace Flare.Framework.Graphics
             this.texture = texture;
             this.position = position;
             this.scale = scale;
-            Tint = tint;
 
             GenerateInformation();
+        }
+
+        public Sprite(Texture texture, Vector2 position, Vector2 scale, Color tint) : this(texture, position, scale)
+        {
+            Tint = new Vector4((float)tint.R / 255, (float)tint.G / 255, (float)tint.B / 255, (float)tint.A / 255);
+        }
+
+        public Sprite(Texture texture, Vector2 position, Vector2 scale, Vector4 tint) : this(texture, position, scale)
+        {
+            Tint = tint;
         }
 
         public void GenerateInformation()

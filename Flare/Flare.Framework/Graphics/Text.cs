@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using System.Runtime.InteropServices;
 using Flare.Framework.Graphics.Fonts;
+using System.Drawing;
 
 namespace Flare.Framework.Graphics
 {
@@ -35,7 +36,17 @@ namespace Flare.Framework.Graphics
             Position = pos;
 
             GenerateInformation();
-        }   
+        }
+
+        public Text(BitmapFont font, string str, Vector2 pos, Color color) : this(font, str, pos)
+        {
+            this.Color = new Vector4((float)color.R / 255, (float)color.G / 255, (float)color.B / 255, (float)color.A / 255);
+        }
+
+        public Text(BitmapFont font, string str, Vector2 pos, Vector4 color) : this(font, str, pos)
+        {
+            this.Color = color;
+        }
 
         /// <summary>
         /// Regenerates vertex and UV information. (Call this after making changes to font, string, or position.)
