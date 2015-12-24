@@ -16,7 +16,7 @@ namespace Flare.GUI
     {
         public FrameClock Clock;
         public Vector2 Position;
-        public Color Color;
+        public Color Color = Color.White;
 
         private BitmapFont font;
         private Dictionary<Data, Text> TextItems = new Dictionary<Data, Text>()
@@ -38,9 +38,18 @@ namespace Flare.GUI
             this.Clock = clock;
             this.font = font;
             this.Position = position;
-            this.Color = Color.White;
 
             GenerateText();
+        }
+
+        public ClockDisplay(FrameClock clock, BitmapFont font, Vector2 position, Vector4 color) : this(clock, font, position)
+        {
+            this.Color = Color.FromArgb((int)(color.X * 255), (int)(color.Y * 255), (int)(color.Z * 255), (int)(color.W * 255));
+        }
+
+        public ClockDisplay(FrameClock clock, BitmapFont font, Vector2 position, Color color) : this(clock, font, position)
+        {
+            this.Color = color;
         }
 
         internal void Draw(SpriteBatch spriteBatch)
