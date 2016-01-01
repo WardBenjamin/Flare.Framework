@@ -13,9 +13,43 @@ Flare is a work in progress. New classes are added as soon as they have been tes
 
 #### Usage
 
-To use Flare, just download the Nuget package that you want and add it to a C# project. Write a class inheriting from Flare.Framework.GameBase, and then implement the OnLoad, OnRenderFrame, and OnUpdateFrame methods. Flare also depends on texture loading using System.Drawing, so don't forget to add a reference to that as well.
+To use Flare, just download the Nuget package that you want and add it to a C# project. The easiest way to use Flare after that is to write a base class and entry point similar the examples that follow: 
 
-Basic samples are located in the Flare.Demo project; at the moment these do not have full coverage of the API but they will be improved. Documentation will be available at a later date.
+    // Entry point, in Program.cs or a custom location
+    static void Main(string[] args)
+    {
+        Editor editor = new Editor();
+    }
+    
+    class Editor
+    {
+        public Editor()
+        {
+            // Register methods to be called on loading or every frame/update
+            Game.Load += OnLoad;
+            Game.RenderFrame += OnRenderFrame;
+            Game.UpdateFrame += OnUpdateFrame;
+            // Set window title, vsync, etc.
+        }
+        private void OnLoad(object sender, EventArgs e)
+        {
+            // Create a spritebatch, load textures, etc.
+        }
+        private void OnRenderFrame(object sender, FrameEventArgs e)
+        {
+            Game.Clock.BeginFrame();
+            Game.Clear(Color.CornflowerBlue)
+            // Draw stuff with SpriteBatch.Add(Sprite) then SpriteBatch.Draw() 
+            // and with SpriteBatch.AddString(Text) and SpriteBatch.DrawStrings();
+            Game.SwapBuffers();
+            Game.Clock.EndFrame()
+        }
+        private void OnUpdateFrame(object sender, FrameEventArgs e)
+        {
+        }
+    }
+
+Basic samples are located in the Flare.Demo project; at the moment these do not have full coverage of the API but they will be improved and more samples will be added as I have more time for development. Documentation will be available at that point.
 
 #### Features
 
