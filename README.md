@@ -21,6 +21,7 @@ To use Flare, just download the Nuget package that you want and add it to a C# p
         Editor editor = new Editor();
     }
     
+    // Main class, in own cs file or another custom location
     class Editor
     {
         public Editor()
@@ -30,6 +31,7 @@ To use Flare, just download the Nuget package that you want and add it to a C# p
             Game.RenderFrame += OnRenderFrame;
             Game.UpdateFrame += OnUpdateFrame;
             // Set window title, vsync, etc.
+            Game.Run(60.0f); // Run and set FPS
         }
         private void OnLoad(object sender, EventArgs e)
         {
@@ -38,11 +40,11 @@ To use Flare, just download the Nuget package that you want and add it to a C# p
         private void OnRenderFrame(object sender, FrameEventArgs e)
         {
             Game.Clock.BeginFrame();
-            Game.Clear(Color.CornflowerBlue)
+            Game.Clear(Color.CornflowerBlue);
             // Draw stuff with SpriteBatch.Add(Sprite) then SpriteBatch.Draw() 
             // and with SpriteBatch.AddString(Text) and SpriteBatch.DrawStrings();
             Game.SwapBuffers();
-            Game.Clock.EndFrame()
+            Game.Clock.EndFrame();
         }
         private void OnUpdateFrame(object sender, FrameEventArgs e)
         {
