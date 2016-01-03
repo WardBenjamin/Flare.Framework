@@ -237,7 +237,7 @@ namespace Flare.Framework
             get { return Window.RenderPeriod; }
         }
 
-            TODO:
+            TODO: Fill these properties in
             Window.RenderFrequency;
             Window.RenderPeriod;
 
@@ -357,6 +357,9 @@ namespace Flare.Framework
             #endregion
 
             Clock = new Utility.FrameClock();
+
+            // Disable VSync for maximum possble framerate by default
+            VSync = VSyncMode.Off;
         }
 
         #region Event Handler Methods

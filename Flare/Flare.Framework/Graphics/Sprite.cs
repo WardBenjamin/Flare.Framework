@@ -9,30 +9,58 @@ using System.Drawing;
 
 namespace Flare.Framework.Graphics
 {
+    /// <summary>
+    /// Represents a simple 2D texture and position to draw.
+    /// </summary>
     public class Sprite
     {
-        private Vector2 position, scale;
+        /// <summary>
+        /// Contains information about transformations such as translations and scale for this sprite.
+        /// </summary>
+        public Matrix4 ModelMatrix;
+
+        private Vector3 position;
+        private Vector2 scale;
         private Texture texture;
 
+        /// <summary>
+        /// The texture to draw
+        /// </summary>
         public Texture Texture
         {
             get { return texture; }
-            set { texture = value; GenerateInformation(); }
+            set { texture = value; GenerateVerts(); }
         }
+
+        public Vector2 Rotation
+        {
+            get { return rotation; }
+            set { rotation = value; }
+        }
+
+        /// <summary>
+        /// The sprite's position in screen coordinates.
+        /// </summary>
         public Vector2 Position
         {
             get { return position; }
-            set { position = value; GenerateInformation(); }
+            set { position = value; }
         }
+
+        /// <summary>
+        /// The sprite's scale
+        /// </summary>
         public Vector2 Scale
         {
             get { return scale; }
-            set { scale = value; GenerateInformation(); }
+            set { scale = value; }
         }
+
         public Vector4 Tint { get; set; }
 
         public int VAO, VBO, UBO; // VAO, Verticies, UVs
-        Vector2[] verticies, uvs;
+        Vector3[] verticies;
+        Vector2[] uvs;
 
         protected Sprite() { }
 
@@ -47,7 +75,8 @@ namespace Flare.Framework.Graphics
             this.scale = Vector2.One;
             Tint = Vector4.One;
 
-            GenerateInformation();
+            GenerateVerts();
+            GenerateMatrix();
         }
 
         public Sprite(Texture texture, Vector2 position, Vector2 scale)
@@ -60,7 +89,8 @@ namespace Flare.Framework.Graphics
             this.position = position;
             this.scale = scale;
 
-            GenerateInformation();
+            GenerateVerts();
+            GenerateMatrix();
         }
 
         public Sprite(Texture texture, Vector2 position, Vector2 scale, Color tint) : this(texture, position, scale)
@@ -73,15 +103,16 @@ namespace Flare.Framework.Graphics
             Tint = tint;
         }
 
-        public void GenerateInformation()
+        private void GenerateVerts()
         {
             // TL, BL, TR, BR for glTriangleStrips
-            Vector2 VTL = Vector2.Zero;
-            Vector2 VTR = new Vector2(Texture.Width * scale.X, 0);
-            Vector2 VBL = new Vector2(0, Texture.Height * scale.Y);
-            Vector2 VBR = Texture.Size * scale;
+            // Scaling is done in the shader, as part of the model matrix
+            Vector3 VTL = Vector3.Zero;
+            Vector3 VTR = new Vector3(Texture.Width, 0, 0);
+            Vector3 VBL = new Vector3(0, Texture.Height, 0);
+            Vector3 VBR = new Vector3(Texture.Size);
 
-            verticies = new Vector2[4] { VTL, VBL, VTR, VBR };
+            verticies = new Vector3[4] { VTL, VBL, VTR, VBR };
 
             Vector2 UTL = Vector2.Zero;
             Vector2 UTR = Vector2.UnitX;
@@ -100,6 +131,14 @@ namespace Flare.Framework.Graphics
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(BlittableValueType.StrideOf(uvs) * uvs.Length), uvs, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, OpenTK.BlittableValueType.StrideOf(uvs), 0);
+        }
+
+        private void GenerateMatrix()
+        {
+            ModelMatrix = Matrix4.CreateScale(new Vector3(scale.X, Scale.Y, 1))
+                * Matrix4.CreateRotationX(Rotation.X)
+                * Matrix4.CreateRotationY(Rotation.Y)
+                * Matrix4.CreateTranslation(position);
         }
     }
 }

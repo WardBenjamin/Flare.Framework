@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\Cameras\Camera.cs" />
+    <Compile Include="Graphics\Cameras\OrthographicCamera.cs" />
+    <Compile Include="Graphics\Cameras\PerspectiveCamera.cs" />
     <Compile Include="Graphics\Fonts\BitmapFont.cs" />
     <Compile Include="Graphics\Fonts\BitmapFontFile.cs" />
     <Compile Include="Graphics\Fonts\BitmapFontRegion.cs" />
@@ -62,6 +65,7 @@
     <Compile Include="Graphics\TextExtensions.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\Text.cs" />
+    <Compile Include="Mathf.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

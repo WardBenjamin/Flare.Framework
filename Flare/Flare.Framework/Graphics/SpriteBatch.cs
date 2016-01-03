@@ -8,6 +8,7 @@ using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 using Flare.Framework.Shaders;
 using System.Runtime.InteropServices;
+using Flare.Framework.Graphics.Cameras;
 
 namespace Flare.Framework.Graphics
 {
@@ -42,16 +43,17 @@ namespace Flare.Framework.Graphics
             spritesToDraw.Add(sprite);
         }
 
-        private void DrawSprites()
+        private void DrawSprites(OrthographicCamera camera = OrthographicCamera.Default)
         {
-            Vector2 lastTarSize = Vector2.Zero, lastPos = -Vector2.One;
+            Matrix4 MVP;
+            if (camera == null)
+                MVP =
             Vector4 lastTint = Vector4.One;
             int lastTexID = -1;
 
             spriteShader.Use();
             GL.BindVertexArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
-            spriteShader.SetUniform("targetSize", lastTarSize);
             spriteShader.SetUniform("tint", lastTint);
             foreach (var spr in spritesToDraw)
             {
@@ -60,17 +62,6 @@ namespace Flare.Framework.Graphics
                 {
                     lastTint = spr.Tint;
                     spriteShader.SetUniform("tint", lastTint);
-                }
-                if (spr.Position != lastPos)
-                {
-                    lastPos = spr.Position;
-                    spriteShader.SetUniform("pos", lastPos);
-                }
-                Vector2 clientSize;
-                if ((clientSize = new Vector2(Game.ClientSize.Width, Game.ClientSize.Height)) != lastTarSize)
-                {
-                    lastTarSize = clientSize;
-                    spriteShader.SetUniform("targetSize", lastTarSize);
                 }
                 if (spr.Texture.TexID != lastTexID)
                 {
@@ -94,18 +85,15 @@ namespace Flare.Framework.Graphics
 
         // Takes UV, relative vertex, and pos in screen space, converts vert pos to homogenous.
         private static string vshader = @"#version 130
-            in vec2 vertPosS;
+            in vec3 vertPos;
             in vec2 vertUV;
+
+            uniform mat4 MVP;
 
             out vec2 UV;
 
-            uniform vec2 pos, targetSize;
-
             void main() {
-                vec2 halfTargetSize = vec2(targetSize.x / 2, targetSize.y / 2);
-                vec2 vertPosH = (pos + vertPosS) - halfTargetSize;
-                vertPosH /= halfTargetSize;
-                gl_Position = vec4(vertPosH.x, -vertPosH.y, 0.0, 1.0);
+                gl_Position = MVP * vec4(vertPos, 1)
                 UV = vertUV;
             }";
 
