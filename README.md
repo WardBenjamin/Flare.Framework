@@ -54,6 +54,10 @@ To use Flare, just download the Nuget package that you want and add it to a C# p
 Basic samples are located in the Flare.Demo project; at the moment these do not have full coverage of the API but they will be improved and more samples will be added as I have more time for development. Documentation will be available at that point.
 
 #### Features
+v1.2.0
+ - Access to all missing events including FocusedChanged, IconChanged, missing keyboard and mouse events, Unload, etc.
+ - Access to all OpenTK.GameWindow properties excluding update and render statistics.
+ - Access to missing methods, such as Game.Exit(), Game.Close(), etc.
 
 v1.1.1 (Corresponds to Flare.GUI v1.0.1)
  - Access to keyboard events: KeyUp, KeyDown, and KeyPress
