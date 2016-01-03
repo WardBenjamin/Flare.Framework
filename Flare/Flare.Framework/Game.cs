@@ -20,17 +20,12 @@ namespace Flare.Framework
         // Store OpenGL states
         private static Color ClearColor;
 
-        public static VSyncMode VSync
-        {
-            get { return Window.VSync; }
-            set { Window.VSync = value; }
-        }
+        /// <summary>
+        /// FrameClock holding data framerate and other information. 
+        /// Note: Update using BeginFrame() and EndFrame() in your draw method.
+        /// </summary>
+        public static Utility.FrameClock Clock { get; private set; }
 
-        public static Icon Icon
-        {
-            get { return Window.Icon; }
-            set { Window.Icon = value; }
-        }
 
         #region Window Size & Position Properties
 
@@ -42,6 +37,15 @@ namespace Flare.Framework
         {
             get { return Window.Bounds; }
             set { Window.Bounds = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a Point structure that contains the location of this window on the desktop.
+        /// </summary>
+        public static Point Location
+        {
+            get { return Window.Location; }
+            set { Window.Location = value; }
         }
 
         /// <summary>
@@ -141,6 +145,72 @@ namespace Flare.Framework
 
         #endregion
 
+        #region Misc. Window Properties
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the the window is visible.
+        /// </summary>
+        public static bool Visible
+        {
+            get { return Window.Visible; }
+            set { Window.Visible = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the window title.
+        /// </summary>
+        public static string Title
+        {
+            get { return Window.Title; }
+            set { Window.Title = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the VSync mode.
+        /// </summary>
+        public static VSyncMode VSync
+        {
+            get { return Window.VSync; }
+            set { Window.VSync = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the System.Drawing.Icon for this window.
+        /// </summary>
+        public static Icon Icon
+        {
+            get { return Window.Icon; }
+            set { Window.Icon = value; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this window exists.
+        /// </summary>
+        public static bool Exists
+        {
+            get { return Window.Exists; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the shutdown sequence has been initiated for this window, 
+        /// by calling Game.Exit() or clicking the "close" button. If this property is true, it is no longer
+        /// safe to use any Flare.Graphics, OpenTK.Input, or OpenTK.Graphics.OpenGL functions or properties.
+        /// </summary>
+        public static bool IsExiting
+        {
+            get { return Window.IsExiting; }
+        }
+
+        /// <summary>
+        /// Gets the OpenGL context associated with the current window.
+        /// </summary>
+        public static IGraphicsContext Context
+        {
+            get { return Window.Context; }
+        }
+
+        #endregion
+
         #region Render & Update Data Properties
         /*
         /// <summary>
@@ -172,6 +242,45 @@ namespace Flare.Framework
             Window.UpdatePeriod;
             Window.UpdateTime;
         */
+        #endregion
+
+        #region Input Device Properties
+
+        /// <summary>
+        /// Gets or sets the MouseCursor for this window.
+        /// </summary>
+        public static MouseCursor Cursor
+        {
+            get { return Window.Cursor; }
+            set { Window.Cursor = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the mouse cursor is visible.
+        /// </summary>
+        public static bool CursorVisible
+        {
+            get { return Window.CursorVisible; }
+            set { Window.CursorVisible = value; }
+        }
+
+        /// <summary>
+        /// Gets the primary mouse device, or null if no Mouse exists.
+        /// </summary>
+        public static OpenTK.Input.MouseDevice Mouse
+        {
+            get { return Window.Mouse; }
+        }
+
+        /// <summary>
+        /// Gets the primary Keyboard device, or null if no Keyboard exists.
+        /// </summary>
+        public static OpenTK.Input.KeyboardDevice Keyboard
+        {
+            get { return Window.Keyboard; }
+        }
+
+        // GameWindow Joysticks have been depricated in favor of OpenTK.Input.Joystick and OpenTK.Input.GamePad
 
         #endregion
 
@@ -203,8 +312,6 @@ namespace Flare.Framework
         public static event EventHandler<EventArgs> WindowStateChanged;
 
         #endregion
-
-        public static Utility.FrameClock Clock { get; private set; }
 
         static Game()
         {
@@ -240,25 +347,6 @@ namespace Flare.Framework
             Window.WindowStateChanged += Window_WindowStateChanged;
 
             #endregion
-
-            // TODO: Create properties for these that do not already exist:
-                /*
-                Window.Context
-                Window.Cursor
-                Window.CursorVisible
-                Window.Exists
-                Window.Icon
-                Window.IsExiting
-                Window.Joysticks
-                Window.Keyboard
-                Window.Location
-                Window.Mouse
-
-                Window.Title
-
-                Window.Visible
-                Window.VSync
-                */
 
             Clock = new Utility.FrameClock();
         }
@@ -412,6 +500,8 @@ namespace Flare.Framework
 
         #endregion
 
+        #region Run Methods
+
         public static void Run()
         {
             Window.Run();
@@ -429,6 +519,10 @@ namespace Flare.Framework
             Window.Exit();
         }
 
+        #endregion
+
+        #region Graphics Methods
+
         public static void SwapBuffers()
         {
             Window.SwapBuffers();
@@ -443,5 +537,71 @@ namespace Flare.Framework
             }
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
+
+        #endregion
+
+        #region GameWindow Methods
+
+        /// <summary>
+        /// Closes the window. Equivalent to Close().
+        /// </summary>
+        public static void Exit()
+        {
+            Window.Exit();
+        }
+
+        /// <summary>
+        /// Closes the window. Equivalent to Exit().
+        /// </summary>
+        public static void Close()
+        {
+            Window.Close();
+        }
+
+        /// <summary>
+        /// Disposes the game, releasing all resources consumed by it.
+        /// </summary>
+        public static void Dispose()
+        {
+            Window.Dispose();
+        }
+
+        /// <summary>
+        /// Make the GraphicsContext current on the calling thread. 
+        /// </summary>
+        public static void MakeCurrent()
+        {
+            Window.MakeCurrent();
+        }
+
+        /// <summary>
+        /// Transforms the specified point from screen to client coordinates.
+        /// </summary>
+        /// <param name="p">Point in screen coordinates</param>
+        /// <returns>Point in client coordinates</returns>
+        public static Point PointToClient(Point p)
+        {
+            return Window.PointToClient(p);
+        }
+
+        /// <summary>
+        /// Transforms the specified point from client to screen coordinates.
+        /// </summary>
+        /// <param name="p">Point in client coordinates</param>
+        /// <returns>Point in screen coordinates</returns>
+        public static Point PointToScreen(Point p)
+        {
+            return Window.PointToScreen(p);
+        }
+
+        /// <summary>
+        /// Process operating system events until window becomes idle.
+        /// </summary>
+        public static void ProcessEvents()
+        {
+            Window.ProcessEvents();
+        }
+
+        #endregion
     }
 }

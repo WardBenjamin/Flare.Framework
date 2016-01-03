@@ -57,9 +57,11 @@ namespace Flare.Framework.Graphics
                     lastPos = text.Position;
                     textShader.SetUniform("pos", lastPos);
                 }
-                if (Game.TargetSize != lastTarSize)
+                Vector2 clientSize;
+                if ((clientSize = new Vector2(Game.ClientSize.Width, Game.ClientSize.Height)) != lastTarSize)
                 {
-                    lastTarSize = Game.TargetSize;
+                    Console.WriteLine(Game.ClientSize);
+                    lastTarSize = clientSize;
                     textShader.SetUniform("targetSize", lastTarSize);
                 }
                 if (text.Font.Texture.TexID != lastTexID)
