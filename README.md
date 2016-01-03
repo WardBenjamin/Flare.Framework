@@ -54,6 +54,9 @@ To use Flare, just download the Nuget package that you want and add it to a C# p
 Basic samples are located in the Flare.Demo project; at the moment these do not have full coverage of the API but they will be improved and more samples will be added as I have more time for development. Documentation will be available at that point.
 
 #### Features
+v1.2.2
+ - Remove annoying console output
+
 v1.2.1
  - Add missing Game.Focused property
  - Generate documentation by default
