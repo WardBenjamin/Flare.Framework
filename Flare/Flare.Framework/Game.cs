@@ -148,6 +148,14 @@ namespace Flare.Framework
         #region Misc. Window Properties
 
         /// <summary>
+        /// Gets a value that indicates whether this window has input focus.
+        /// </summary>
+        public static bool Focused
+        {
+            get { return Window.Focused; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the the window is visible.
         /// </summary>
         public static bool Visible
