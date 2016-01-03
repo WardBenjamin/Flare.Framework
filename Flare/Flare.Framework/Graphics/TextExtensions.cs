@@ -60,7 +60,6 @@ namespace Flare.Framework.Graphics
                 Vector2 clientSize;
                 if ((clientSize = new Vector2(Game.ClientSize.Width, Game.ClientSize.Height)) != lastTarSize)
                 {
-                    Console.WriteLine(Game.ClientSize);
                     lastTarSize = clientSize;
                     textShader.SetUniform("targetSize", lastTarSize);
                 }
