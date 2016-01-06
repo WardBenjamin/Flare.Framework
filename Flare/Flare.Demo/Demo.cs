@@ -16,8 +16,10 @@ namespace Flare.Demo
     class Demo
     {
         private SpriteBatch spriteBatch;
+        private Texture texture;
         private Sprite sprite;
         private Text text;
+        BitmapFont font;
         private ClockDisplay fpsCounter;
 
         public Demo()
@@ -25,16 +27,28 @@ namespace Flare.Demo
             Game.Load += OnLoad;
             Game.RenderFrame += OnRenderFrame;
             Game.UpdateFrame += OnUpdateFrame;
+            Game.Unload += OnUnload;
             Game.Run(60.0f);
             Game.UpdateFrame += (sender, e) => { GC.Collect(); };
+        }
+
+        private void OnUnload(object sender, EventArgs e)
+        {
+            sprite.Dispose();
+            texture.Dispose();
+            text.Dispose();
+            fpsCounter.Dispose();
+            font.Dispose();
         }
 
         protected void OnLoad(object sender, EventArgs e)
         {
             spriteBatch = new SpriteBatch();
-            sprite = new Sprite(new Texture(new Bitmap(@"Content/test.png")), new Vector2(0, 0));
+            texture = new Texture(new Bitmap(@"Content/test.png"));
+            sprite = new Sprite(texture, new Vector2(0, 0));
             text = new Text(new BitmapFont("Content/arial_test"), "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
-            fpsCounter = new ClockDisplay(Game.Clock, new BitmapFont(@"Content/fps_font"), Vector2.Zero, Color.White); // White is also default
+            font = new BitmapFont(@"Content/fps_font");
+            fpsCounter = new ClockDisplay(Game.Clock, font, Vector2.Zero, Color.White); // White is also default
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs e)

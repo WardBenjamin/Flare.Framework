@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 
 namespace Flare.Framework.Graphics
 {
-    public class Texture
+    public class Texture : IDisposable
     {
         public static readonly Texture WhitePixel = new Texture(1, 1, new Vector4[] { Vector4.One });
 
@@ -16,7 +16,9 @@ namespace Flare.Framework.Graphics
         internal virtual int TexID { get; set; }
 
         // Protected ctor for subclasses to use if handling OpenGL Texture Handles by themselves.
-        protected Texture() { }
+        protected Texture()
+        {
+        }
 
         public Texture(int width, int height)
         {
@@ -46,11 +48,44 @@ namespace Flare.Framework.Graphics
             bitmap.UnlockBits(bmpData);
         }
 
-        ~Texture()
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            // Commented because of crash on exit when this is included. Why?
-            //GL.DeleteTexture(TexID);
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    GL.DeleteTexture(TexID);
+                }
+                else
+                {
+                    // We are being disposed from the destructor
+                    // Figure out a way to clean up the uploaded texture.
+                    // Oh wait, let's just complain!
+                    Console.WriteLine("Warning: An instance of Type: Texture was not disposed before garbage collection.");
+                }
+
+                disposedValue = true;
+            }
         }
 
+        ~Texture()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Cleans up unmanaged OpenGL resources
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

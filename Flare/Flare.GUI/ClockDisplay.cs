@@ -12,7 +12,7 @@ using OpenTK;
 
 namespace Flare.GUI
 {
-    public class ClockDisplay
+    public class ClockDisplay : IDisposable
     {
         public FrameClock Clock;
         public Vector2 Position;
@@ -67,6 +67,8 @@ namespace Flare.GUI
             float dy = 0.0f;
             foreach (Data data in Enum.GetValues(typeof(Data)))
             {
+                if (TextItems[data] != null)
+                    TextItems[data].Dispose();
                 TextItems[data] = new Text(font, GetInfo(data), Position + new OpenTK.Vector2(0, dy), Color);
                 dy += font.MeasureString(data.ToString()).Y;
             }
@@ -109,5 +111,37 @@ namespace Flare.GUI
             FPS, MinFPS, AvgFPS, MaxFPS,
             Delta, MinDelta, AvgDelta, MaxDelta
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    foreach (var item in TextItems.Values)
+                    {
+                        item.Dispose();
+                    }
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        ~ClockDisplay()
+        {
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

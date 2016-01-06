@@ -129,13 +129,20 @@ namespace Flare.Framework.Graphics
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects).
+                    GL.DeleteVertexArray(VAO);
+                    GL.DeleteBuffers(1, ref VBO);
+                    GL.DeleteBuffers(1, ref UBO);
+                }
+                else
+                {
+                    // We are being disposed from the destructor
+                    // Figure out a way to clean up the vertex buffers/array.
+                    // Oh wait, let's just complain!
+                    Console.WriteLine("Warning: An instance of Type: Text was not disposed before garbage collection.");
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-                GL.DeleteVertexArray(VAO);
-                GL.DeleteBuffers(1, ref VBO);
-                GL.DeleteBuffers(1, ref UBO);
 
                 disposedValue = true;
             }
