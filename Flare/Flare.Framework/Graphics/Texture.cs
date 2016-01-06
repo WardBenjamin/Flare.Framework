@@ -8,7 +8,21 @@ namespace Flare.Framework.Graphics
 {
     public class Texture : IDisposable
     {
+        #region Static Members
+
         public static readonly Texture WhitePixel = new Texture(1, 1, new Vector4[] { Vector4.One });
+
+        static Texture()
+        {
+            Game.Unload += CleanupStaticTextures;
+        }
+
+        private static void CleanupStaticTextures(object sender, EventArgs e)
+        {
+            WhitePixel.Dispose();
+        }
+
+        #endregion
 
         public virtual Vector2 Size { get { return new Vector2(Width, Height); } }
         public virtual int Width { get; protected set; }
@@ -66,6 +80,7 @@ namespace Flare.Framework.Graphics
                     // Figure out a way to clean up the uploaded texture.
                     // Oh wait, let's just complain!
                     Console.WriteLine("Warning: An instance of Type: Texture was not disposed before garbage collection.");
+                    throw new NotImplementedException();
                 }
 
                 disposedValue = true;

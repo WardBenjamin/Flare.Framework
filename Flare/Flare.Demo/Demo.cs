@@ -18,8 +18,9 @@ namespace Flare.Demo
         private SpriteBatch spriteBatch;
         private Texture texture;
         private Sprite sprite;
+        private BitmapFont arial;
         private Text text;
-        BitmapFont font;
+        private BitmapFont fpsFont;
         private ClockDisplay fpsCounter;
 
         public Demo()
@@ -37,8 +38,9 @@ namespace Flare.Demo
             sprite.Dispose();
             texture.Dispose();
             text.Dispose();
+            arial.Dispose();
             fpsCounter.Dispose();
-            font.Dispose();
+            fpsFont.Dispose();
         }
 
         protected void OnLoad(object sender, EventArgs e)
@@ -46,9 +48,10 @@ namespace Flare.Demo
             spriteBatch = new SpriteBatch();
             texture = new Texture(new Bitmap(@"Content/test.png"));
             sprite = new Sprite(texture, new Vector2(0, 0));
-            text = new Text(new BitmapFont("Content/arial_test"), "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
-            font = new BitmapFont(@"Content/fps_font");
-            fpsCounter = new ClockDisplay(Game.Clock, font, Vector2.Zero, Color.White); // White is also default
+            arial = new BitmapFont("Content/arial_test");
+            text = new Text(arial, "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
+            fpsFont = new BitmapFont(@"Content/fps_font");
+            fpsCounter = new ClockDisplay(Game.Clock, fpsFont, Vector2.Zero, Color.White); // White is also default
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs e)
