@@ -17,7 +17,7 @@ namespace Flare.Framework.Graphics.Cameras
         /// <summary>
         /// View matrix used in drawing. The view matrix converts from world space to view (aka camera) space.
         /// </summary>
-        public Matrix4 ViewMatrix
+        public virtual Matrix4 ViewMatrix
         {
             get
             {
@@ -122,23 +122,24 @@ namespace Flare.Framework.Graphics.Cameras
         /// <param name="height">Height of viewport</param>
         /// <param name="zNear">Near clipping distance</param>
         /// <param name="zFar">Far clipping distance</param>
-        public PerspectiveCamera CreatePerspectiveFov(float fovy, float width, float height, float zNear, float zFar)
+        public static PerspectiveCamera CreatePerspectiveFov(float fovy, float width, float height, float zNear, float zFar)
         {
             return CreatePerspectiveFov(fovy, width / height, zNear, zFar);
         }
 
         /// <summary>
-        /// Set projection matrix to be orthonographic, representing the width, height,
-        /// and clipping distance params.
+        /// Create a camera with an orthographic projection matrix. Note that this by default uses OrthographicCamera.ViewMode.Default.
+        /// See OrthographicCamera.ViewMode for mode options and descriptions.
         /// </summary>
         /// <param name="width">Width of viewport</param>
         /// <param name="height">Height of viewport</param>
         /// <param name="zNear">Near clipping distance</param>
         /// <param name="zFar">Far clipping distance</param>
+        /// <param name="mode">Camera view mode</param>
         /// <returns></returns>
-        public OrthographicCamera CreateOrthographic(float width, float height, float zNear, float zFar)
+        public static OrthographicCamera CreateOrthographic(float width, float height, float zNear, float zFar, OrthographicCamera.ViewMode mode = OrthographicCamera.ViewMode.Default)
         {
-            return new OrthographicCamera(Matrix4.CreateOrthographic(width, height, zNear, zFar));   
+            return new OrthographicCamera(Matrix4.CreateOrthographic(width, height, zNear, zFar), mode);   
         }
     }
 }

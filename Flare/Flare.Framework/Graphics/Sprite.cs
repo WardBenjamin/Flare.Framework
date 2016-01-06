@@ -21,10 +21,11 @@ namespace Flare.Framework.Graphics
 
         private Vector3 position;
         private Vector2 scale;
+        private float rotation;
         private Texture texture;
 
         /// <summary>
-        /// The texture to draw
+        /// The texture to draw.
         /// </summary>
         public Texture Texture
         {
@@ -32,7 +33,10 @@ namespace Flare.Framework.Graphics
             set { texture = value; GenerateVerts(); }
         }
 
-        public Vector2 Rotation
+        /// <summary>
+        /// The rotation around the z axis, in radians.
+        /// </summary>
+        public float Rotation
         {
             get { return rotation; }
             set { rotation = value; }
@@ -43,12 +47,12 @@ namespace Flare.Framework.Graphics
         /// </summary>
         public Vector2 Position
         {
-            get { return position; }
-            set { position = value; }
+            get { return position.Xy; }
+            set { position.Xy = value; }
         }
 
         /// <summary>
-        /// The sprite's scale
+        /// The scale of the image. X and Y scale must be set seperately.
         /// </summary>
         public Vector2 Scale
         {
@@ -71,8 +75,8 @@ namespace Flare.Framework.Graphics
             UBO = GL.GenBuffer();
 
             this.texture = texture;
-            this.position = position;
-            this.scale = Vector2.One;
+            this.Position = position;
+            this.Scale = Vector2.One;
             Tint = Vector4.One;
 
             GenerateVerts();
@@ -86,7 +90,7 @@ namespace Flare.Framework.Graphics
             UBO = GL.GenBuffer();
 
             this.texture = texture;
-            this.position = position;
+            this.Position = position;
             this.scale = scale;
 
             GenerateVerts();
@@ -136,8 +140,7 @@ namespace Flare.Framework.Graphics
         private void GenerateMatrix()
         {
             ModelMatrix = Matrix4.CreateScale(new Vector3(scale.X, Scale.Y, 1))
-                * Matrix4.CreateRotationX(Rotation.X)
-                * Matrix4.CreateRotationY(Rotation.Y)
+                * Matrix4.CreateRotationZ(rotation)
                 * Matrix4.CreateTranslation(position);
         }
     }

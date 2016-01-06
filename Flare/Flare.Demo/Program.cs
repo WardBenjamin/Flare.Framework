@@ -11,6 +11,7 @@ namespace Flare.Demo
         static void Main(string[] args)
         {
             var demo = new Demo();
+            Console.ReadKey();
         }
     }
 }

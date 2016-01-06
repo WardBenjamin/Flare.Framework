@@ -26,12 +26,13 @@ namespace Flare.Demo
             Game.RenderFrame += OnRenderFrame;
             Game.UpdateFrame += OnUpdateFrame;
             Game.Run(60.0f);
+            Game.UpdateFrame += (sender, e) => { GC.Collect(); };
         }
 
         protected void OnLoad(object sender, EventArgs e)
         {
             spriteBatch = new SpriteBatch();
-            sprite = new Sprite(new Texture(new Bitmap(@"Content/test.png")), new Vector2(256, 0));
+            sprite = new Sprite(new Texture(new Bitmap(@"Content/test.png")), new Vector2(0, 0));
             text = new Text(new BitmapFont("Content/arial_test"), "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
             fpsCounter = new ClockDisplay(Game.Clock, new BitmapFont(@"Content/fps_font"), Vector2.Zero, Color.White); // White is also default
         }

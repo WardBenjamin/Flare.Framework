@@ -14,6 +14,17 @@ namespace Flare.Framework.Graphics
 {
     public class SpriteBatch
     {
+        #region Default Camera
+
+        internal static OrthographicCamera DefaultCamera { get; private set; }
+
+        private static void Default_Camera_Resize_Hook(object sender, EventArgs e)
+        {
+            DefaultCamera = Camera.CreateOrthographic(Game.ClientSize.Width, Game.ClientSize.Height, -1, 1);
+        }
+
+        #endregion
+
         List<Sprite> spritesToDraw = new List<Sprite>();
         static Shader spriteShader;
 
@@ -24,6 +35,8 @@ namespace Flare.Framework.Graphics
                 spriteShader = new Shader(vshader, fshader);
                 spriteShader.Compile();
             }
+            DefaultCamera = Camera.CreateOrthographic(Game.ClientSize.Width, Game.ClientSize.Height, -1, 1);
+            Game.Resize += Default_Camera_Resize_Hook;
         }
 
         public void Draw()
@@ -43,11 +56,11 @@ namespace Flare.Framework.Graphics
             spritesToDraw.Add(sprite);
         }
 
-        private void DrawSprites(OrthographicCamera camera = OrthographicCamera.Default)
+        private void DrawSprites(OrthographicCamera camera = null)
         {
-            Matrix4 MVP;
-            if (camera == null)
-                MVP =
+            Matrix4 MVP, lastMVP = Matrix4.Identity;
+            camera = camera ?? DefaultCamera;
+
             Vector4 lastTint = Vector4.One;
             int lastTexID = -1;
 
@@ -58,6 +71,13 @@ namespace Flare.Framework.Graphics
             foreach (var spr in spritesToDraw)
             {
                 GL.BindVertexArray(spr.VAO);
+                MVP = spr.ModelMatrix * camera.ViewMatrix * camera.ProjectionMatrix;
+                if (MVP != lastMVP)
+                {
+                    lastMVP = MVP;
+                    spriteShader.SetUniform("MVP", lastMVP);
+                }
+                Console.WriteLine(Vector4.Transform(new Vector4(spr.Position), lastMVP));
                 if (spr.Tint != lastTint)
                 {
                     lastTint = spr.Tint;
@@ -87,13 +107,12 @@ namespace Flare.Framework.Graphics
         private static string vshader = @"#version 130
             in vec3 vertPos;
             in vec2 vertUV;
+            out vec2 UV;
 
             uniform mat4 MVP;
 
-            out vec2 UV;
-
             void main() {
-                gl_Position = MVP * vec4(vertPos, 1)
+                gl_Position = MVP * vec4(vertPos, 1);
                 UV = vertUV;
             }";
 
