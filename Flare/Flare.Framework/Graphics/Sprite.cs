@@ -14,14 +14,7 @@ namespace Flare.Framework.Graphics
     /// </summary>
     public class Sprite : IDisposable
     {
-        /// <summary>
-        /// Contains information about transformations such as translations and scale for this sprite.
-        /// </summary>
-        public Matrix4 ModelMatrix;
-
-        private Vector3 position;
-        private Vector2 scale;
-        private float rotation;
+        public Transform Transform;
         private Texture texture;
 
         /// <summary>
@@ -33,76 +26,46 @@ namespace Flare.Framework.Graphics
             set { texture = value; GenerateVerts(); }
         }
 
-        /// <summary>
-        /// The rotation around the z axis, in radians.
-        /// </summary>
-        public float Rotation
-        {
-            get { return rotation; }
-            set { rotation = value; }
-        }
-
-        /// <summary>
-        /// The sprite's position in screen coordinates.
-        /// </summary>
-        public Vector2 Position
-        {
-            get { return position.Xy; }
-            set { position.Xy = value; }
-        }
-
-        /// <summary>
-        /// The scale of the image. X and Y scale must be set seperately.
-        /// </summary>
-        public Vector2 Scale
-        {
-            get { return scale; }
-            set { scale = value; }
-        }
-
         public Vector4 Tint { get; set; }
 
         public int VAO, VBO, UBO; // VAO, Verticies, UVs
-        Vector3[] verticies;
+        public Vector3[] verticies;
         Vector2[] uvs;
 
         protected Sprite() { }
 
-        public Sprite(Texture texture, Vector2 position)
+        public Sprite(Texture texture)
         {
             VAO = GL.GenVertexArray();
             VBO = GL.GenBuffer();
             UBO = GL.GenBuffer();
 
             this.texture = texture;
-            this.Position = position;
-            this.Scale = Vector2.One;
+            this.Transform = new Transform();
             Tint = Vector4.One;
 
             GenerateVerts();
-            GenerateMatrix();
         }
 
-        public Sprite(Texture texture, Vector2 position, Vector2 scale)
+        public Sprite(Texture texture, Transform transform)
         {
             VAO = GL.GenVertexArray();
             VBO = GL.GenBuffer();
             UBO = GL.GenBuffer();
 
             this.texture = texture;
-            this.Position = position;
-            this.scale = scale;
+            this.Transform = transform;
+            Tint = Vector4.One;
 
             GenerateVerts();
-            GenerateMatrix();
         }
 
-        public Sprite(Texture texture, Vector2 position, Vector2 scale, Color tint) : this(texture, position, scale)
+        public Sprite(Texture texture, Color tint) : this(texture)
         {
             Tint = new Vector4((float)tint.R / 255, (float)tint.G / 255, (float)tint.B / 255, (float)tint.A / 255);
         }
 
-        public Sprite(Texture texture, Vector2 position, Vector2 scale, Vector4 tint) : this(texture, position, scale)
+        public Sprite(Texture texture, Transform transform, Vector4 tint) : this(texture, transform)
         {
             Tint = tint;
         }
@@ -135,13 +98,6 @@ namespace Flare.Framework.Graphics
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(BlittableValueType.StrideOf(uvs) * uvs.Length), uvs, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, OpenTK.BlittableValueType.StrideOf(uvs), 0);
-        }
-
-        private void GenerateMatrix()
-        {
-            ModelMatrix = Matrix4.CreateScale(new Vector3(scale.X, Scale.Y, 1))
-                * Matrix4.CreateRotationZ(rotation)
-                * Matrix4.CreateTranslation(position);
         }
 
         #region IDisposable Support

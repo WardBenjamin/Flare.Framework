@@ -20,7 +20,7 @@ namespace Flare.Framework.Graphics
 
         private static void Default_Camera_Resize_Hook(object sender, EventArgs e)
         {
-            DefaultCamera = Camera.CreateOrthographic(Game.ClientSize.Width, Game.ClientSize.Height, -1, 1);
+            DefaultCamera = Camera.CreateOrthographicTopLeftOrigin(Game.ClientSize.Width, Game.ClientSize.Height, -1, 1);
         }
 
         #endregion
@@ -68,16 +68,29 @@ namespace Flare.Framework.Graphics
             GL.BindVertexArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
             spriteShader.SetUniform("tint", lastTint);
+
             foreach (var spr in spritesToDraw)
             {
                 GL.BindVertexArray(spr.VAO);
-                MVP = spr.ModelMatrix * camera.ViewMatrix * camera.ProjectionMatrix;
+                MVP = spr.Transform.Matrix * camera.ViewMatrix * camera.ProjectionMatrix;
+                Console.WriteLine(camera.Orientation.X);
+                //Console.WriteLine("View:\n" + camera.ViewMatrix);
+                //Console.WriteLine("Proj:\n" + camera.ProjectionMatrix);
+                //Console.WriteLine("Proj Inv:\n" + camera.ProjectionMatrix.Inverted());
+
                 if (MVP != lastMVP)
                 {
                     lastMVP = MVP;
                     spriteShader.SetUniform("MVP", lastMVP);
                 }
-                Console.WriteLine(Vector4.Transform(new Vector4(spr.Position), lastMVP));
+                /*Console.WriteLine("Verts:");
+                foreach (var vert in spr.verticies)
+                {
+                    Console.WriteLine("Untransformed: " + new Vector4(vert, 1));
+                    Console.WriteLine("Transformed: " + Vector4.Transform(new Vector4(vert, 1), lastMVP));
+                }*/
+                //Console.WriteLine("MVP: ");
+                //Console.WriteLine(lastMVP);
                 if (spr.Tint != lastTint)
                 {
                     lastTint = spr.Tint;

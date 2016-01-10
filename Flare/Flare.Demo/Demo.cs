@@ -47,7 +47,7 @@ namespace Flare.Demo
         {
             spriteBatch = new SpriteBatch();
             texture = new Texture(new Bitmap(@"Content/test.png"));
-            sprite = new Sprite(texture, new Vector2(0, 0));
+            sprite = new Sprite(texture);
             arial = new BitmapFont("Content/arial_test");
             text = new Text(arial, "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
             fpsFont = new BitmapFont(@"Content/fps_font");

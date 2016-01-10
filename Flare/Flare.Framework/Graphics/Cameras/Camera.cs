@@ -48,7 +48,7 @@ namespace Flare.Framework.Graphics.Cameras
         /// <summary>
         /// Rotation in world space. Requires radians.
         /// </summary>
-        public Vector3 Orientation = new Vector3((float)Math.PI, 0f, 0f);
+        public Vector3 Orientation = new Vector3(0f, 0f, 0f);
 
         /// <summary>
         /// Moves the camera in world space.
@@ -140,6 +140,21 @@ namespace Flare.Framework.Graphics.Cameras
         public static OrthographicCamera CreateOrthographic(float width, float height, float zNear, float zFar, OrthographicCamera.ViewMode mode = OrthographicCamera.ViewMode.Default)
         {
             return new OrthographicCamera(Matrix4.CreateOrthographic(width, height, zNear, zFar), mode);   
+        }
+
+        /// <summary>
+        /// Create a camera with an orthographic projection matrix. 
+        /// Alias for CreateOrthographic(width, height, zNear, zFar, OrthographicCamera.ViewMode.TopLeft).
+        /// </summary>
+        /// <param name="width">Width of viewport</param>
+        /// <param name="height">Height of viewport</param>
+        /// <param name="zNear">Near clipping distance</param>
+        /// <param name="zFar">Far clipping distance</param>
+        /// <param name="mode">Camera view mode</param>
+        /// <returns></returns>
+        public static OrthographicCamera CreateOrthographicTopLeftOrigin(float width, float height, float zNear, float zFar)
+        {
+            return CreateOrthographic(width, height, zNear, zFar, OrthographicCamera.ViewMode.TopLeft);
         }
     }
 }

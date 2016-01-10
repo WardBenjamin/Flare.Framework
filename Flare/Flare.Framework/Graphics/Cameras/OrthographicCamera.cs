@@ -20,17 +20,17 @@ namespace Flare.Framework.Graphics.Cameras
         public enum ViewMode
         {
             /// <summary>
-            /// Default view mode. Equivalent to ViewMode.TopLeft.
+            /// Default view mode. Equivalent to ViewMode.Center.
             /// </summary>
             Default = 0,
             /// <summary>
-            /// 0, 0 is defined as the top-left of the screen when the position is at 0, 0.
-            /// </summary>
-            TopLeft = 0,
-            /// <summary>
             /// 0, 0 is defined as the center of the projection when at position 0, 0.
             /// </summary>
-            Center = 1
+            Center = 0,
+            /// <summary>
+            /// 0, 0 is defined as the top-left of the screen when the position is at 0, 0.
+            /// </summary>
+            TopLeft = 1
         }
 
         /// <summary>
@@ -44,29 +44,15 @@ namespace Flare.Framework.Graphics.Cameras
             {
                 if ((int)value == (int)ViewMode.Default)
                 {
-                    if (Screen_Resize_Hook_Used)
-                    {
-                        Game.Resize -= Screen_Resize_Hook;
-                        Screen_Resize_Hook_Used = false;
-                    }
                 }
-                else
+                else if ((int)value == (int)ViewMode.TopLeft)
                 {
-                    Game.Resize += Screen_Resize_Hook;
-                    Screen_Resize_Hook_Used = true;
                 }
                 viewMode = value;
             }
         }
 
-        private void Screen_Resize_Hook(object sender, EventArgs e)
-        {
-            ScreenSize = Game.ClientSize;
-        }
-
         private ViewMode viewMode = ViewMode.Default;
-        private bool Screen_Resize_Hook_Used = false;
-        private Size ScreenSize = Size.Empty;
 
         /// <summary>
         /// View matrix used in drawing. The view matrix converts from world space to view (aka camera) space.
@@ -75,19 +61,20 @@ namespace Flare.Framework.Graphics.Cameras
         {
             get
             {
+                Console.WriteLine("View Matrix");
                 if (Mode == ViewMode.TopLeft)
                 {
-                    Console.WriteLine("Screen Size" + ScreenSize);
-                    Console.WriteLine("Top Left");
-                    Console.WriteLine(Matrix4.CreateTranslation(new Vector3(ScreenSize.Width, ScreenSize.Height, 0))
-                        * Matrix4.CreateTranslation(Position)
-                        * Matrix4.CreateRotationX(Orientation.X)
-                        * Matrix4.CreateRotationY(Orientation.Y));
-                    Console.WriteLine("Center");
-                    Console.WriteLine(Matrix4.CreateTranslation(Position)
-                        * Matrix4.CreateRotationX(Orientation.X)
-                        * Matrix4.CreateRotationY(Orientation.Y));
-                    return Matrix4.CreateTranslation(new Vector3(ScreenSize.Width, ScreenSize.Height, 0))
+                    //Console.WriteLine("Screen Size" + Game.ClientSize);
+                   // Console.WriteLine("Top Left");
+                    //Console.WriteLine(Matrix4.CreateTranslation(new Vector3(Game.ClientSize.Width, Game.ClientSize.Height, 0))
+                      //  * Matrix4.CreateTranslation(Position)
+                        //* Matrix4.CreateRotationX(Orientation.X)
+                       // * Matrix4.CreateRotationY(Orientation.Y));
+                   // Console.WriteLine("Center");
+                    //Console.WriteLine(Matrix4.CreateTranslation(Position)
+                        //* Matrix4.CreateRotationX(Orientation.X)
+                        //* Matrix4.CreateRotationY(Orientation.Y));
+                    return Matrix4.CreateTranslation(-(new Vector3(Game.ClientSize.Width, Game.ClientSize.Height, 0)) / 2)
                         * Matrix4.CreateTranslation(Position)
                         * Matrix4.CreateRotationX(Orientation.X)
                         * Matrix4.CreateRotationY(Orientation.Y);
