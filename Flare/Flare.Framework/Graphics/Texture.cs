@@ -24,9 +24,21 @@ namespace Flare.Framework.Graphics
 
         #endregion
 
+        /// <summary>
+        /// Represents the width and height of the texture, in pixels.
+        /// </summary>
         public virtual Vector2 Size { get { return new Vector2(Width, Height); } }
+        /// <summary>
+        /// The width of the texture, in pixels.
+        /// </summary>
         public virtual int Width { get; protected set; }
+        /// <summary>
+        /// The height of the texture, in pixels.
+        /// </summary>
         public virtual int Height { get; protected set; }
+        /// <summary>
+        /// The OpenGL texture handle.
+        /// </summary>
         internal virtual int TexID { get; set; }
 
         // Protected ctor for subclasses to use if handling OpenGL Texture Handles by themselves.
@@ -34,6 +46,11 @@ namespace Flare.Framework.Graphics
         {
         }
 
+        /// <summary>
+        /// Buffer memory and generate a new OpenGL texture
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public Texture(int width, int height)
         {
             Width = width;
@@ -48,12 +65,22 @@ namespace Flare.Framework.Graphics
             GC.AddMemoryPressure(width * height * 4);
         }
 
+        /// <summary>
+        /// Generates an OpenGL texture handle and uploads pixels to that texture.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="pixels"></param>
         public Texture(int width, int height, Vector4[] pixels)
             : this(width, height)
         {
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.Float, pixels);
         }
 
+        /// <summary>
+        /// Generates an OpenGL texture handle and uploads the pixels of the input bitmap.
+        /// </summary>
+        /// <param name="bitmap"></param>
         public Texture(Bitmap bitmap)
             : this(bitmap.Width, bitmap.Height)
         {
@@ -64,26 +91,17 @@ namespace Flare.Framework.Graphics
 
         #region IDisposable Support
 
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposed = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!disposed)
             {
-                if (disposing)
-                {
-                    GL.DeleteTexture(TexID);
-                }
-                else
-                {
-                    // We are being disposed from the destructor
-                    // Figure out a way to clean up the uploaded texture.
-                    // Oh wait, let's just complain!
-                    Console.WriteLine("Warning: An instance of Type: Texture was not disposed before garbage collection.");
-                    throw new NotImplementedException();
-                }
+                disposed = true;
+                if (disposing) {/* User is calling dispose */}
+                else {/* We are being disposed from the destructor */}
 
-                disposedValue = true;
+                GLCleanupQueue.Add(new GLCleanupTexture(TexID));
             }
         }
 

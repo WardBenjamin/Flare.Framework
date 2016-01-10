@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GLCleanupQueue.cs" />
     <Compile Include="Graphics\Cameras\Camera.cs" />
     <Compile Include="Graphics\Cameras\OrthographicCamera.cs" />
     <Compile Include="Graphics\Cameras\PerspectiveCamera.cs" />

@@ -102,50 +102,36 @@ namespace Flare.Framework.Graphics
 
         #region IDisposable Support
 
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposed = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!disposed)
             {
-                if (disposing)   
-                {
-                    // TODO: dispose managed state (managed objects).
-                    GL.DeleteVertexArray(VAO);
-                    GL.DeleteBuffers(1, ref VBO);
-                    GL.DeleteBuffers(1, ref UBO);
-                }
-                else
-                {
-                    // We are being disposed from the destructor
-                    // Figure out a way to clean up the vertex buffers/array.
-                    // Oh wait, let's just complain!
-                    Console.WriteLine("Warning: An instance of Type: Sprite was not disposed before garbage collection.");
-                }
+                disposed = true;
+                if (disposing) {/* User is calling dispose */}
+                else {/* We are being disposed from the destructor */}
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
+                GLCleanupQueue.Add(new GLCleanupVAO(VAO));
+                GLCleanupQueue.Add(new GLCleanupVBO(VBO));
+                GLCleanupQueue.Add(new GLCleanupVBO(UBO));
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
         ~Sprite()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);
         }
 
-        // This code added to correctly implement the disposable pattern.
         /// <summary>
-        /// Cleans up unmanaged OpenGL resources
+        /// Cleans up unmanaged OpenGL resources.
+        /// This object will no longer be able to be drawn after disposing.
         /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
             GC.SuppressFinalize(this);
         }
 

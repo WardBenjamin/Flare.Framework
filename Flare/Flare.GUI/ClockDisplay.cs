@@ -67,6 +67,7 @@ namespace Flare.GUI
             float dy = 0.0f;
             foreach (Data data in Enum.GetValues(typeof(Data)))
             {
+                // This is not technically required but *ensures* that this does not create a ton of OpenGL VAOs/VBOs.
                 if (TextItems[data] != null)
                     TextItems[data].Dispose();
                 TextItems[data] = new Text(font, GetInfo(data), Position + new OpenTK.Vector2(0, dy), Color);
