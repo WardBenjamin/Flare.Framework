@@ -10,6 +10,7 @@ namespace Flare.Demo
     {
         static void Main(string[] args)
         {
+            Console.WindowHeight = Console.LargestWindowHeight;
             var demo = new Demo();
             Console.ReadKey();
         }

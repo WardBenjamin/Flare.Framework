@@ -27,12 +27,13 @@ namespace Flare.Demo
 
         public Demo()
         {
+            Game.VSync = VSyncMode.On;
             Game.Load += OnLoad;
             Game.RenderFrame += OnRenderFrame;
             Game.UpdateFrame += OnUpdateFrame;
             Game.Unload += OnUnload;
             Game.Run(60.0f);
-            Game.UpdateFrame += (sender, e) => { GC.Collect(); };
+            //Game.UpdateFrame += (sender, e) => { GC.Collect(); };
         }
 
         private void OnUnload(object sender, EventArgs e)
@@ -66,7 +67,7 @@ namespace Flare.Demo
 
             spriteBatch.Add(sprite);
             spriteBatch.AddString(text);
-            spriteBatch.Draw(camera);
+            spriteBatch.Draw();
             spriteBatch.DrawStrings();
 
             spriteBatch.Draw(fpsCounter);
@@ -78,9 +79,10 @@ namespace Flare.Demo
         protected void OnUpdateFrame(object sender, FrameEventArgs e)
         {
             // Note: see Errata.md for more information on this.
-            //camera.Transform.TranslateLocal(new Vector3((float)(32 * e.Time), 0, 0));
+            Vector3 translation = new Vector3((float)(32 * e.Time), 0, 0);
+            //camera.Transform.TranslateLocal(translation);
             
-            //sprite.Transform.Position += new Vector3((float)(32 * e.Time), (float)(32 * e.Time), 0);
+            sprite.Transform.Position += translation;
         }
     }
 }

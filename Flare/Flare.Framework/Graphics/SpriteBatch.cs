@@ -100,6 +100,7 @@ namespace Flare.Framework.Graphics
                 {
                     lastTexID = spr.Texture.TexID;
                     GL.BindTexture(TextureTarget.Texture2D, lastTexID);
+                    GL.TexParameterI(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, new int[] { (int)TextureMinFilter.Linear });
                 }
 
                 GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);

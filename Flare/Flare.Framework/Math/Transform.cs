@@ -62,6 +62,7 @@ namespace Flare.Framework
         {
             get
             {
+                //Console.WriteLine("Internal pos: " + position);
                 return position;
             }
             set

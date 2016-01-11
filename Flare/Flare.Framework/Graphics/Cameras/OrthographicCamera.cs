@@ -16,13 +16,18 @@ namespace Flare.Framework.Graphics.Cameras
         /// <summary>
         /// View matrix used in drawing. The view matrix converts from world space to view (aka camera) space.
         /// </summary>
-        /*public override Matrix4 ViewMatrix
+        public override Matrix4 ViewMatrix
         {
             get
             {
-                return Matrix4.CreateTranslation(Position)
-                    * Matrix4.CreateRotationX(Orientation.X)
-                    * Matrix4.CreateRotationY(Orientation.Y);
+                //Console.WriteLine("Transform Pos: " + Transform.Position);  
+                //Console.WriteLine("Transform AbsolutePos: " + Transform.AbsolutePosition);
+                Matrix4 mat /*= Matrix4.CreateTranslation(-Transform.AbsolutePosition)
+                    * Matrix4.CreateRotationX(Transform.Rotation.X)
+                    * Matrix4.CreateRotationY(Transform.Rotation.Y);*/
+                = Transform.Matrix;
+                //Console.WriteLine(mat);
+                return mat;
                 #region LookAt
                 // TODO: Replace this with something other than a LookAt call (user choice)
                 // Aka, ViewMatrix should be set with a LookAt call?
@@ -35,7 +40,7 @@ namespace Flare.Framework.Graphics.Cameras
                 //return Matrix4.LookAt(Position, Position + lookat, Vector3.UnitY);
                 #endregion
             }
-        }*/
+        }
 
         internal OrthographicCamera(Matrix4 projectionMatrix)
         {

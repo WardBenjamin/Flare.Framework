@@ -61,7 +61,6 @@
     <Compile Include="Graphics\Fonts\BitmapFontFile.cs" />
     <Compile Include="Graphics\Fonts\BitmapFontRegion.cs" />
     <Compile Include="Graphics\Fonts\BitmapFontXMLSerializer.cs" />
-    <Compile Include="Graphics\Models\ObjFile.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\SpriteBatch.cs" />
     <Compile Include="Graphics\TextExtensions.cs" />
