@@ -142,6 +142,7 @@ namespace Flare.Framework.Graphics.Cameras
         /// <summary>
         /// Create a camera with an orthographic projection matrix. 
         /// Alias for CreateOrthographic(width, height, zNear, zFar, OrthographicCamera.ViewMode.TopLeft).
+        /// See Errata.md in the source for more information.
         /// </summary>
         /// <param name="width">Width of viewport</param>
         /// <param name="height">Height of viewport</param>
