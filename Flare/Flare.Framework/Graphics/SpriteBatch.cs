@@ -35,7 +35,8 @@ namespace Flare.Framework.Graphics
                 spriteShader = new Shader(vshader, fshader);
                 spriteShader.Compile();
             }
-            DefaultCamera = Camera.CreateOrthographic(Game.ClientSize.Width, Game.ClientSize.Height, -1, 1);
+            // Create the default camera for the first time
+            Default_Camera_Resize_Hook(null, EventArgs.Empty);
             Game.Resize += Default_Camera_Resize_Hook;
         }
 
@@ -83,12 +84,12 @@ namespace Flare.Framework.Graphics
                     lastMVP = MVP;
                     spriteShader.SetUniform("MVP", lastMVP);
                 }
-                /*Console.WriteLine("Verts:");
+                Console.WriteLine("Verts:");
                 foreach (var vert in spr.verticies)
                 {
                     Console.WriteLine("Untransformed: " + new Vector4(vert, 1));
                     Console.WriteLine("Transformed: " + Vector4.Transform(new Vector4(vert, 1), lastMVP));
-                }*/
+                }
                 //Console.WriteLine("MVP: ");
                 //Console.WriteLine(lastMVP);
                 if (spr.Tint != lastTint)

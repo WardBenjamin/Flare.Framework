@@ -91,9 +91,7 @@ namespace Flare.Framework.Graphics.Cameras
         public virtual bool Contains(Rectangle rect)
         {
             // TODO: Write the Contains method.
-            // Or make abstract?
-
-            return false;
+            throw new NotImplementedException();
         }
 
         // Documentation for ortho and perspective fov matricies: 
@@ -135,11 +133,10 @@ namespace Flare.Framework.Graphics.Cameras
         /// <param name="height">Height of viewport</param>
         /// <param name="zNear">Near clipping distance</param>
         /// <param name="zFar">Far clipping distance</param>
-        /// <param name="mode">Camera view mode</param>
         /// <returns></returns>
-        public static OrthographicCamera CreateOrthographic(float width, float height, float zNear, float zFar, OrthographicCamera.ViewMode mode = OrthographicCamera.ViewMode.Default)
+        public static OrthographicCamera CreateOrthographic(float width, float height, float zNear, float zFar)
         {
-            return new OrthographicCamera(Matrix4.CreateOrthographic(width, height, zNear, zFar), mode);   
+            return new OrthographicCamera(Matrix4.CreateOrthographic(width, height, zNear, zFar));   
         }
 
         /// <summary>
@@ -150,11 +147,10 @@ namespace Flare.Framework.Graphics.Cameras
         /// <param name="height">Height of viewport</param>
         /// <param name="zNear">Near clipping distance</param>
         /// <param name="zFar">Far clipping distance</param>
-        /// <param name="mode">Camera view mode</param>
         /// <returns></returns>
         public static OrthographicCamera CreateOrthographicTopLeftOrigin(float width, float height, float zNear, float zFar)
         {
-            return CreateOrthographic(width, height, zNear, zFar, OrthographicCamera.ViewMode.TopLeft);
+            return new OrthographicCamera(Matrix4.CreateOrthographicOffCenter(0, width, height, 0, zNear, zFar));
         }
     }
 }
