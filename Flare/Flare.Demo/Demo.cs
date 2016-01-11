@@ -10,6 +10,7 @@ using System.Drawing;
 using Flare.Framework.Graphics.Fonts;
 using OpenTK.Graphics.OpenGL;
 using Flare.GUI;
+using Flare.Framework.Graphics.Cameras;
 
 namespace Flare.Demo
 {
@@ -22,6 +23,7 @@ namespace Flare.Demo
         private Text text;
         private BitmapFont fpsFont;
         private ClockDisplay fpsCounter;
+        private OrthographicCamera camera;
 
         public Demo()
         {
@@ -35,6 +37,8 @@ namespace Flare.Demo
 
         private void OnUnload(object sender, EventArgs e)
         {
+            // This is not required, but is good practice because the 
+            // garbage collecter may decide not to clean up OpenGL resources.
             sprite.Dispose();
             texture.Dispose();
             text.Dispose();
@@ -51,7 +55,8 @@ namespace Flare.Demo
             arial = new BitmapFont("Content/arial_test");
             text = new Text(arial, "The quick brown fox \njumps over the lazy dog.", new Vector2(0, 256), Color.Black);
             fpsFont = new BitmapFont(@"Content/fps_font");
-            fpsCounter = new ClockDisplay(Game.Clock, fpsFont, Vector2.Zero, Color.White); // White is also default
+            fpsCounter = new ClockDisplay(Game.Clock, fpsFont, Vector2.Zero, Color.Black); // White is also default
+            camera = Camera.CreateOrthographic(Game.ClientSize.Width, Game.ClientSize.Height, -1, 1);
         }
 
         protected void OnRenderFrame(object sender, FrameEventArgs e)
@@ -61,7 +66,7 @@ namespace Flare.Demo
 
             spriteBatch.Add(sprite);
             spriteBatch.AddString(text);
-            spriteBatch.Draw();
+            spriteBatch.Draw(camera);
             spriteBatch.DrawStrings();
 
             spriteBatch.Draw(fpsCounter);
@@ -72,6 +77,10 @@ namespace Flare.Demo
 
         protected void OnUpdateFrame(object sender, FrameEventArgs e)
         {
+            // Note: see Errata.md for more information on this.
+            //camera.Transform.TranslateLocal(new Vector3((float)(32 * e.Time), 0, 0));
+            
+            //sprite.Transform.Position += new Vector3((float)(32 * e.Time), (float)(32 * e.Time), 0);
         }
     }
 }

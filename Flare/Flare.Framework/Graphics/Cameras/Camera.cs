@@ -21,10 +21,12 @@ namespace Flare.Framework.Graphics.Cameras
         {
             get
             {
+                return Transform.Matrix;
+                /*
                 return Matrix4.CreateTranslation(Position) 
                     * Matrix4.CreateRotationX(Orientation.X) 
                     * Matrix4.CreateRotationY(Orientation.Y);
-
+                    */
                 #region LookAt
                 // TODO: Replace this with something other than a LookAt call (user choice)
                 // Aka, ViewMatrix should be set with a LookAt call?
@@ -39,6 +41,9 @@ namespace Flare.Framework.Graphics.Cameras
             }
         }
 
+        public Transform Transform = new Transform();
+
+        /*
         /// <summary>
         /// Camera position in world space. This represents the absolute OpenGL position where the origin is zero.
         /// See http://www.cocos2d-x.org/attachments/download/1563 for axis details.
@@ -81,7 +86,7 @@ namespace Flare.Framework.Graphics.Cameras
         {
             Orientation.X = (Orientation.X + x) % ((float)Math.PI * 2.0f);
             Orientation.Y = Math.Max(Math.Min(Orientation.Y + y, (float)Math.PI / 2.0f - 0.1f), (float)-Math.PI / 2.0f + 0.1f);
-        }
+        }*/
 
         /// <summary>
         /// Check if the camera can "see" the input bounds
