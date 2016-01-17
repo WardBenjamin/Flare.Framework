@@ -53,11 +53,19 @@
     <Compile Include="Input\Gamepad.cs" />
     <Compile Include="Input\Joystick.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SDL2\SDL2_Gamepad.cs" />
+    <Compile Include="SDL2\SDL2_Joystick.cs" />
     <Compile Include="SDL2\SDL2_Platform.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Flare.Framework.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\lib\SDL2-CS\SDL2-CS.csproj">
+      <Project>{85480198-8711-4355-830e-72fd794ad3f6}</Project>
+      <Name>SDL2-CS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
