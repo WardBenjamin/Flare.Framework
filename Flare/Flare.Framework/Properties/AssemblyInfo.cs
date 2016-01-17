@@ -1,4 +1,13 @@
-﻿using System.Reflection;
+﻿#region License
+/* Flare - A Framework by Developers, for Developers.
+ * Copyright 2016 Benjamin Ward
+ * 
+ * Released under the Creative Commons Attribution 4.0 International Public License
+ * See LICENSE.md for details.
+ */
+#endregion
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Flare.Framework")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright ©  Benjamin Ward 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
