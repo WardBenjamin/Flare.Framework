@@ -41,6 +41,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,13 +50,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game.cs" />
     <Compile Include="GameWindow.cs" />
-    <Compile Include="Graphics\GL4\Gl.cs" />
-    <Compile Include="Graphics\GL4\GlCore.cs" />
-    <Compile Include="Graphics\GL4\GlDelegates.cs" />
-    <Compile Include="Graphics\GL4\GlEnum.cs" />
-    <Compile Include="Graphics\GL4\GlMethods.cs" />
-    <Compile Include="Graphics\GL4\GlReload.cs" />
+    <Compile Include="Graphics\GL4\Billboard.cs" />
+    <Compile Include="Graphics\GL4\BitmapFont.cs" />
+    <Compile Include="Graphics\GL4\Core\Gl.cs" />
+    <Compile Include="Graphics\GL4\Core\GlCore.cs" />
+    <Compile Include="Graphics\GL4\Core\GlDelegates.cs" />
+    <Compile Include="Graphics\GL4\Core\GlEnum.cs" />
+    <Compile Include="Graphics\GL4\Core\GlMethods.cs" />
+    <Compile Include="Graphics\GL4\Core\GlReload.cs" />
+    <Compile Include="Graphics\GL4\FBO.cs" />
+    <Compile Include="Graphics\GL4\Geometry.cs" />
+    <Compile Include="Graphics\GL4\GlslLexer.cs" />
+    <Compile Include="Graphics\GL4\Shader.cs" />
+    <Compile Include="Graphics\GL4\Texture.cs" />
+    <Compile Include="Graphics\GL4\VAO.cs" />
+    <Compile Include="Graphics\GL4\VBO.cs" />
     <Compile Include="Input\Gamepad.cs" />
     <Compile Include="Input\Joystick.cs" />
     <Compile Include="Math\BoundingBox.cs" />

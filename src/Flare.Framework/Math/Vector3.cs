@@ -19,61 +19,73 @@ namespace Flare.Math
         public float x, y, z;
 
         #region Static Constructors
+        private static readonly Vector3 identity = new Vector3(1.0f, 1.0f, 1.0f);
         public static Vector3 Identity
         {
-            get { return new Vector3(1.0f, 1.0f, 1.0f); }
+            get { return identity; }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 Zero
         {
-            get { return new Vector3(0.0f, 0.0f, 0.0f); }
+            get { return zero; }
         }
 
+        private static readonly Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
         public static Vector3 Up
         {
-            get { return new Vector3(0.0f, 1.0f, 0.0f); }
+            get { return up; }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 Down
         {
             get { return new Vector3(0.0f, -1.0f, 0.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 Forward
         {
             get { return new Vector3(0.0f, 0.0f, -1.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 Backward
         {
             get { return new Vector3(0.0f, 0.0f, 1.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 Left
         {
             get { return new Vector3(-1.0f, 0.0f, 0.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 Right
         {
             get { return new Vector3(1.0f, 0.0f, 0.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 UnitX
         {
             get { return new Vector3(1.0f, 0.0f, 0.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 UnitY
         {
             get { return new Vector3(0.0f, 1.0f, 0.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 UnitZ
         {
             get { return new Vector3(0.0f, 0.0f, 1.0f); }
         }
 
+        private static readonly Vector3 zero = new Vector3(0.0f, 0.0f, 0.0f);
         public static Vector3 UnitScale
         {
             get { return new Vector3(1.0f, 1.0f, 1.0f); }

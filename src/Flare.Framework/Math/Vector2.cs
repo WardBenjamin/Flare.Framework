@@ -19,14 +19,28 @@ namespace Flare.Math
         public float x, y;
 
         #region Static Constructors
+        private static readonly Vector2 identity = new Vector2(1.0f, 1.0f);
         public static Vector2 Identity
         {
-            get { return new Vector2(1.0f, 1.0f); }
+            get { return identity; }
         }
 
+        private static readonly Vector2 zero = new Vector2(0.0f, 0.0f);
         public static Vector2 Zero
         {
-            get { return new Vector2(0.0f, 0.0f); }
+            get { return zero; }
+        }
+
+        private static readonly Vector2 unitx = new Vector2(1.0f, 0.0f);
+        public static Vector2 UnitX
+        {
+            get { return unitx; }
+        }
+
+        private static readonly Vector2 unity = new Vector2(0.0f, 1.0f);
+        public static Vector2 UnitY
+        {
+            get { return unity; }
         }
         #endregion
 
