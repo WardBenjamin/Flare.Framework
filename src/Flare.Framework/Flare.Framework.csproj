@@ -7,7 +7,7 @@
     <ProjectGuid>{A0559DD5-8601-47A0-9D90-5ABC3AEB38DE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Flare.Framework</RootNamespace>
+    <RootNamespace>Flare</RootNamespace>
     <AssemblyName>Flare.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -50,8 +50,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameWindow.cs" />
+    <Compile Include="Graphics\GL4\Gl.cs" />
+    <Compile Include="Graphics\GL4\GlCore.cs" />
+    <Compile Include="Graphics\GL4\GlDelegates.cs" />
+    <Compile Include="Graphics\GL4\GlEnum.cs" />
+    <Compile Include="Graphics\GL4\GlMethods.cs" />
+    <Compile Include="Graphics\GL4\GlReload.cs" />
     <Compile Include="Input\Gamepad.cs" />
     <Compile Include="Input\Joystick.cs" />
+    <Compile Include="Math\BoundingBox.cs" />
+    <Compile Include="Math\Frustum.cs" />
+    <Compile Include="Math\Matrix4.cs" />
+    <Compile Include="Math\Plane.cs" />
+    <Compile Include="Math\Quaternion.cs" />
+    <Compile Include="Math\Ray.cs" />
+    <Compile Include="Math\Vector2.cs" />
+    <Compile Include="Math\Vector3.cs" />
+    <Compile Include="Math\Vector4.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SDL2\SDL2_Gamepad.cs" />
     <Compile Include="SDL2\SDL2_Joystick.cs" />
