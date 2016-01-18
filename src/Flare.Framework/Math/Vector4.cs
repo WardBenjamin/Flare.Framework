@@ -19,34 +19,45 @@ namespace Flare.Math
         public float x, y, z, w;
 
         #region Static Constructors
+        private static readonly Vector4 identity = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         public static Vector4 Identity
         {
-            get { return new Vector4(1.0f, 1.0f, 1.0f, 1.0f); }
+            get { return identity; }
         }
 
+        private static readonly Vector4 zero = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
         public static Vector4 Zero
         {
-            get { return new Vector4(0.0f, 0.0f, 0.0f, 0.0f); }
+            get { return zero; }
         }
 
+        public static Vector4 One
+        {
+            get { return Identity; }
+        }
+
+        private static readonly Vector4 unitx = new Vector4(1.0f, 0.0f, 0.0f, 0.0f);
         public static Vector4 UnitX
         {
             get { return new Vector4(1.0f, 0.0f, 0.0f, 0.0f); }
         }
 
+        private static readonly Vector4 unity = new Vector4(0.0f, 1.0f, 0.0f, 0.0f);
         public static Vector4 UnitY
         {
-            get { return new Vector4(0.0, 1.0f, 0.0f, 0.0f); }
+            get { return unity; }
         }
 
+        private static readonly Vector4 unitz = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
         public static Vector4 UnitZ
         {
-            get { return new Vector4(0.0, 0.0f, 1.0f, 0.0f); }
+            get { return unitz; }
         }
 
+        private static readonly Vector4 unitw = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
         public static Vector4 UnitW
         {
-            get { return new Vector4(0.0, 0.0f, 0.0f, 1.0f); }
+            get { return unitw; }
         }
         #endregion
 

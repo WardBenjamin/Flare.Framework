@@ -31,6 +31,11 @@ namespace Flare.Math
             get { return zero; }
         }
 
+        public static Vector2 One
+        {
+            get { return Identity; }
+        }
+
         private static readonly Vector2 unitx = new Vector2(1.0f, 0.0f);
         public static Vector2 UnitX
         {
