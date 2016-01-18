@@ -3,6 +3,10 @@
 
 Flare is an open source game development framework written in C#, designed to allow the user to focus exclusively on their game design rather than the drawing or other areas of their game. This lets developers make their game, instead of spending time creating their own engine. Flare also directly exposes OpenGL methods from OpenTK, so it still lets you keep the extensibility and low-level rendering options if you need them.
 
+Join the chat at [https://gitter.im/WardBenjamin/Flare.Framework](https://gitter.im/WardBenjamin/Flare.Framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Join the chat at https://gitter.im/WardBenjamin/Flare.Framework](https://badges.gitter.im/WardBenjamin/Flare.Framework.svg)](https://gitter.im/WardBenjamin/Flare.Framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### Origins
 
 Flare was designed for a personal project, originally as a way to learn OpenGL 3 concepts. Now, built using OpenTK's OpenGL bindings, Flare allows for silent, reliable, and out-of-the-box 2D graphics and text rendering. See the "Features" section for more information.
