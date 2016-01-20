@@ -10,7 +10,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Flare.Math
+namespace Flare
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -45,22 +45,22 @@ namespace Flare.Math
         public static Matrix4 operator *(Matrix4 m, Matrix4 m2)
         {
             Matrix4 r = new Matrix4(
-            new Vector4(m[0].x * m2[0].x + m[0].y * m2[1].x + m[0].z * m2[2].x + m[0].w * m2[3].x,
-                m[0].x * m2[0].y + m[0].y * m2[1].y + m[0].z * m2[2].y + m[0].w * m2[3].y,
-                m[0].x * m2[0].z + m[0].y * m2[1].z + m[0].z * m2[2].z + m[0].w * m2[3].z,
-                m[0].x * m2[0].w + m[0].y * m2[1].w + m[0].z * m2[2].w + m[0].w * m2[3].w),
-            new Vector4(m[1].x * m2[0].x + m[1].y * m2[1].x + m[1].z * m2[2].x + m[1].w * m2[3].x,
-                m[1].x * m2[0].y + m[1].y * m2[1].y + m[1].z * m2[2].y + m[1].w * m2[3].y,
-                m[1].x * m2[0].z + m[1].y * m2[1].z + m[1].z * m2[2].z + m[1].w * m2[3].z,
-                m[1].x * m2[0].w + m[1].y * m2[1].w + m[1].z * m2[2].w + m[1].w * m2[3].w),
-            new Vector4(m[2].x * m2[0].x + m[2].y * m2[1].x + m[2].z * m2[2].x + m[2].w * m2[3].x,
-                m[2].x * m2[0].y + m[2].y * m2[1].y + m[2].z * m2[2].y + m[2].w * m2[3].y,
-                m[2].x * m2[0].z + m[2].y * m2[1].z + m[2].z * m2[2].z + m[2].w * m2[3].z,
-                m[2].x * m2[0].w + m[2].y * m2[1].w + m[2].z * m2[2].w + m[2].w * m2[3].w),
-            new Vector4(m[3].x * m2[0].x + m[3].y * m2[1].x + m[3].z * m2[2].x + m[3].w * m2[3].x,
-                m[3].x * m2[0].y + m[3].y * m2[1].y + m[3].z * m2[2].y + m[3].w * m2[3].y,
-                m[3].x * m2[0].z + m[3].y * m2[1].z + m[3].z * m2[2].z + m[3].w * m2[3].z,
-                m[3].x * m2[0].w + m[3].y * m2[1].w + m[3].z * m2[2].w + m[3].w * m2[3].w));
+            new Vector4(m[0].X * m2[0].X + m[0].Y * m2[1].X + m[0].Z * m2[2].X + m[0].W * m2[3].X,
+                m[0].X * m2[0].Y + m[0].Y * m2[1].Y + m[0].Z * m2[2].Y + m[0].W * m2[3].Y,
+                m[0].X * m2[0].Z + m[0].Y * m2[1].Z + m[0].Z * m2[2].Z + m[0].W * m2[3].Z,
+                m[0].X * m2[0].W + m[0].Y * m2[1].W + m[0].Z * m2[2].W + m[0].W * m2[3].W),
+            new Vector4(m[1].X * m2[0].X + m[1].Y * m2[1].X + m[1].Z * m2[2].X + m[1].W * m2[3].X,
+                m[1].X * m2[0].Y + m[1].Y * m2[1].Y + m[1].Z * m2[2].Y + m[1].W * m2[3].Y,
+                m[1].X * m2[0].Z + m[1].Y * m2[1].Z + m[1].Z * m2[2].Z + m[1].W * m2[3].Z,
+                m[1].X * m2[0].W + m[1].Y * m2[1].W + m[1].Z * m2[2].W + m[1].W * m2[3].W),
+            new Vector4(m[2].X * m2[0].X + m[2].Y * m2[1].X + m[2].Z * m2[2].X + m[2].W * m2[3].X,
+                m[2].X * m2[0].Y + m[2].Y * m2[1].Y + m[2].Z * m2[2].Y + m[2].W * m2[3].Y,
+                m[2].X * m2[0].Z + m[2].Y * m2[1].Z + m[2].Z * m2[2].Z + m[2].W * m2[3].Z,
+                m[2].X * m2[0].W + m[2].Y * m2[1].W + m[2].Z * m2[2].W + m[2].W * m2[3].W),
+            new Vector4(m[3].X * m2[0].X + m[3].Y * m2[1].X + m[3].Z * m2[2].X + m[3].W * m2[3].X,
+                m[3].X * m2[0].Y + m[3].Y * m2[1].Y + m[3].Z * m2[2].Y + m[3].W * m2[3].Y,
+                m[3].X * m2[0].Z + m[3].Y * m2[1].Z + m[3].Z * m2[2].Z + m[3].W * m2[3].Z,
+                m[3].X * m2[0].W + m[3].Y * m2[1].W + m[3].Z * m2[2].W + m[3].W * m2[3].W));
             return r;
         }
 
@@ -76,32 +76,32 @@ namespace Flare.Math
 
         public static Vector3 operator *(Matrix4 m1, Vector3 v)
         {
-            return new Vector3(m1[0].x * v.x + m1[0].y * v.y + m1[0].z * v.z,
-                m1[1].x * v.x + m1[1].y * v.y + m1[1].z * v.z,
-                m1[2].x * v.x + m1[2].y * v.y + m1[2].z * v.z);
+            return new Vector3(m1[0].X * v.X + m1[0].Y * v.Y + m1[0].Z * v.Z,
+                m1[1].X * v.X + m1[1].Y * v.Y + m1[1].Z * v.Z,
+                m1[2].X * v.X + m1[2].Y * v.Y + m1[2].Z * v.Z);
         }
 
         public static Vector3 operator *(Vector3 v, Matrix4 m1)
         {
-            return new Vector3(v.x * m1[0].x + v.y * m1[1].x + v.z * m1[2].x,
-                v.x * m1[0].y + v.y * m1[1].y + v.z * m1[2].y,
-                v.x * m1[0].z + v.y * m1[1].z + v.z * m1[2].z);
+            return new Vector3(v.X * m1[0].X + v.Y * m1[1].X + v.Z * m1[2].X,
+                v.X * m1[0].Y + v.Y * m1[1].Y + v.Z * m1[2].Y,
+                v.X * m1[0].Z + v.Y * m1[1].Z + v.Z * m1[2].Z);
         }
 
         public static Vector4 operator *(Matrix4 m1, Vector4 v)
         {
-            return new Vector4(m1[0].x * v.x + m1[0].y * v.y + m1[0].z * v.z + m1[0].w * v.w,
-                m1[1].x * v.x + m1[1].y * v.y + m1[1].z * v.z + m1[1].w * v.w,
-                m1[2].x * v.x + m1[2].y * v.y + m1[2].z * v.z + m1[2].w * v.w,
-                m1[3].x * v.x + m1[3].y * v.y + m1[3].z * v.z + m1[3].w * v.w);
+            return new Vector4(m1[0].X * v.X + m1[0].Y * v.Y + m1[0].Z * v.Z + m1[0].W * v.W,
+                m1[1].X * v.X + m1[1].Y * v.Y + m1[1].Z * v.Z + m1[1].W * v.W,
+                m1[2].X * v.X + m1[2].Y * v.Y + m1[2].Z * v.Z + m1[2].W * v.W,
+                m1[3].X * v.X + m1[3].Y * v.Y + m1[3].Z * v.Z + m1[3].W * v.W);
         }
 
         public static Vector4 operator *(Vector4 v, Matrix4 m1)
         {
-            return new Vector4(v.x * m1[0].x + v.y * m1[1].x + v.z * m1[2].x + v.w * m1[3].x,
-                v.x * m1[0].y + v.y * m1[1].y + v.z * m1[2].y + v.w * m1[3].y,
-                v.x * m1[0].z + v.y * m1[1].z + v.z * m1[2].z + v.w * m1[3].z,
-                v.x * m1[0].w + v.y * m1[1].w + v.z * m1[2].w + v.w * m1[3].w);
+            return new Vector4(v.X * m1[0].X + v.Y * m1[1].X + v.Z * m1[2].X + v.W * m1[3].X,
+                v.X * m1[0].Y + v.Y * m1[1].Y + v.Z * m1[2].Y + v.W * m1[3].Y,
+                v.X * m1[0].Z + v.Y * m1[1].Z + v.Z * m1[2].Z + v.W * m1[3].Z,
+                v.X * m1[0].W + v.Y * m1[1].W + v.Z * m1[2].W + v.W * m1[3].W);
         }
 
         public Vector4 this[int a]
@@ -199,7 +199,7 @@ namespace Flare.Math
         /// <summary>
         /// Creates a matrix which contains information on how to translate.
         /// </summary>
-        /// <param name="translation">Amount to translate by in the x, y and z direction.</param>
+        /// <param name="translation">Amount to translate by in the X, Y and Z direction.</param>
         /// <returns>A Matrix4 object that contains the translation matrix.</returns>
         public static Matrix4 CreateTranslation(Vector3 translation)
         {
@@ -258,15 +258,15 @@ namespace Flare.Math
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
             float tan = 1.0f - cos;
-            return new Matrix4(new Vector4(tan * axis.x * axis.x + cos,
-                    tan * axis.x * axis.y - sin * axis.z,
-                    tan * axis.x * axis.z + sin * axis.y, 0.0f),
-                new Vector4(tan * axis.y * axis.x + sin * axis.z,
-                    tan * axis.y * axis.y + cos,
-                    tan * axis.y * axis.z - sin * axis.x, 0.0f),
-                new Vector4(tan * axis.z * axis.x - sin * axis.y,
-                    tan * axis.z * axis.y + sin * axis.x,
-                    tan * axis.z * axis.z + cos, 0.0f),
+            return new Matrix4(new Vector4(tan * axis.X * axis.X + cos,
+                    tan * axis.X * axis.Y - sin * axis.Z,
+                    tan * axis.X * axis.Z + sin * axis.Y, 0.0f),
+                new Vector4(tan * axis.Y * axis.X + sin * axis.Z,
+                    tan * axis.Y * axis.Y + cos,
+                    tan * axis.Y * axis.Z - sin * axis.X, 0.0f),
+                new Vector4(tan * axis.Z * axis.X - sin * axis.Y,
+                    tan * axis.Z * axis.Y + sin * axis.X,
+                    tan * axis.Z * axis.Z + cos, 0.0f),
                 new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
@@ -283,18 +283,18 @@ namespace Flare.Math
 
             axis.Normalize();
 
-            return new Matrix4(new Vector4(t * axis.x * axis.x + cos, t * axis.x * axis.y - sin * axis.z, t * axis.x * axis.z + sin * axis.y, 0.0f),
-                                 new Vector4(t * axis.x * axis.y + sin * axis.z, t * axis.y * axis.y + cos, t * axis.y * axis.z - sin * axis.x, 0.0f),
-                                 new Vector4(t * axis.x * axis.z - sin * axis.y, t * axis.y * axis.z + sin * axis.x, t * axis.z * axis.z + cos, 0.0f),
+            return new Matrix4(new Vector4(t * axis.X * axis.X + cos, t * axis.X * axis.Y - sin * axis.Z, t * axis.X * axis.Z + sin * axis.Y, 0.0f),
+                                 new Vector4(t * axis.X * axis.Y + sin * axis.Z, t * axis.Y * axis.Y + cos, t * axis.Y * axis.Z - sin * axis.X, 0.0f),
+                                 new Vector4(t * axis.X * axis.Z - sin * axis.Y, t * axis.Y * axis.Z + sin * axis.X, t * axis.Z * axis.Z + cos, 0.0f),
                                  Vector4.UnitW);
         }
 
         /// <summary>Creates a matrix which contains information on how to scale</summary>
-        /// <param name="scale">Amount to scale by in the x, y and z direction</param>
+        /// <param name="scale">Amount to scale by in the X, Y and Z direction</param>
         /// <returns>A Matrix4 object that contains the scaling matrix</returns>
         public static Matrix4 CreateScaling(Vector3 scale)
         {
-            return new Matrix4(new Vector4(scale.x, 0.0f, 0.0f, 0.0f), new Vector4(0.0f, scale.y, 0.0f, 0.0f), new Vector4(0.0f, 0.0f, scale.z, 0.0f), new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+            return new Matrix4(new Vector4(scale.X, 0.0f, 0.0f, 0.0f), new Vector4(0.0f, scale.Y, 0.0f, 0.0f), new Vector4(0.0f, 0.0f, scale.Z, 0.0f), new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace Flare.Math
         /// <summary>
         /// Creates a perspective projection matrix.
         /// </summary>
-        /// <param name="fovy">Angle of the field of view in the y direction (in radians)</param>
+        /// <param name="fovy">Angle of the field of view in the Y direction (in radians)</param>
         /// <param name="aspect">Aspect ratio of the view (width / height)</param>
         /// <param name="zNear">Distance to the near clip plane</param>
         /// <param name="zFar">Distance to the far clip plane</param>
@@ -410,9 +410,9 @@ namespace Flare.Math
             Vector3 x = Vector3.Cross(up, z).Normalize();
             Vector3 y = Vector3.Cross(z, x).Normalize();
 
-            Matrix4 matrix = new Matrix4(new Vector4(x.x, y.x, z.x, 0.0f),
-                                        new Vector4(x.y, y.y, z.y, 0.0f),
-                                        new Vector4(x.z, y.z, z.z, 0.0f),
+            Matrix4 matrix = new Matrix4(new Vector4(x.X, y.X, z.X, 0.0f),
+                                        new Vector4(x.Y, y.Y, z.Y, 0.0f),
+                                        new Vector4(x.Z, y.Z, z.Z, 0.0f),
                                         Vector4.UnitW);
 
             return Matrix4.CreateTranslation(-eye) * matrix;
@@ -424,10 +424,10 @@ namespace Flare.Math
         /// <returns>A Matrix4 object that contains the transposed matrix</returns>
         public Matrix4 Transpose()
         {
-            return new Matrix4(new Vector4(this[0].x, this[1].x, this[2].x, this[3].x),
-                new Vector4(this[0].y, this[1].y, this[2].y, this[3].y),
-                new Vector4(this[0].z, this[1].z, this[2].z, this[3].z),
-                new Vector4(this[0].w, this[1].w, this[2].w, this[3].w));
+            return new Matrix4(new Vector4(this[0].X, this[1].X, this[2].X, this[3].X),
+                new Vector4(this[0].Y, this[1].Y, this[2].Y, this[3].Y),
+                new Vector4(this[0].Z, this[1].Z, this[2].Z, this[3].Z),
+                new Vector4(this[0].W, this[1].W, this[2].W, this[3].W));
         }
 
         /// <summary>
@@ -505,8 +505,8 @@ namespace Flare.Math
         /// <returns>Floating array that represents that Matrix4</returns>
         public float[] ToFloat()
         {
-            return new float[] { this[0].x, this[0].y, this[0].z, this[0].w, this[1].x, this[1].y, this[1].z, this[1].w,
-                this[2].x, this[2].y, this[2].z, this[2].w, this[3].x, this[3].y, this[3].z, this[3].w };
+            return new float[] { this[0].X, this[0].Y, this[0].Z, this[0].W, this[1].X, this[1].Y, this[1].Z, this[1].W,
+                this[2].X, this[2].Y, this[2].Z, this[2].W, this[3].X, this[3].Y, this[3].Z, this[3].W };
         }
 
         /// <summary>

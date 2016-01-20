@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Flare.Math
+namespace Flare
 {
     /// <summary>
     /// A viewing frustum, brought in from Orchard Sun.
@@ -46,12 +46,12 @@ namespace Flare.Math
         /// <param name="clipMatrix">The combined projection and view matrix (usually from the camera).</param>
         public void UpdateFrustum(Matrix4 clipMatrix)
         {
-            planes[0].Set(clipMatrix[3].w - clipMatrix[3].x, new Vector3(clipMatrix[0].w - clipMatrix[0].x, clipMatrix[1].w - clipMatrix[1].x, clipMatrix[2].w - clipMatrix[2].x));
-            planes[1].Set(clipMatrix[3].w + clipMatrix[3].x, new Vector3(clipMatrix[0].w + clipMatrix[0].x, clipMatrix[1].w + clipMatrix[1].x, clipMatrix[2].w + clipMatrix[2].x));
-            planes[2].Set(clipMatrix[3].w + clipMatrix[3].y, new Vector3(clipMatrix[0].w + clipMatrix[0].y, clipMatrix[1].w + clipMatrix[1].y, clipMatrix[2].w + clipMatrix[2].y));
-            planes[3].Set(clipMatrix[3].w - clipMatrix[3].y, new Vector3(clipMatrix[0].w - clipMatrix[0].y, clipMatrix[1].w - clipMatrix[1].y, clipMatrix[2].w - clipMatrix[2].y));
-            planes[4].Set(clipMatrix[3].w - clipMatrix[3].z, new Vector3(clipMatrix[0].w - clipMatrix[0].z, clipMatrix[1].w - clipMatrix[1].z, clipMatrix[2].w - clipMatrix[2].z));
-            planes[5].Set(clipMatrix[3].w + clipMatrix[3].z, new Vector3(clipMatrix[0].w + clipMatrix[0].z, clipMatrix[1].w + clipMatrix[1].z, clipMatrix[2].w + clipMatrix[2].z));
+            planes[0].Set(clipMatrix[3].W - clipMatrix[3].X, new Vector3(clipMatrix[0].W - clipMatrix[0].X, clipMatrix[1].W - clipMatrix[1].X, clipMatrix[2].W - clipMatrix[2].X));
+            planes[1].Set(clipMatrix[3].W + clipMatrix[3].X, new Vector3(clipMatrix[0].W + clipMatrix[0].X, clipMatrix[1].W + clipMatrix[1].X, clipMatrix[2].W + clipMatrix[2].X));
+            planes[2].Set(clipMatrix[3].W + clipMatrix[3].Y, new Vector3(clipMatrix[0].W + clipMatrix[0].Y, clipMatrix[1].W + clipMatrix[1].Y, clipMatrix[2].W + clipMatrix[2].Y));
+            planes[3].Set(clipMatrix[3].W - clipMatrix[3].Y, new Vector3(clipMatrix[0].W - clipMatrix[0].Y, clipMatrix[1].W - clipMatrix[1].Y, clipMatrix[2].W - clipMatrix[2].Y));
+            planes[4].Set(clipMatrix[3].W - clipMatrix[3].Z, new Vector3(clipMatrix[0].W - clipMatrix[0].Z, clipMatrix[1].W - clipMatrix[1].Z, clipMatrix[2].W - clipMatrix[2].Z));
+            planes[5].Set(clipMatrix[3].W + clipMatrix[3].Z, new Vector3(clipMatrix[0].W + clipMatrix[0].Z, clipMatrix[1].W + clipMatrix[1].Z, clipMatrix[2].W + clipMatrix[2].Z));
 
             for (int i = 0; i < 6; i++)
             {
@@ -81,7 +81,7 @@ namespace Flare.Math
                 Plane p = planes[i];
 
                 float d = box.Center.Dot(p.Normal);
-                float r = box.Size.x * System.Math.Abs(p.Normal.x) + box.Size.y * System.Math.Abs(p.Normal.y) + box.Size.z * System.Math.Abs(p.Normal.z);
+                float r = box.Size.X * System.Math.Abs(p.Normal.X) + box.Size.Y * System.Math.Abs(p.Normal.Y) + box.Size.Z * System.Math.Abs(p.Normal.Z);
                 float dpr = d + r;
                 float dmr = d - r;
 

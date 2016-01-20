@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Flare.SDL2
 {
-    internal class SDL2_Gamepad : Input.Gamepad
+    class SDL2_WindowParams
     {
     }
 }

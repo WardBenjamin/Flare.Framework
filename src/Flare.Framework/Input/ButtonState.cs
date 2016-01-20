@@ -13,9 +13,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flare.SDL2
+namespace Flare.Input
 {
-    internal class SDL2_Gamepad : Input.Gamepad
+    /// <summary>
+    /// Defines a button state for buttons of mouse, gamepad or joystick.
+    /// </summary>
+    public enum ButtonState
     {
+        /// <summary>
+        /// The button is released.
+        /// </summary>
+        Released,
+        /// <summary>
+        /// The button is pressed.
+        /// </summary>
+        Pressed
     }
 }

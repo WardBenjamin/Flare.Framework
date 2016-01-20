@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Flare.Math
+namespace Flare
 {
     /// <summary>
     /// A 3d plane, brought in from Orchard Sun.
@@ -83,9 +83,9 @@ namespace Flare.Math
         /// <summary>
         /// Builds a plane from four floats
         /// </summary>
-        /// <param name="a">Normal.x</param>
-        /// <param name="b">Normal.y</param>
-        /// <param name="c">Normal.z</param>
+        /// <param name="a">Normal.X</param>
+        /// <param name="b">Normal.Y</param>
+        /// <param name="c">Normal.Z</param>
         /// <param name="d">Scalar</param>
         public Plane(float a, float b, float c, float d)
         {

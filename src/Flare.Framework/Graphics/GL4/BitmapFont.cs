@@ -8,7 +8,6 @@
 #endregion
 
 using System;
-using Flare.Math;
 
 namespace Flare.Graphics.GL4
 {
@@ -76,10 +75,10 @@ namespace Flare.Graphics.GL4
                 vertices[i * 4 + 3] = new Vector3(1 + i * 2, -1, 0);
 
                 UVPair ch = Character[Text[i] > 256 ? ' ' : Text[i]];
-                uvs[i * 4 + 0] = new Vector2(ch.Topleft.x, ch.BottomRight.y);
+                uvs[i * 4 + 0] = new Vector2(ch.Topleft.X, ch.BottomRight.Y);
                 uvs[i * 4 + 1] = ch.Topleft;
                 uvs[i * 4 + 2] = ch.BottomRight;
-                uvs[i * 4 + 3] = new Vector2(ch.BottomRight.x, ch.Topleft.y);
+                uvs[i * 4 + 3] = new Vector2(ch.BottomRight.X, ch.Topleft.Y);
 
                 indices[i * 6 + 0] = i * 4 + 1;
                 indices[i * 6 + 1] = i * 4 + 0;

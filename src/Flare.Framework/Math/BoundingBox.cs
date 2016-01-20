@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Flare.Math
+namespace Flare
 {
     /// <summary>
     /// An axis aligned bounding box, brought in from Orchard Sun.
@@ -23,7 +23,7 @@ namespace Flare.Math
 
         #region Properties
         /// <summary>
-        /// The minimum x, y, and z values for the AxisAlignedBoundingBox
+        /// The minimum X, Y, and Z values for the AxisAlignedBoundingBox
         /// </summary>
         public Vector3 Min
         {
@@ -32,7 +32,7 @@ namespace Flare.Math
         }
 
         /// <summary>
-        /// The maximum x, y, and z values for the AxisAlignedBoundingBox
+        /// The maximum X, Y, and Z values for the AxisAlignedBoundingBox
         /// </summary>
         public Vector3 Max
         {
@@ -53,7 +53,7 @@ namespace Flare.Math
         /// </summary>
         public Vector3 Center
         {
-            get { return new Vector3((max.x + min.x) * 0.5, (max.y + min.y) * 0.5, (max.z + min.z) * 0.5); }
+            get { return new Vector3((max.X + min.X) * 0.5, (max.Y + min.Y) * 0.5, (max.Z + min.Z) * 0.5); }
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Flare.Math
         {
             get
             {
-                float t_length = Size.x;
+                float t_length = Size.X;
                 return (float)System.Math.Sqrt(t_length * t_length * 3) / 2.0f;
             }
         }
@@ -73,8 +73,8 @@ namespace Flare.Math
         /// <summary>
         /// Creates an axis-aligned bounding box of size min, max
         /// </summary>
-        /// <param name="Min">Minimum x,y,z</param>
-        /// <param name="Max">Maximum x,y,z</param>
+        /// <param name="Min">Minimum X,Y,Z</param>
+        /// <param name="Max">Maximum X,Y,Z</param>
         public AxisAlignedBoundingBox(Vector3 Min, Vector3 Max)
         {
             min = Min;
@@ -93,8 +93,8 @@ namespace Flare.Math
         /// <summary>
         /// Set new extents for the axis-aligned bounding box
         /// </summary>
-        /// <param name="Min">Minimum x,y,z</param>
-        /// <param name="Max">Maximum x,y,z</param>
+        /// <param name="Min">Minimum X,Y,Z</param>
+        /// <param name="Max">Maximum X,Y,Z</param>
         public void SetExtents(Vector3 Min, Vector3 Max)
         {
             min = Min;
@@ -118,9 +118,9 @@ namespace Flare.Math
         /// <returns>The clamped point</returns>
         public Vector3 ClampPoint(Vector3 Point)
         {
-            return new Vector3((Point.x > Max.x) ? Max.x : (Point.x < Min.x) ? Min.x : Point.x,
-                (Point.y > Max.y) ? Max.y : (Point.y < Min.y) ? Min.y : Point.y,
-                (Point.z > Max.z) ? Max.z : (Point.z < Min.z) ? Min.z : Point.z);
+            return new Vector3((Point.X > Max.X) ? Max.X : (Point.X < Min.X) ? Min.X : Point.X,
+                (Point.Y > Max.Y) ? Max.Y : (Point.Y < Min.Y) ? Min.Y : Point.Y,
+                (Point.Z > Max.Z) ? Max.Z : (Point.Z < Min.Z) ? Min.Z : Point.Z);
         }
 
         /// <summary>
@@ -146,19 +146,19 @@ namespace Flare.Math
 
             t_corner = t_min;       // min min min
             AddPoint(TranformMatrix * t_corner);
-            t_corner.z = t_max.z;   // min min max
+            t_corner.Z = t_max.Z;   // min min max
             AddPoint(TranformMatrix * t_corner);
-            t_corner.y = t_max.y;   // min max max
+            t_corner.Y = t_max.Y;   // min max max
             AddPoint(TranformMatrix * t_corner);
-            t_corner.z = t_min.z;   // min max min
+            t_corner.Z = t_min.Z;   // min max min
             AddPoint(TranformMatrix * t_corner);
-            t_corner.x = t_max.x;   // max max min
+            t_corner.X = t_max.X;   // max max min
             AddPoint(TranformMatrix * t_corner);
-            t_corner.z = t_max.z;   // max max max
+            t_corner.Z = t_max.Z;   // max max max
             AddPoint(TranformMatrix * t_corner);
-            t_corner.y = t_min.y;   // max min max
+            t_corner.Y = t_min.Y;   // max min max
             AddPoint(TranformMatrix * t_corner);
-            t_corner.z = t_min.z;   // max min min
+            t_corner.Z = t_min.Z;   // max min min
             AddPoint(TranformMatrix * t_corner);
         }
 
@@ -181,7 +181,7 @@ namespace Flare.Math
         /// <returns>True if the vector intersects the AxisAlignedBoundingBox</returns>
         public bool Intersects(Vector3 v)
         {
-            return (v.x >= min.x && v.x <= max.x && v.y >= min.y && v.y <= max.y && v.z >= min.z && v.z <= max.z);
+            return (v.X >= min.X && v.X <= max.X && v.Y >= min.Y && v.Y <= max.Y && v.Z >= min.Z && v.Z <= max.Z);
         }
 
         /// <summary>
@@ -222,12 +222,12 @@ namespace Flare.Math
         public bool Intersects(AxisAlignedBoundingBox b)
         {
             // Test the six planes of the box
-            if (max.x < b.Min.x) return false;
-            if (max.y < b.Min.y) return false;
-            if (max.z < b.Min.z) return false;
-            if (min.x > b.Max.x) return false;
-            if (min.y > b.Max.y) return false;
-            if (min.z > b.Max.z) return false;
+            if (max.X < b.Min.X) return false;
+            if (max.Y < b.Min.Y) return false;
+            if (max.Z < b.Min.Z) return false;
+            if (min.X > b.Max.X) return false;
+            if (min.Y > b.Max.Y) return false;
+            if (min.Z > b.Max.Z) return false;
 
             // Must be intersecting if all planes check out
             return true;
@@ -244,7 +244,7 @@ namespace Flare.Math
             Vector3 t_max = max;
             t_min.TakeMax(b.Min);
             t_max.TakeMin(b.Max);
-            if (t_min.x < t_max.x && t_min.y < t_max.y && t_min.z < t_max.z)
+            if (t_min.X < t_max.X && t_min.Y < t_max.Y && t_min.Z < t_max.Z)
                 return new AxisAlignedBoundingBox(t_min, t_max);
             return null;    // Must be no intersection
         }
@@ -256,9 +256,9 @@ namespace Flare.Math
         /// <returns>True if the AABB contains the point</returns>
         public bool Contains(Vector3 Position)
         {
-            return (Position.x >= min.x && Position.x <= max.x &&
-                Position.y >= min.y && Position.y <= max.y &&
-                Position.z >= min.z && Position.z <= max.z);
+            return (Position.X >= min.X && Position.X <= max.X &&
+                Position.Y >= min.Y && Position.Y <= max.Y &&
+                Position.Z >= min.Z && Position.Z <= max.Z);
         }
         #endregion
     }
@@ -275,7 +275,7 @@ namespace Flare.Math
 
         #region Properties
         /// <summary>
-        /// The minimum x, y, and z values for the OrientatedBoundingBox
+        /// The minimum X, Y, and Z values for the OrientatedBoundingBox
         /// </summary>
         public Vector3 Min
         {
@@ -284,7 +284,7 @@ namespace Flare.Math
         }
 
         /// <summary>
-        /// The maximum x, y, and z values for the OrientatedBoundingBox
+        /// The maximum X, Y, and Z values for the OrientatedBoundingBox
         /// </summary>
         public Vector3 Max
         {
@@ -322,8 +322,8 @@ namespace Flare.Math
         /// <summary>
         /// Creates an orientated bounding box of size min, max
         /// </summary>
-        /// <param name="Min">Minimum x,y,z</param>
-        /// <param name="Max">Maximum x,y,z</param>
+        /// <param name="Min">Minimum X,Y,Z</param>
+        /// <param name="Max">Maximum X,Y,Z</param>
         public OrientatedBoundingBox(Vector3 Min, Vector3 Max)
         {
             box = new AxisAlignedBoundingBox(Min, Max);
@@ -333,8 +333,8 @@ namespace Flare.Math
         /// <summary>
         /// Set new extents for the orientated bounding box
         /// </summary>
-        /// <param name="Min">Minimum x,y,z</param>
-        /// <param name="Max">Maximum x,y,z</param>
+        /// <param name="Min">Minimum X,Y,Z</param>
+        /// <param name="Max">Maximum X,Y,Z</param>
         public void SetExtents(Vector3 Min, Vector3 Max)
         {
             box.SetExtents(Min, Max);

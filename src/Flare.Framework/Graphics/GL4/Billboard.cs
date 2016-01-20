@@ -8,7 +8,6 @@
 #endregion
 
 using System;
-using Flare.Math;
 
 namespace Flare.Graphics.GL4
 {
@@ -84,7 +83,7 @@ void main(void)
 {
   vec4 pos = projection_matrix * modelview_matrix * vec4(in_position, 1);
   color = vec4(in_normal, 1);
-  gl_PointSize = in_normal.y * 10;
+  gl_PointSize = in_normal.Y * 10;
   gl_Position = pos;
 }";
 

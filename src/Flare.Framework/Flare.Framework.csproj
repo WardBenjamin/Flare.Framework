@@ -24,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Flare.Framework.XML</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -50,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Color.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameTime.cs" />
     <Compile Include="GameWindow.cs" />
     <Compile Include="Graphics\GL4\Billboard.cs" />
     <Compile Include="Graphics\GL4\BitmapFont.cs" />
@@ -67,21 +71,34 @@
     <Compile Include="Graphics\GL4\Texture.cs" />
     <Compile Include="Graphics\GL4\VAO.cs" />
     <Compile Include="Graphics\GL4\VBO.cs" />
+    <Compile Include="Input\ButtonState.cs" />
     <Compile Include="Input\Gamepad.cs" />
     <Compile Include="Input\Joystick.cs" />
+    <Compile Include="Input\Keyboard.cs" />
+    <Compile Include="Input\Keys.cs" />
+    <Compile Include="Input\Mouse.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Math\BoundingBox.cs" />
     <Compile Include="Math\Frustum.cs" />
+    <Compile Include="Math\MathHelper.cs" />
     <Compile Include="Math\Matrix4.cs" />
     <Compile Include="Math\Plane.cs" />
     <Compile Include="Math\Quaternion.cs" />
     <Compile Include="Math\Ray.cs" />
+    <Compile Include="Math\Point.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Math\Vector4.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SDL2\SDL2_Gamepad.cs" />
-    <Compile Include="SDL2\SDL2_Joystick.cs" />
+    <Compile Include="Math\Rectangle.cs" />
+    <Compile Include="SDL2\SDL2_Game.cs" />
+    <Compile Include="SDL2\SDL2_MouseUtil.cs" />
     <Compile Include="SDL2\SDL2_Platform.cs" />
+    <Compile Include="SDL2\SDL2_Gamepad.cs" />
+    <Compile Include="SDL2\SDL2_GameWindow.cs" />
+    <Compile Include="SDL2\SDL2_Joystick.cs" />
+    <Compile Include="SDL2\SDL2_KeyboardUtil.cs" />
+    <Compile Include="SDL2\SDL2_WindowParams.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

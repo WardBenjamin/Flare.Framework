@@ -10,13 +10,13 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Flare.Math
+namespace Flare
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector4 : IEquatable<Vector4>
     {
-        public float x, y, z, w;
+        public float X, Y, Z, W;
 
         #region Static Constructors
         private static readonly Vector4 identity = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -64,107 +64,107 @@ namespace Flare.Math
         #region Operators
         public static Vector4 operator +(Vector4 v1, Vector4 v2)
         {
-            return new Vector4(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w);
+            return new Vector4(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
         }
 
         public static Vector4 operator +(Vector4 v, float s)
         {
-            return new Vector4(v.x + s, v.y + s, v.z + s, v.w + s);
+            return new Vector4(v.X + s, v.Y + s, v.Z + s, v.W + s);
         }
 
         public static Vector4 operator +(float s, Vector4 v)
         {
-            return new Vector4(v.x + s, v.y + s, v.z + s, v.w + s);
+            return new Vector4(v.X + s, v.Y + s, v.Z + s, v.W + s);
         }
 
         public static Vector4 operator -(Vector4 v1, Vector4 v2)
         {
-            return new Vector4(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z, v1.w - v2.w);
+            return new Vector4(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
         }
 
         public static Vector4 operator -(Vector4 v, float s)
         {
-            return new Vector4(v.x - s, v.y - s, v.z - s, v.w - s);
+            return new Vector4(v.X - s, v.Y - s, v.Z - s, v.W - s);
         }
 
         public static Vector4 operator -(float s, Vector4 v)
         {
-            return new Vector4(s - v.x, s - v.y, s - v.z, s - v.w);
+            return new Vector4(s - v.X, s - v.Y, s - v.Z, s - v.W);
         }
 
         public static Vector4 operator -(Vector4 v)
         {
-            return new Vector4(-v.x, -v.y, -v.z, -v.w);
+            return new Vector4(-v.X, -v.Y, -v.Z, -v.W);
         }
 
         public static Vector4 operator *(Vector4 v1, Vector4 v2)
         {
-            return new Vector4(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
+            return new Vector4(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z, v1.W * v2.W);
         }
 
         public static Vector4 operator *(float s, Vector4 v)
         {
-            return new Vector4(v.x * s, v.y * s, v.z * s, v.w * s);
+            return new Vector4(v.X * s, v.Y * s, v.Z * s, v.W * s);
         }
 
         public static Vector4 operator *(Vector4 v, float s)
         {
-            return new Vector4(v.x * s, v.y * s, v.z * s, v.w * s);
+            return new Vector4(v.X * s, v.Y * s, v.Z * s, v.W * s);
         }
 
         public static Vector4 operator /(Vector4 v1, Vector4 v2)
         {
-            return new Vector4(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z, v1.w / v2.w);
+            return new Vector4(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z, v1.W / v2.W);
         }
 
         public static Vector4 operator /(float s, Vector4 v)
         {
-            return new Vector4(s / v.x, s / v.y, s / v.z, s / v.w);
+            return new Vector4(s / v.X, s / v.Y, s / v.Z, s / v.W);
         }
 
         public static Vector4 operator /(Vector4 v, float s)
         {
-            return new Vector4(v.x / s, v.y / s, v.z / s, v.w / s);
+            return new Vector4(v.X / s, v.Y / s, v.Z / s, v.W / s);
         }
 
         public static bool operator ==(Vector4 v1, Vector4 v2)
         {
-            return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w);
+            return (v1.X == v2.X && v1.Y == v2.Y && v1.Z == v2.Z && v1.W == v2.W);
         }
 
         public static bool operator !=(Vector4 v1, Vector4 v2)
         {
-            return (v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.w != v2.w);
+            return (v1.X != v2.X || v1.Y != v2.Y || v1.Z != v2.Z || v1.W != v2.W);
         }
         #endregion
 
         #region Constructors
         /// <summary>Create a Vector4 structure.</summary>
-        /// <param name="x">x value</param>
-        /// <param name="y">y value</param>
-        /// <param name="z">z value</param>
+        /// <param name="x">X value</param>
+        /// <param name="y">Y value</param>
+        /// <param name="z">Z value</param>
         /// <param name="w">w value</param>
         public Vector4(float x, float y, float z, float w)
         {
-            this.x = x; this.y = y; this.z = z; this.w = w;
+            this.X = x; this.Y = y; this.Z = z; this.W = w;
         }
 
         /// <summary>Creates a Vector4 structure.  Casted to floats for OpenGL.</summary>
-        /// <param name="x">x value</param>
-        /// <param name="y">y value</param>
-        /// <param name="z">z value</param>
+        /// <param name="x">X value</param>
+        /// <param name="y">Y value</param>
+        /// <param name="z">Z value</param>
         /// <param name="w">w value</param>
         public Vector4(double x, double y, double z, double w)
         {
-            this.x = (float)x; this.y = (float)y; this.z = (float)z; this.w = (float)w;
+            this.X = (float)x; this.Y = (float)y; this.Z = (float)z; this.W = (float)w;
         }
 
         /// <summary>Creates a Vector4 structure based on a Vector3 and w.</summary>
-        /// <param name="v">Vector3 to make up x,y,z</param>
+        /// <param name="v">Vector3 to make up X,Y,Z</param>
         /// <param name="w">Double to make up the w component</param>
         public Vector4(Vector3 v, float w)
         {
-            x = v.x; y = v.y; z = v.z; this.w = w;
+            X = v.X; Y = v.Y; Z = v.Z; this.W = w;
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Flare.Math
         public Vector4(byte[] RGBByte)
         {
             if (RGBByte.Length < 3) throw new Exception("Color data was not 24bit as expected.");
-            x = (float)(RGBByte[0] / 256.0); y = (float)(RGBByte[1] / 256.0); z = (float)(RGBByte[2] / 256.0); w = 1.0f;
+            X = (float)(RGBByte[0] / 256.0); Y = (float)(RGBByte[1] / 256.0); Z = (float)(RGBByte[2] / 256.0); W = 1.0f;
         }
 
         /// <summary>Creates a Vector4 tructure from a float array (assuming the float array is of length 4).</summary>
@@ -182,7 +182,7 @@ namespace Flare.Math
         public Vector4(float[] vector)
         {
             if (vector.Length != 4) throw new Exception(string.Format("float[] vector was of length {0}.  Was expecting a length of 4.", vector.Length));
-            this.x = vector[0]; this.y = vector[1]; this.z = vector[2]; this.w = vector[3];
+            this.X = vector[0]; this.Y = vector[1]; this.Z = vector[2]; this.W = vector[3];
         }
         #endregion
 
@@ -206,7 +206,7 @@ namespace Flare.Math
 
         public override string ToString()
         {
-            return "{" + x + ", " + y + ", " + z + ", " + w + "}";
+            return "{" + X + ", " + Y + ", " + Z + ", " + W + "}";
         }
 
         /// <summary>
@@ -222,13 +222,13 @@ namespace Flare.Math
 
         public float this[int a]
         {
-            get { return (a == 0) ? x : (a == 1) ? y : (a == 2) ? z : w; }
+            get { return (a == 0) ? X : (a == 1) ? Y : (a == 2) ? Z : W; }
             set
             {
-                if (a == 0) x = value;
-                else if (a == 1) y = value;
-                else if (a == 2) z = value;
-                else if (a == 3) w = value;
+                if (a == 0) X = value;
+                else if (a == 1) Y = value;
+                else if (a == 2) Z = value;
+                else if (a == 3) W = value;
             }
         }
         #endregion
@@ -239,7 +239,7 @@ namespace Flare.Math
         /// </summary>
         public float Length
         {
-            get { return (float)System.Math.Sqrt(x * x + y * y + z * z + w * w); }
+            get { return (float)System.Math.Sqrt(X * X + Y * Y + Z * Z + W * W); }
         }
 
         /// <summary>
@@ -247,18 +247,18 @@ namespace Flare.Math
         /// </summary>
         public float SquaredLength
         {
-            get { return x * x + y * y + z * z + w * w; }
+            get { return X * X + Y * Y + Z * Z + W * W; }
         }
 
         /// <summary>
-        /// Gets or sets an OpenGl.Types.Vector2 with the x and y components of this instance.
+        /// Gets or sets an OpenGl.Types.Vector2 with the X and Y components of this instance.
         /// </summary>
-        public Vector2 Xy { get { return new Vector2(x, y); } set { x = value.x; y = value.y; } }
+        public Vector2 Xy { get { return new Vector2(X, Y); } set { X = value.X; Y = value.Y; } }
 
         /// <summary>
-        /// Gets or sets an OpenGl.Types.Vector3 with the x, y and z components of this instance.
+        /// Gets or sets an OpenGl.Types.Vector3 with the X, Y and Z components of this instance.
         /// </summary>
-        public Vector3 Xyz { get { return new Vector3(x, y, z); } set { x = value.x; y = value.y; z = value.z; } }
+        public Vector3 Xyz { get { return new Vector3(X, Y, Z); } set { X = value.X; Y = value.Y; Z = value.Z; } }
         #endregion
 
         #region Methods
@@ -270,7 +270,7 @@ namespace Flare.Math
         /// <returns>Scalar dot product value</returns>
         public static float Dot(Vector4 v1, Vector4 v2)
         {
-            return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
         }
 
         /// <summary>
@@ -289,55 +289,55 @@ namespace Flare.Math
         /// <returns>Float array representation of a Vector4</returns>
         public float[] ToFloat()
         {
-            return new float[] { x, y, z, w };
+            return new float[] { X, Y, Z, W };
         }
 
         /// <summary>
         /// Normalizes the Vector4 structure to have a peak value of one.
         /// </summary>
-        /// <returns>if (Length = 0) return Zero; else return Vector4(x,y,z,w)/Length</returns>
+        /// <returns>if (Length = 0) return Zero; else return Vector4(X,Y,Z,w)/Length</returns>
         public Vector4 Normalize()
         {
             if (Length == 0) return Zero;
-            else return new Vector4(x, y, z, w) / Length;
+            else return new Vector4(X, Y, Z, W) / Length;
         }
 
         /// <summary>
-        /// Checks to see if any value (x, y, z, w) are within 0.0001 of 0.
+        /// Checks to see if any value (X, Y, Z, w) are within 0.0001 of 0.
         /// If so this method truncates that value to zero.
         /// </summary>
         /// <returns>A truncated Vector4</returns>
         public Vector4 Truncate()
         {
-            float _x = (System.Math.Abs(x) - 0.0001 < 0) ? 0 : x;
-            float _y = (System.Math.Abs(y) - 0.0001 < 0) ? 0 : y;
-            float _z = (System.Math.Abs(z) - 0.0001 < 0) ? 0 : z;
-            float _w = (System.Math.Abs(w) - 0.0001 < 0) ? 0 : w;
+            float _x = (System.Math.Abs(X) - 0.0001 < 0) ? 0 : X;
+            float _y = (System.Math.Abs(Y) - 0.0001 < 0) ? 0 : Y;
+            float _z = (System.Math.Abs(Z) - 0.0001 < 0) ? 0 : Z;
+            float _w = (System.Math.Abs(W) - 0.0001 < 0) ? 0 : W;
             return new Vector4(_x, _y, _z, _w);
         }
 
         /// <summary>
-        /// Store the minimum values of x, y, z, and w between the two vectors.
+        /// Store the minimum values of X, Y, Z, and w between the two vectors.
         /// </summary>
         /// <param name="v">Vector to check against</param>
         public void TakeMin(Vector4 v)
         {
-            if (v.x < x) x = v.x;
-            if (v.y < y) y = v.y;
-            if (v.z < z) z = v.z;
-            if (v.w < w) w = v.w;
+            if (v.X < X) X = v.X;
+            if (v.Y < Y) Y = v.Y;
+            if (v.Z < Z) Z = v.Z;
+            if (v.W < W) W = v.W;
         }
 
         /// <summary>
-        /// Store the maximum values of x, y, z, and w  between the two vectors.
+        /// Store the maximum values of X, Y, Z, and w  between the two vectors.
         /// </summary>
         /// <param name="v">Vector to check against</param>
         public void TakeMax(Vector4 v)
         {
-            if (v.x > x) x = v.x;
-            if (v.y > y) y = v.y;
-            if (v.z > z) z = v.z;
-            if (v.w > w) w = v.w;
+            if (v.X > X) X = v.X;
+            if (v.Y > Y) Y = v.Y;
+            if (v.Z > Z) Z = v.Z;
+            if (v.W > W) W = v.W;
         }
 
         /// <summary>

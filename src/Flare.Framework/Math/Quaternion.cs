@@ -10,7 +10,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Flare.Math
+namespace Flare
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -38,7 +38,7 @@ namespace Flare.Math
 
         public Quaternion(Vector4 vec)
         {
-            this.x = vec.x; this.y = vec.y; this.z = vec.z; this.w = vec.w;
+            this.x = vec.X; this.y = vec.Y; this.z = vec.Z; this.w = vec.W;
         }
         #endregion
 
@@ -165,7 +165,7 @@ namespace Flare.Math
         }
 
         /// <summary>
-        /// Gets the length of the current Quaternion.  sqrt(x^2 + y^2 + z^2 + w^2)
+        /// Gets the length of the current Quaternion.  sqrt(X^2 + Y^2 + Z^2 + w^2)
         /// </summary>
         public float Length
         {
@@ -173,7 +173,7 @@ namespace Flare.Math
         }
 
         /// <summary>
-        /// Gets the squared length of the current Quaternion.  x^2 + y^2 + z^2 + w^2
+        /// Gets the squared length of the current Quaternion.  X^2 + Y^2 + Z^2 + w^2
         /// </summary>
         public float SquaredLength
         {
@@ -183,7 +183,7 @@ namespace Flare.Math
 
         #region Methods
         /// <summary>
-        /// Gets the dot product of the current Quaternion with another.  Dot = x*q.x + y * q.y + z * q.z + w * q.w
+        /// Gets the dot product of the current Quaternion with another.  Dot = X*q.X + Y * q.Y + Z * q.Z + w * q.w
         /// </summary>
         public float Dot(Quaternion q)
         {
@@ -199,7 +199,7 @@ namespace Flare.Math
         }
 
         /// <summary>
-        /// Calculates the norm of this Quaternion.  Norm = x^2 + y^2 + z^2 + w^2
+        /// Calculates the norm of this Quaternion.  Norm = X^2 + Y^2 + Z^2 + w^2
         /// </summary>
         public float Norm()
         {
@@ -362,9 +362,9 @@ namespace Flare.Math
         public Vector3[] ToAxis()
         {
             Matrix4 rotationMatrix = this.Matrix4;
-            return new Vector3[] { new Vector3(rotationMatrix[0].x, rotationMatrix[1].x, rotationMatrix[2].x),
-                new Vector3(rotationMatrix[0].y, rotationMatrix[1].y, rotationMatrix[2].y),
-                new Vector3(rotationMatrix[0].z, rotationMatrix[1].z, rotationMatrix[2].z) };
+            return new Vector3[] { new Vector3(rotationMatrix[0].X, rotationMatrix[1].X, rotationMatrix[2].X),
+                new Vector3(rotationMatrix[0].Y, rotationMatrix[1].Y, rotationMatrix[2].Y),
+                new Vector3(rotationMatrix[0].Z, rotationMatrix[1].Z, rotationMatrix[2].Z) };
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace Flare.Math
 
             Vector4 result = new Vector4();
 
-            result.w = 2.0f * (float)System.Math.Acos(q.w); // angle
+            result.W = 2.0f * (float)System.Math.Acos(q.w); // angle
             float den = (float)System.Math.Sqrt(1.0 - q.w * q.w);
             if (den > 0.0001f)
             {
@@ -402,9 +402,9 @@ namespace Flare.Math
         public static Quaternion FromAxis(Vector3 xvec, Vector3 yvec, Vector3 zvec)
         {
             Matrix4 Rotation = new Matrix4(
-                new Vector4(xvec.x, yvec.x, zvec.x, 0),
-                new Vector4(xvec.y, yvec.y, zvec.y, 0),
-                new Vector4(xvec.z, yvec.z, zvec.z, 0),
+                new Vector4(xvec.X, yvec.X, zvec.X, 0),
+                new Vector4(xvec.Y, yvec.Y, zvec.Y, 0),
+                new Vector4(xvec.Z, yvec.Z, zvec.Z, 0),
                 Vector4.Zero);
             return FromRotationMatrix(Rotation);
         }

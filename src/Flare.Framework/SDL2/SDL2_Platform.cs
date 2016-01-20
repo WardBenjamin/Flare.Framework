@@ -1,51 +1,36 @@
-﻿#region License
+#region License
 /* Flare - A Framework by Developers, for Developers.
  * Copyright 2016 Benjamin Ward
  * 
- * Released under the Creative Commons Attribution 4.0 International Public License
+ * Released under the Creative Commons Attribution 4.0 International  License
  * See LICENSE.md for details.
- *
- * This file originally Copyright 2009-2016 Ethan Lee and the Monogame Team under the MS-PL.
  */
 #endregion
 
-#region USE_SCANCODES Option
-// #define USE_SCANCODES
-/* XNA Keys are based on keycodes, rather than scancodes.
- *
- * With SDL2 you can actually pick between SDL_Keycode and SDL_Scancode, but
- * scancodes will not be accurate to XNA4. The benefit is that scancodes will
- * essentially ignore "foreign" keyboard layouts, making default keyboard
- * layouts work out of the box everywhere (unless the actual symbol for the keys
- * matters in your game).
- *
- * At the same time, the TextInputEXT extension will still read the actual chars
- * correctly, so you can (mostly) have your cake and eat it too if you don't
- * care about your bindings menu not making a lot of sense on foreign layouts.
- * -flibit
- */
-#endregion
-
+#region Using Statements
 using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using SDL2;
+using Flare.Input;
+#endregion
 
-namespace Flare.Framework.SDL2
+namespace Flare.SDL2
 {
-    internal static class SDL2_Platform
+    static class SDL2_Platform
     {
-        #region Public Static Constants
+        #region  Static Constants
 
-        public static readonly string OSVersion = SDL.SDL_GetPlatform();
+        static readonly string OSVersion = SDL.SDL_GetPlatform();
 
         #endregion
 
-        #region Public Static Methods
+        #region Internal Static Methods
 
-        public static void Init(Game game)
+        internal static void Init(Game game)
         {
             /* SDL2 might complain if an OS that uses SDL_main has not actually
 			 * used SDL_main by the time you initialize SDL2.
@@ -75,7 +60,7 @@ namespace Flare.Framework.SDL2
 
             // If available, load the SDL_GameControllerDB
             string mappingsDB = Path.Combine(
-                TitleContainer.Location,
+                Directory.GetCurrentDirectory(),
                 "gamecontrollerdb.txt"
             );
             if (File.Exists(mappingsDB))
@@ -86,19 +71,7 @@ namespace Flare.Framework.SDL2
             }
 
             // Set and initialize the SDL2 window
-            bool forceES2 = Environment.GetEnvironmentVariable(
-                "FNA_OPENGL_FORCE_ES2"
-            ) == "1";
-            bool forceCoreProfile = Environment.GetEnvironmentVariable(
-                "FNA_OPENGL_FORCE_CORE_PROFILE"
-            ) == "1";
-            game.Window = new SDL2_GameWindow(
-                forceES2 ||
-                OSVersion.Equals("Emscripten") ||
-                OSVersion.Equals("Android") ||
-                OSVersion.Equals("iOS"),
-                forceCoreProfile
-            );
+            game.Window = new SDL2_GameWindow(game.Title, game.WindowWidth, game.WindowHeight);
 
             // Disable the screensaver.
             SDL.SDL_DisableScreenSaver();
@@ -107,7 +80,7 @@ namespace Flare.Framework.SDL2
             SDL.SDL_ShowCursor(0);
         }
 
-        public static void Dispose(Game game)
+        internal static void Dispose(Game game)
         {
             if (game.Window != null)
             {
@@ -131,7 +104,7 @@ namespace Flare.Framework.SDL2
             SDL.SDL_Quit();
         }
 
-        public static void RunLoop(Game game)
+        internal static void RunLoop(Game game)
         {
             SDL.SDL_ShowWindow(game.Window.Handle);
 
@@ -152,15 +125,24 @@ namespace Flare.Framework.SDL2
                 osxUseSpaces = false;
             }
 
+            // Do we want to read keycodes or scancodes?
+            SDL2_KeyboardUtil.UseScancodes = Environment.GetEnvironmentVariable(
+                "FLARE_KEYBOARD_USE_SCANCODES"
+            ) == "1";
+            if (SDL2_KeyboardUtil.UseScancodes)
+            {
+                Log.Write("Using scancodes instead of keycodes!");
+            }
+
             // Active Key List
             List<Keys> keys = new List<Keys>();
 
             /* Setup Text Input Control Character Arrays
 			 * (Only 4 control keys supported at this time)
 			 */
-            bool[] INTERNAL_TextInputControlDown = new bool[4];
-            int[] INTERNAL_TextInputControlRepeat = new int[4];
-            bool INTERNAL_TextInputSuppress = false;
+            bool[] _TextInputControlDown = new bool[4];
+            int[] _TextInputControlRepeat = new int[4];
+            bool _TextInputSuppress = false;
 
             SDL.SDL_Event evt;
 
@@ -171,66 +153,58 @@ namespace Flare.Framework.SDL2
                     // Keyboard
                     if (evt.type == SDL.SDL_EventType.SDL_KEYDOWN)
                     {
-#if USE_SCANCODES
-						Keys key = SDL2_KeyboardUtil.ToXNA(evt.key.keysym.scancode);
-#else
-                        Keys key = SDL2_KeyboardUtil.ToXNA(evt.key.keysym.sym);
-#endif
+                        Keys key = SDL2_KeyboardUtil.ToXNA(ref evt.key.keysym);
                         if (!keys.Contains(key))
                         {
                             keys.Add(key);
                             if (key == Keys.Back)
                             {
-                                INTERNAL_TextInputControlDown[0] = true;
-                                INTERNAL_TextInputControlRepeat[0] = Environment.TickCount + 400;
-                                TextInputEXT.OnTextInput((char)8); // Backspace
+                                _TextInputControlDown[0] = true;
+                                _TextInputControlRepeat[0] = Environment.TickCount + 400;
+                                game.OnKeyPress((char)8); // Backspace
                             }
                             else if (key == Keys.Tab)
                             {
-                                INTERNAL_TextInputControlDown[1] = true;
-                                INTERNAL_TextInputControlRepeat[1] = Environment.TickCount + 400;
-                                TextInputEXT.OnTextInput((char)9); // Tab
+                                _TextInputControlDown[1] = true;
+                                _TextInputControlRepeat[1] = Environment.TickCount + 400;
+                                game.OnKeyPress((char)9); // Tab
                             }
                             else if (key == Keys.Enter)
                             {
-                                INTERNAL_TextInputControlDown[2] = true;
-                                INTERNAL_TextInputControlRepeat[2] = Environment.TickCount + 400;
-                                TextInputEXT.OnTextInput((char)13); // Enter
+                                _TextInputControlDown[2] = true;
+                                _TextInputControlRepeat[2] = Environment.TickCount + 400;
+                                game.OnKeyPress((char)13); // Enter
                             }
                             else if (keys.Contains(Keys.LeftControl) && key == Keys.V)
                             {
-                                INTERNAL_TextInputControlDown[3] = true;
-                                INTERNAL_TextInputControlRepeat[3] = Environment.TickCount + 400;
-                                TextInputEXT.OnTextInput((char)22); // Control-V (Paste)
-                                INTERNAL_TextInputSuppress = true;
+                                _TextInputControlDown[3] = true;
+                                _TextInputControlRepeat[3] = Environment.TickCount + 400;
+                                game.OnKeyPress((char)22); // Control-V (Paste)
+                                _TextInputSuppress = true;
                             }
                         }
                     }
                     else if (evt.type == SDL.SDL_EventType.SDL_KEYUP)
                     {
-#if USE_SCANCODES
-						Keys key = SDL2_KeyboardUtil.ToXNA(evt.key.keysym.scancode);
-#else
-                        Keys key = SDL2_KeyboardUtil.ToXNA(evt.key.keysym.sym);
-#endif
+                        Keys key = SDL2_KeyboardUtil.ToXNA(ref evt.key.keysym);
                         if (keys.Remove(key))
                         {
                             if (key == Keys.Back)
                             {
-                                INTERNAL_TextInputControlDown[0] = false;
+                                _TextInputControlDown[0] = false;
                             }
                             else if (key == Keys.Tab)
                             {
-                                INTERNAL_TextInputControlDown[1] = false;
+                                _TextInputControlDown[1] = false;
                             }
                             else if (key == Keys.Enter)
                             {
-                                INTERNAL_TextInputControlDown[2] = false;
+                                _TextInputControlDown[2] = false;
                             }
-                            else if ((!keys.Contains(Keys.LeftControl) && INTERNAL_TextInputControlDown[3]) || key == Keys.V)
+                            else if ((!keys.Contains(Keys.LeftControl) && _TextInputControlDown[3]) || key == Keys.V)
                             {
-                                INTERNAL_TextInputControlDown[3] = false;
-                                INTERNAL_TextInputSuppress = false;
+                                _TextInputControlDown[3] = false;
+                                _TextInputSuppress = false;
                             }
                         }
                     }
@@ -238,12 +212,12 @@ namespace Flare.Framework.SDL2
                     // Mouse Input
                     else if (evt.type == SDL.SDL_EventType.SDL_MOUSEMOTION)
                     {
-                        Mouse.INTERNAL_IsWarped = false;
+                        SDL2_MouseUtil._IsWarped = false;
                     }
                     else if (evt.type == SDL.SDL_EventType.SDL_MOUSEWHEEL)
                     {
                         // 120 units per notch. Because reasons.
-                        Mouse.INTERNAL_MouseWheel += evt.wheel.y * 120;
+                        SDL2_MouseUtil._MouseWheel += evt.wheel.y * 120;
                     }
 
                     // Various Window Events...
@@ -259,7 +233,7 @@ namespace Flare.Framework.SDL2
                                 // If we alt-tab away, we lose the 'fullscreen desktop' flag on some WMs
                                 SDL.SDL_SetWindowFullscreen(
                                     game.Window.Handle,
-                                    game.GraphicsDevice.PresentationParameters.IsFullScreen ?
+                                    (game.Window as SDL2_GameWindow).full ?
                                         (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP :
                                         0
                                 );
@@ -284,18 +258,19 @@ namespace Flare.Framework.SDL2
                         // Window Resize
                         else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_RESIZED)
                         {
-                            Mouse.INTERNAL_WindowWidth = evt.window.data1;
-                            Mouse.INTERNAL_WindowHeight = evt.window.data2;
+                            SDL2_MouseUtil._WindowWidth = evt.window.data1;
+                            SDL2_MouseUtil._WindowHeight = evt.window.data2;
 
                             // Should be called on user resize only, NOT ApplyChanges!
-                            ((SDL2_GameWindow)game.Window).INTERNAL_ClientSizeChanged();
+                            ((SDL2_GameWindow)game.Window)._ClientSizeChanged();
                         }
                         else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_SIZE_CHANGED)
                         {
-                            Mouse.INTERNAL_WindowWidth = evt.window.data1;
-                            Mouse.INTERNAL_WindowHeight = evt.window.data2;
+                            SDL2_MouseUtil._WindowWidth = evt.window.data1;
+                            SDL2_MouseUtil._WindowHeight = evt.window.data2;
 
                             // Need to reset the graphics device any time the window size changes
+                            /*
                             GraphicsDeviceManager gdm = game.Services.GetService(
                                 typeof(IGraphicsDeviceService)
                             ) as GraphicsDeviceManager;
@@ -303,18 +278,18 @@ namespace Flare.Framework.SDL2
                             if (gdm.IsFullScreen)
                             {
                                 GraphicsDevice device = game.GraphicsDevice;
-                                gdm.INTERNAL_ResizeGraphicsDevice(
+                                gdm._ResizeGraphicsDevice(
                                     device.GLDevice.Backbuffer.Width,
                                     device.GLDevice.Backbuffer.Height
                                 );
                             }
                             else
                             {
-                                gdm.INTERNAL_ResizeGraphicsDevice(
+                                gdm._ResizeGraphicsDevice(
                                     evt.window.data1,
                                     evt.window.data2
                                 );
-                            }
+                            }*/
                         }
 
                         // Window Move
@@ -324,6 +299,7 @@ namespace Flare.Framework.SDL2
 							 * display, a GraphicsDevice Reset occurs.
 							 * -flibit
 							 */
+                             /*
                             int newIndex = SDL.SDL_GetWindowDisplayIndex(
                                 game.Window.Handle
                             );
@@ -334,7 +310,7 @@ namespace Flare.Framework.SDL2
                                     game.GraphicsDevice.PresentationParameters,
                                     GraphicsAdapter.Adapters[displayIndex]
                                 );
-                            }
+                            }*/
                         }
 
                         // Mouse Focus
@@ -349,17 +325,17 @@ namespace Flare.Framework.SDL2
                     }
 
                     // Controller device management
-                    else if (evt.type == SDL.SDL_EventType.SDL_CONTROLLERDEVICEADDED)
+                    /*else if (evt.type == SDL.SDL_EventType.SDL_CONTROLLERDEVICEADDED)
                     {
-                        INTERNAL_AddInstance(evt.cdevice.which);
+                        _AddInstance(evt.cdevice.which);
                     }
                     else if (evt.type == SDL.SDL_EventType.SDL_CONTROLLERDEVICEREMOVED)
                     {
-                        INTERNAL_RemoveInstance(evt.cdevice.which);
-                    }
+                        _RemoveInstance(evt.cdevice.which);
+                    }*/
 
                     // Text Input
-                    else if (evt.type == SDL.SDL_EventType.SDL_TEXTINPUT && !INTERNAL_TextInputSuppress)
+                    else if (evt.type == SDL.SDL_EventType.SDL_TEXTINPUT && !_TextInputSuppress)
                     {
                         string text;
 
@@ -378,7 +354,7 @@ namespace Flare.Framework.SDL2
 
                         if (text.Length > 0)
                         {
-                            TextInputEXT.OnTextInput(text[0]);
+                            game.OnKeyPress(text[0]);
                         }
                     }
 
@@ -390,21 +366,21 @@ namespace Flare.Framework.SDL2
                     }
                 }
                 // Text Input Controls Key Handling
-                if (INTERNAL_TextInputControlDown[0] && INTERNAL_TextInputControlRepeat[0] <= Environment.TickCount)
+                if (_TextInputControlDown[0] && _TextInputControlRepeat[0] <= Environment.TickCount)
                 {
-                    TextInputEXT.OnTextInput((char)8);
+                    game.OnKeyPress((char)8);
                 }
-                if (INTERNAL_TextInputControlDown[1] && INTERNAL_TextInputControlRepeat[1] <= Environment.TickCount)
+                if (_TextInputControlDown[1] && _TextInputControlRepeat[1] <= Environment.TickCount)
                 {
-                    TextInputEXT.OnTextInput((char)9);
+                    game.OnKeyPress((char)9);
                 }
-                if (INTERNAL_TextInputControlDown[2] && INTERNAL_TextInputControlRepeat[2] <= Environment.TickCount)
+                if (_TextInputControlDown[2] && _TextInputControlRepeat[2] <= Environment.TickCount)
                 {
-                    TextInputEXT.OnTextInput((char)13);
+                    game.OnKeyPress((char)13);
                 }
-                if (INTERNAL_TextInputControlDown[3] && INTERNAL_TextInputControlRepeat[3] <= Environment.TickCount)
+                if (_TextInputControlDown[3] && _TextInputControlRepeat[3] <= Environment.TickCount)
                 {
-                    TextInputEXT.OnTextInput((char)22);
+                    game.OnKeyPress((char)22);
                 }
 
                 Keyboard.SetKeys(keys);
@@ -415,8 +391,9 @@ namespace Flare.Framework.SDL2
             game.Exit();
         }
 
-        public static void BeforeInitialize()
+        internal static void BeforeInitialize()
         {
+            /*
             // We want to initialize the controllers ASAP!
             SDL.SDL_Event[] evt = new SDL.SDL_Event[1];
             SDL.SDL_PumpEvents(); // Required to get OSX device events this early.
@@ -428,19 +405,12 @@ namespace Flare.Framework.SDL2
                 SDL.SDL_EventType.SDL_CONTROLLERDEVICEADDED
             ) == 1)
             {
-                INTERNAL_AddInstance(evt[0].cdevice.which);
-            }
+                _AddInstance(evt[0].cdevice.which);
+            }*/
         }
 
-        public static IGLDevice CreateGLDevice(
-            PresentationParameters presentationParameters
-        )
-        {
-            // This loads the OpenGL entry points.
-            return new OpenGLDevice(presentationParameters);
-        }
-
-        public static IALDevice CreateALDevice()
+        // TODO: Audio
+        /*static IALDevice CreateALDevice()
         {
             try
             {
@@ -448,19 +418,19 @@ namespace Flare.Framework.SDL2
             }
             catch (DllNotFoundException e)
             {
-                Log("OpenAL not found! Need FNA.dll.config?");
+                Log.Write("OpenAL not found! Need Flare.dll.config?");
                 throw e;
             }
             catch (Exception)
             {
-                /* We ignore device creation exceptions,
-				 * as they are handled down the line with Instance != null
-				 */
+                // We ignore device creation exceptions,
+				// as they are handled down the line with Instance != null
+				 
                 return null;
             }
-        }
+        }*/
 
-        public static void SetPresentationInterval(PresentInterval interval)
+        static void SetPresentationInterval(PresentInterval interval)
         {
             if (interval == PresentInterval.Default || interval == PresentInterval.One)
             {
@@ -473,11 +443,11 @@ namespace Flare.Framework.SDL2
                 {
                     if (SDL.SDL_GL_SetSwapInterval(-1) != -1)
                     {
-                        Log("Using EXT_swap_control_tear VSync!");
+                        Log.Write("Using EXT_swap_control_tear VSync!");
                     }
                     else
                     {
-                        Log("EXT_swap_control_tear unsupported. Fall back to standard VSync.");
+                        Log.Write("EXT_swap_control_tear unsupported. Fall back to standard VSync.");
                         SDL.SDL_ClearError();
                         SDL.SDL_GL_SetSwapInterval(1);
                     }
@@ -497,66 +467,20 @@ namespace Flare.Framework.SDL2
             }
         }
 
-        public static GraphicsAdapter[] GetGraphicsAdapters()
-        {
-            SDL.SDL_DisplayMode filler = new SDL.SDL_DisplayMode();
-            GraphicsAdapter[] adapters = new GraphicsAdapter[SDL.SDL_GetNumVideoDisplays()];
-            for (int i = 0; i < adapters.Length; i += 1)
-            {
-                List<DisplayMode> modes = new List<DisplayMode>();
-                int numModes = SDL.SDL_GetNumDisplayModes(i);
-                for (int j = 0; j < numModes; j += 1)
-                {
-                    SDL.SDL_GetDisplayMode(i, j, out filler);
-
-                    // Check for dupes caused by varying refresh rates.
-                    bool dupe = false;
-                    foreach (DisplayMode mode in modes)
-                    {
-                        if (filler.w == mode.Width && filler.h == mode.Height)
-                        {
-                            dupe = true;
-                        }
-                    }
-                    if (!dupe)
-                    {
-                        modes.Add(
-                            new DisplayMode(
-                                filler.w,
-                                filler.h,
-                                SurfaceFormat.Color // FIXME: Assumption!
-                            )
-                        );
-                    }
-                }
-                SDL.SDL_GetCurrentDisplayMode(i, out filler);
-                adapters[i] = new GraphicsAdapter(
-                    new DisplayMode(
-                        filler.w,
-                        filler.h,
-                        SurfaceFormat.Color // FIXME: Assumption!
-                    ),
-                    new DisplayModeCollection(modes),
-                    SDL.SDL_GetDisplayName(i)
-                );
-            }
-            return adapters;
-        }
-
-        public static Keys GetKeyFromScancode(Keys scancode)
+        internal static Keys GetKeyFromScancode(Keys scancode)
         {
             return SDL2_KeyboardUtil.KeyFromScancode(scancode);
         }
 
-        public static void GetMouseState(
-            out int x,
-            out int y,
-            out ButtonState left,
-            out ButtonState middle,
-            out ButtonState right,
-            out ButtonState x1,
-            out ButtonState x2
-        )
+        internal static void GetMouseState(
+           out int x,
+           out int y,
+           out ButtonState left,
+           out ButtonState middle,
+           out ButtonState right,
+           out ButtonState x1,
+           out ButtonState x2
+       )
         {
             uint flags = SDL.SDL_GetMouseState(out x, out y);
             left = (ButtonState)(flags & SDL.SDL_BUTTON_LMASK);
@@ -566,17 +490,17 @@ namespace Flare.Framework.SDL2
             x2 = (ButtonState)((flags & SDL.SDL_BUTTON_X2MASK) >> 4);
         }
 
-        public static void SetMousePosition(IntPtr window, int x, int y)
+        static void SetMousePosition(IntPtr window, int x, int y)
         {
             SDL.SDL_WarpMouseInWindow(window, x, y);
         }
 
-        public static void OnIsMouseVisibleChanged(bool visible)
+        internal static void OnIsMouseVisibleChanged(bool visible)
         {
             SDL.SDL_ShowCursor(visible ? 1 : 0);
         }
 
-        public static string GetStorageRoot()
+        internal static string GetStorageRoot()
         {
             if (OSVersion.Equals("Windows"))
             {
@@ -613,7 +537,7 @@ namespace Flare.Framework.SDL2
             throw new NotSupportedException("Unhandled SDL2 platform!");
         }
 
-        public static bool IsStoragePathConnected(string path)
+        internal static bool IsStoragePathConnected(string path)
         {
             if (OSVersion.Equals("Linux") ||
                 OSVersion.Equals("Mac OS X"))
@@ -638,12 +562,7 @@ namespace Flare.Framework.SDL2
             throw new NotSupportedException("Unhandled SDL2 platform");
         }
 
-        public static void Log(string Message)
-        {
-            Console.WriteLine(Message);
-        }
-
-        public static void ShowRuntimeError(string title, string message)
+        internal static void ShowRuntimeError(string title, string message)
         {
             SDL.SDL_ShowSimpleMessageBox(
                 SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
@@ -653,15 +572,15 @@ namespace Flare.Framework.SDL2
             );
         }
 
-        public static void TextureDataFromStream(
-            Stream stream,
-            out int width,
-            out int height,
-            out byte[] pixels,
-            int reqWidth = -1,
-            int reqHeight = -1,
-            bool zoom = false
-        )
+        internal static void TextureDataFromStream(
+           Stream stream,
+           out int width,
+           out int height,
+           out byte[] pixels,
+           int reqWidth = -1,
+           int reqHeight = -1,
+           bool zoom = false
+       )
         {
             // Load the Stream into an SDL_RWops*
             byte[] mem = new byte[stream.Length];
@@ -680,7 +599,7 @@ namespace Flare.Framework.SDL2
                 pixels = null;
                 return;
             }
-            surface = INTERNAL_convertSurfaceFormat(surface);
+            surface = _convertSurfaceFormat(surface);
 
             // Image scaling, if applicable
             if (reqWidth != -1 && reqHeight != -1)
@@ -808,14 +727,14 @@ namespace Flare.Framework.SDL2
             }
         }
 
-        public static void SavePNG(
-            Stream stream,
-            int width,
-            int height,
-            int imgWidth,
-            int imgHeight,
-            byte[] data
-        )
+        internal static void SavePNG(
+           Stream stream,
+           int width,
+           int height,
+           int imgWidth,
+           int imgHeight,
+           byte[] data
+       )
         {
             // Create an SDL_Surface*, write the pixel data
             IntPtr surface = SDL.SDL_CreateRGBSurface(
@@ -891,7 +810,7 @@ namespace Flare.Framework.SDL2
         #endregion
 
         #region GamePad Backend
-
+        /*
         private enum HapticType
         {
             Simple = 0,
@@ -900,23 +819,23 @@ namespace Flare.Framework.SDL2
         }
 
         // Controller device information
-        private static IntPtr[] INTERNAL_devices = new IntPtr[GamePad.GAMEPAD_COUNT];
-        private static Dictionary<int, int> INTERNAL_instanceList = new Dictionary<int, int>();
-        private static string[] INTERNAL_guids = GenStringArray();
+        private static IntPtr[] _devices = new IntPtr[GamePad.GAMEPAD_COUNT];
+        private static Dictionary<int, int> _instanceList = new Dictionary<int, int>();
+        private static string[] _guids = GenStringArray();
 
         // Haptic device information
-        private static IntPtr[] INTERNAL_haptics = new IntPtr[GamePad.GAMEPAD_COUNT];
-        private static HapticType[] INTERNAL_hapticTypes = new HapticType[GamePad.GAMEPAD_COUNT];
+        private static IntPtr[] _haptics = new IntPtr[GamePad.GAMEPAD_COUNT];
+        private static HapticType[] _hapticTypes = new HapticType[GamePad.GAMEPAD_COUNT];
 
         // Light bar information
-        private static string[] INTERNAL_lightBars = GenStringArray();
+        private static string[] _lightBars = GenStringArray();
 
         // Cached GamePadStates/Capabilities
-        private static GamePadState[] INTERNAL_states = new GamePadState[GamePad.GAMEPAD_COUNT];
-        private static GamePadCapabilities[] INTERNAL_capabilities = new GamePadCapabilities[GamePad.GAMEPAD_COUNT];
+        private static GamePadState[] _states = new GamePadState[GamePad.GAMEPAD_COUNT];
+        private static GamePadCapabilities[] _capabilities = new GamePadCapabilities[GamePad.GAMEPAD_COUNT];
 
         // We use this to apply XInput-like rumble effects.
-        private static SDL.SDL_HapticEffect INTERNAL_leftRightEffect = new SDL.SDL_HapticEffect
+        private static SDL.SDL_HapticEffect _leftRightEffect = new SDL.SDL_HapticEffect
         {
             type = SDL.SDL_HAPTIC_LEFTRIGHT,
             leftright = new SDL.SDL_HapticLeftRight
@@ -932,7 +851,7 @@ namespace Flare.Framework.SDL2
         private static ushort[] leftRightMacHackData = { 0, 0 };
         private static GCHandle leftRightMacHackPArry = GCHandle.Alloc(leftRightMacHackData, GCHandleType.Pinned);
         private static IntPtr leftRightMacHackPtr = leftRightMacHackPArry.AddrOfPinnedObject();
-        private static SDL.SDL_HapticEffect INTERNAL_leftRightMacHackEffect = new SDL.SDL_HapticEffect
+        private static SDL.SDL_HapticEffect _leftRightMacHackEffect = new SDL.SDL_HapticEffect
         {
             type = SDL.SDL_HAPTIC_CUSTOM,
             custom = new SDL.SDL_HapticCustom
@@ -948,21 +867,22 @@ namespace Flare.Framework.SDL2
 
         // FIXME: SDL_GameController config input inversion!
         private static float invertAxis = Environment.GetEnvironmentVariable(
-            "FNA_WORKAROUND_INVERT_YAXIS"
+            "FLARE_WORKAROUND_INVERT_YAXIS"
         ) == "1" ? -1.0f : 1.0f;
 
-        public static GamePadCapabilities GetGamePadCapabilities(int index)
+        
+        static GamePadCapabilities GetGamePadCapabilities(int index)
         {
-            if (INTERNAL_devices[index] == IntPtr.Zero)
+            if (_devices[index] == IntPtr.Zero)
             {
                 return new GamePadCapabilities();
             }
-            return INTERNAL_capabilities[index];
+            return _capabilities[index];
         }
 
-        public static GamePadState GetGamePadState(int index, GamePadDeadZone deadZoneMode)
+        internal static GamePadState GetGamePadState(int index, GamePadDeadZone deadZoneMode)
         {
-            IntPtr device = INTERNAL_devices[index];
+            IntPtr device = _devices[index];
             if (device == IntPtr.Zero)
             {
                 return new GamePadState();
@@ -1114,20 +1034,20 @@ namespace Flare.Framework.SDL2
                 gc_dpad
             );
             gc_builtState.IsConnected = true;
-            gc_builtState.PacketNumber = INTERNAL_states[index].PacketNumber;
-            if (gc_builtState != INTERNAL_states[index])
+            gc_builtState.PacketNumber = _states[index].PacketNumber;
+            if (gc_builtState != _states[index])
             {
                 gc_builtState.PacketNumber += 1;
-                INTERNAL_states[index] = gc_builtState;
+                _states[index] = gc_builtState;
             }
 
             return gc_builtState;
         }
 
-        public static bool SetGamePadVibration(int index, float leftMotor, float rightMotor)
+        internal static bool SetGamePadVibration(int index, float leftMotor, float rightMotor)
         {
-            IntPtr haptic = INTERNAL_haptics[index];
-            HapticType type = INTERNAL_hapticTypes[index];
+            IntPtr haptic = _haptics[index];
+            HapticType type = _hapticTypes[index];
 
             if (haptic == IntPtr.Zero)
             {
@@ -1140,12 +1060,12 @@ namespace Flare.Framework.SDL2
             }
             else if (type == HapticType.LeftRight)
             {
-                INTERNAL_leftRightEffect.leftright.large_magnitude = (ushort)(65535.0f * leftMotor);
-                INTERNAL_leftRightEffect.leftright.small_magnitude = (ushort)(65535.0f * rightMotor);
+                _leftRightEffect.leftright.large_magnitude = (ushort)(65535.0f * leftMotor);
+                _leftRightEffect.leftright.small_magnitude = (ushort)(65535.0f * rightMotor);
                 SDL.SDL_HapticUpdateEffect(
                     haptic,
                     0,
-                    ref INTERNAL_leftRightEffect
+                    ref _leftRightEffect
                 );
                 SDL.SDL_HapticRunEffect(
                     haptic,
@@ -1160,7 +1080,7 @@ namespace Flare.Framework.SDL2
                 SDL.SDL_HapticUpdateEffect(
                     haptic,
                     0,
-                    ref INTERNAL_leftRightMacHackEffect
+                    ref _leftRightMacHackEffect
                 );
                 SDL.SDL_HapticRunEffect(
                     haptic,
@@ -1179,19 +1099,19 @@ namespace Flare.Framework.SDL2
             return true;
         }
 
-        public static string GetGamePadGUID(int index)
+        internal static string GetGamePadGUID(int index)
         {
-            return INTERNAL_guids[index];
+            return _guids[index];
         }
 
-        public static void SetGamePadLightBar(int index, Color color)
+        internal static void SetGamePadLightBar(int index, Color color)
         {
-            if (String.IsNullOrEmpty(INTERNAL_lightBars[index]))
+            if (String.IsNullOrEmpty(_lightBars[index]))
             {
                 return;
             }
 
-            string baseDir = INTERNAL_lightBars[index];
+            string baseDir = _lightBars[index];
             try
             {
                 File.WriteAllText(baseDir + "red/brightness", color.R.ToString());
@@ -1201,16 +1121,16 @@ namespace Flare.Framework.SDL2
             catch
             {
                 // If something went wrong, assume the worst and just remove it.
-                INTERNAL_lightBars[index] = String.Empty;
+                _lightBars[index] = String.Empty;
             }
         }
 
-        private static void INTERNAL_AddInstance(int dev)
+        private static void _AddInstance(int dev)
         {
             int which = -1;
-            for (int i = 0; i < INTERNAL_devices.Length; i += 1)
+            for (int i = 0; i < _devices.Length; i += 1)
             {
-                if (INTERNAL_devices[i] == IntPtr.Zero)
+                if (_devices[i] == IntPtr.Zero)
                 {
                     which = i;
                     break;
@@ -1225,64 +1145,64 @@ namespace Flare.Framework.SDL2
             SDL.SDL_ClearError();
 
             // Open the device!
-            INTERNAL_devices[which] = SDL.SDL_GameControllerOpen(dev);
+            _devices[which] = SDL.SDL_GameControllerOpen(dev);
 
             // We use this when dealing with Haptic/GUID initialization.
-            IntPtr thisJoystick = SDL.SDL_GameControllerGetJoystick(INTERNAL_devices[which]);
+            IntPtr thisJoystick = SDL.SDL_GameControllerGetJoystick(_devices[which]);
 
             // Pair up the instance ID to the player index.
             // FIXME: Remove check after 2.0.4? -flibit
             int thisInstance = SDL.SDL_JoystickInstanceID(thisJoystick);
-            if (INTERNAL_instanceList.ContainsKey(thisInstance))
+            if (_instanceList.ContainsKey(thisInstance))
             {
                 // Duplicate? Usually this is OSX being dumb, but...?
-                INTERNAL_devices[which] = IntPtr.Zero;
+                _devices[which] = IntPtr.Zero;
                 return;
             }
-            INTERNAL_instanceList.Add(thisInstance, which);
+            _instanceList.Add(thisInstance, which);
 
             // Start with a fresh state.
-            INTERNAL_states[which] = new GamePadState();
-            INTERNAL_states[which].IsConnected = true;
+            _states[which] = new GamePadState();
+            _states[which].IsConnected = true;
 
             // Initialize the haptics for the joystick, if applicable.
             if (SDL.SDL_JoystickIsHaptic(thisJoystick) == 1)
             {
-                INTERNAL_haptics[which] = SDL.SDL_HapticOpenFromJoystick(thisJoystick);
-                if (INTERNAL_haptics[which] == IntPtr.Zero)
+                _haptics[which] = SDL.SDL_HapticOpenFromJoystick(thisJoystick);
+                if (_haptics[which] == IntPtr.Zero)
                 {
-                    Log("HAPTIC OPEN ERROR: " + SDL.SDL_GetError());
+                    Log.Write("HAPTIC OPEN ERROR: " + SDL.SDL_GetError());
                 }
             }
-            if (INTERNAL_haptics[which] != IntPtr.Zero)
+            if (_haptics[which] != IntPtr.Zero)
             {
                 if (OSVersion.Equals("Mac OS X") &&
-                    SDL.SDL_HapticEffectSupported(INTERNAL_haptics[which], ref INTERNAL_leftRightMacHackEffect) == 1)
+                    SDL.SDL_HapticEffectSupported(_haptics[which], ref _leftRightMacHackEffect) == 1)
                 {
-                    INTERNAL_hapticTypes[which] = HapticType.LeftRightMacHack;
-                    SDL.SDL_HapticNewEffect(INTERNAL_haptics[which], ref INTERNAL_leftRightMacHackEffect);
+                    _hapticTypes[which] = HapticType.LeftRightMacHack;
+                    SDL.SDL_HapticNewEffect(_haptics[which], ref _leftRightMacHackEffect);
                 }
                 else if (!OSVersion.Equals("Mac OS X") &&
-                        SDL.SDL_HapticEffectSupported(INTERNAL_haptics[which], ref INTERNAL_leftRightEffect) == 1)
+                        SDL.SDL_HapticEffectSupported(_haptics[which], ref _leftRightEffect) == 1)
                 {
-                    INTERNAL_hapticTypes[which] = HapticType.LeftRight;
-                    SDL.SDL_HapticNewEffect(INTERNAL_haptics[which], ref INTERNAL_leftRightEffect);
+                    _hapticTypes[which] = HapticType.LeftRight;
+                    SDL.SDL_HapticNewEffect(_haptics[which], ref _leftRightEffect);
                 }
-                else if (SDL.SDL_HapticRumbleSupported(INTERNAL_haptics[which]) == 1)
+                else if (SDL.SDL_HapticRumbleSupported(_haptics[which]) == 1)
                 {
-                    INTERNAL_hapticTypes[which] = HapticType.Simple;
-                    SDL.SDL_HapticRumbleInit(INTERNAL_haptics[which]);
+                    _hapticTypes[which] = HapticType.Simple;
+                    SDL.SDL_HapticRumbleInit(_haptics[which]);
                 }
                 else
                 {
                     // We can't even play simple rumble, this haptic device is useless to us.
-                    SDL.SDL_HapticClose(INTERNAL_haptics[which]);
-                    INTERNAL_haptics[which] = IntPtr.Zero;
+                    SDL.SDL_HapticClose(_haptics[which]);
+                    _haptics[which] = IntPtr.Zero;
                 }
             }
 
             // An SDL_GameController _should_ always be complete...
-            INTERNAL_capabilities[which] = new GamePadCapabilities()
+            _capabilities[which] = new GamePadCapabilities()
             {
                 IsConnected = true,
                 HasAButton = true,
@@ -1306,8 +1226,8 @@ namespace Flare.Framework.SDL2
                 HasRightXThumbStick = true,
                 HasRightYThumbStick = true,
                 HasBigButton = true,
-                HasLeftVibrationMotor = INTERNAL_haptics[which] != IntPtr.Zero,
-                HasRightVibrationMotor = INTERNAL_haptics[which] != IntPtr.Zero,
+                HasLeftVibrationMotor = _haptics[which] != IntPtr.Zero,
+                HasRightVibrationMotor = _haptics[which] != IntPtr.Zero,
                 HasVoiceSupport = false
             };
 
@@ -1372,11 +1292,11 @@ namespace Flare.Framework.SDL2
             {
                 throw new NotSupportedException("Unhandled SDL2 platform!");
             }
-            INTERNAL_guids[which] = result.ToString();
+            _guids[which] = result.ToString();
 
             // Initialize light bar
             if (OSVersion.Equals("Linux") &&
-                INTERNAL_guids[which].Equals("4c05c405"))
+                _guids[which].Equals("4c05c405"))
             {
                 // Get all of the individual PS4 LED instances
                 List<string> ledList = new List<string>();
@@ -1391,9 +1311,9 @@ namespace Flare.Framework.SDL2
                 }
                 // Find how many of these are already in use
                 int numLights = 0;
-                for (int i = 0; i < INTERNAL_lightBars.Length; i += 1)
+                for (int i = 0; i < _lightBars.Length; i += 1)
                 {
-                    if (!String.IsNullOrEmpty(INTERNAL_lightBars[i]))
+                    if (!String.IsNullOrEmpty(_lightBars[i]))
                     {
                         numLights += 1;
                     }
@@ -1401,35 +1321,35 @@ namespace Flare.Framework.SDL2
                 // If all are not already in use, use the first unused light
                 if (numLights < ledList.Count)
                 {
-                    INTERNAL_lightBars[which] = ledList[numLights];
+                    _lightBars[which] = ledList[numLights];
                 }
             }
 
             // Print controller information to stdout.
             Log(
                 "Controller " + which.ToString() + ": " +
-                SDL.SDL_GameControllerName(INTERNAL_devices[which])
+                SDL.SDL_GameControllerName(_devices[which])
             );
         }
 
-        private static void INTERNAL_RemoveInstance(int dev)
+        private static void _RemoveInstance(int dev)
         {
             int output;
-            if (!INTERNAL_instanceList.TryGetValue(dev, out output))
+            if (!_instanceList.TryGetValue(dev, out output))
             {
                 // Odds are, this is controller 5+ getting removed.
                 return;
             }
-            INTERNAL_instanceList.Remove(dev);
-            if (INTERNAL_haptics[output] != IntPtr.Zero)
+            _instanceList.Remove(dev);
+            if (_haptics[output] != IntPtr.Zero)
             {
-                SDL.SDL_HapticClose(INTERNAL_haptics[output]);
-                INTERNAL_haptics[output] = IntPtr.Zero;
+                SDL.SDL_HapticClose(_haptics[output]);
+                _haptics[output] = IntPtr.Zero;
             }
-            SDL.SDL_GameControllerClose(INTERNAL_devices[output]);
-            INTERNAL_devices[output] = IntPtr.Zero;
-            INTERNAL_states[output] = new GamePadState();
-            INTERNAL_guids[output] = String.Empty;
+            SDL.SDL_GameControllerClose(_devices[output]);
+            _devices[output] = IntPtr.Zero;
+            _states[output] = new GamePadState();
+            _guids[output] = String.Empty;
 
             // A lot of errors can happen here, but honestly, they can be ignored...
             SDL.SDL_ClearError();
@@ -1484,12 +1404,12 @@ namespace Flare.Framework.SDL2
             }
             return result;
         }
-
+        */
         #endregion
 
         #region Private Static SDL_Surface Interop
 
-        private static unsafe IntPtr INTERNAL_convertSurfaceFormat(IntPtr surface)
+        private static unsafe IntPtr _convertSurfaceFormat(IntPtr surface)
         {
             IntPtr result = surface;
             unsafe
@@ -1509,5 +1429,28 @@ namespace Flare.Framework.SDL2
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Defines how <see cref="GraphicsDevice.Present"/> updates the game window.
+    /// </summary>
+    public enum PresentInterval
+    {
+        /// <summary>
+        /// Equivalent to <see cref="PresentInterval.One"/>.
+        /// </summary>
+        Default = 0,
+        /// <summary>
+        /// The driver waits for the vertical retrace period, before updating window client area. Present operations are not affected more frequently than the screen refresh rate.
+        /// </summary>
+        One = 1,
+        /// <summary>
+        /// The driver waits for the vertical retrace period, before updating window client area. Present operations are not affected more frequently than every second screen refresh.
+        /// </summary>
+        Two = 2,
+        /// <summary>
+        /// The driver updates the window client area immediately. Present operations might be affected immediately. There is no limit for framerate.
+        /// </summary>
+        Immediate = 3,
     }
 }

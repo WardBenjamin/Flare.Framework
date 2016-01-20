@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flare.Framework.Input
+namespace Flare.Input
 {
     class Gamepad
     {

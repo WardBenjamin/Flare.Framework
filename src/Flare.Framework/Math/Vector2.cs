@@ -10,13 +10,13 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Flare.Math
+namespace Flare
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector2 : IEquatable<Vector2>
     {
-        public float x, y;
+        public float X, Y;
 
         #region Static Constructors
         private static readonly Vector2 identity = new Vector2(1.0f, 1.0f);
@@ -52,95 +52,95 @@ namespace Flare.Math
         #region Operators
         public static Vector2 operator +(Vector2 v1, Vector2 v2)
         {
-            return new Vector2(v1.x + v2.x, v1.y + v2.y);
+            return new Vector2(v1.X + v2.X, v1.Y + v2.Y);
         }
 
         public static Vector2 operator +(Vector2 v, float s)
         {
-            return new Vector2(v.x + s, v.y + s);
+            return new Vector2(v.X + s, v.Y + s);
         }
 
         public static Vector2 operator +(float s, Vector2 v)
         {
-            return new Vector2(v.x + s, v.y + s);
+            return new Vector2(v.X + s, v.Y + s);
         }
 
         public static Vector2 operator -(Vector2 v1, Vector2 v2)
         {
-            return new Vector2(v1.x - v2.x, v1.y - v2.y);
+            return new Vector2(v1.X - v2.X, v1.Y - v2.Y);
         }
 
         public static Vector2 operator -(Vector2 v, float s)
         {
-            return new Vector2(v.x - s, v.y - s);
+            return new Vector2(v.X - s, v.Y - s);
         }
 
         public static Vector2 operator -(float s, Vector2 v)
         {
-            return new Vector2(s - v.x, s - v.y);
+            return new Vector2(s - v.X, s - v.Y);
         }
 
         public static Vector2 operator -(Vector2 v)
         {
-            return new Vector2(-v.x, -v.y);
+            return new Vector2(-v.X, -v.Y);
         }
 
         public static Vector2 operator *(Vector2 v1, Vector2 v2)
         {
-            return new Vector2(v1.x * v2.x, v1.y * v2.y);
+            return new Vector2(v1.X * v2.X, v1.Y * v2.Y);
         }
 
         public static Vector2 operator *(float s, Vector2 v)
         {
-            return new Vector2(v.x * s, v.y * s);
+            return new Vector2(v.X * s, v.Y * s);
         }
 
         public static Vector2 operator *(Vector2 v, float s)
         {
-            return new Vector2(v.x * s, v.y * s);
+            return new Vector2(v.X * s, v.Y * s);
         }
 
         public static Vector2 operator /(Vector2 v1, Vector2 v2)
         {
-            return new Vector2(v1.x / v2.x, v1.y / v2.y);
+            return new Vector2(v1.X / v2.X, v1.Y / v2.Y);
         }
 
         public static Vector2 operator /(float s, Vector2 v)
         {
-            return new Vector2(s / v.x, s / v.y);
+            return new Vector2(s / v.X, s / v.Y);
         }
 
         public static Vector2 operator /(Vector2 v, float s)
         {
-            return new Vector2(v.x / s, v.y / s);
+            return new Vector2(v.X / s, v.Y / s);
         }
 
         public static bool operator ==(Vector2 v1, Vector2 v2)
         {
-            return (v1.x == v2.x && v1.y == v2.y);
+            return (v1.X == v2.X && v1.Y == v2.Y);
         }
 
         public static bool operator !=(Vector2 v1, Vector2 v2)
         {
-            return (v1.x != v2.x || v1.y != v2.y);
+            return (v1.X != v2.X || v1.Y != v2.Y);
         }
         #endregion
 
         #region Constructors
         /// <summary>Create a Vector2 structure, normally used to store Vertex positions.</summary>
-        /// <param name="x">x value</param>
-        /// <param name="y">y value</param>
+        /// <param name="x">X value</param>
+        /// <param name="y">Y value</param>
         public Vector2(float x, float y)
         {
-            this.x = x; this.y = y;
+            this.X = x; this.Y = y;
         }
 
         /// <summary>Create a Vector2 structure, normally used to store Vertex positions.</summary>
-        /// <param name="x">x value</param>
-        /// <param name="y">y value</param>
+        /// <param name="x">X value</param>
+        /// <param name="y">Y value</param>
         public Vector2(double x, double y)
         {
-            this.x = (float)x; this.y = (float)y;
+            this.X = (float)x; this.Y = (float)y;
         }
         #endregion
 
@@ -164,7 +164,7 @@ namespace Flare.Math
 
         public override string ToString()
         {
-            return "{" + x + ", " + y + "}";
+            return "{" + X + ", " + Y + "}";
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Flare.Math
 
         public float this[int a]
         {
-            get { return (a == 0) ? x : y; }
+            get { return (a == 0) ? X : Y; }
         }
         #endregion
 
@@ -190,7 +190,7 @@ namespace Flare.Math
         /// </summary>
         public float Length
         {
-            get { return (float)System.Math.Sqrt(x * x + y * y); }
+            get { return (float)System.Math.Sqrt(X * X + Y * Y); }
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Flare.Math
         /// </summary>
         public float SquaredLength
         {
-            get { return x * x + y * y; }
+            get { return X * X + Y * Y; }
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Flare.Math
         /// </summary>
         public Vector2 PerpendicularRight
         {
-            get { return new Vector2(y, -x); }
+            get { return new Vector2(Y, -X); }
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace Flare.Math
         /// </summary>
         public Vector2 PerpendicularLeft
         {
-            get { return new Vector2(-y, x); }
+            get { return new Vector2(-Y, X); }
         }
         #endregion
 
@@ -225,7 +225,7 @@ namespace Flare.Math
         /// <returns>Float array representation of a Vector2</returns>
         public float[] ToFloat()
         {
-            return new float[] { x, y };
+            return new float[] { X, Y };
         }
 
         /// <summary>
@@ -233,10 +233,10 @@ namespace Flare.Math
         /// </summary>
         /// <param name="v1">The left Vector2.</param>
         /// <param name="v2">The right Vector2.</param>
-        /// <returns>v1.x * v2.x + v1.y * v2.y</returns>
+        /// <returns>v1.X * v2.X + v1.Y * v2.Y</returns>
         public static float Dot(Vector2 v1, Vector2 v2)
         {
-            return v1.x * v2.x + v1.y * v2.y;
+            return v1.X * v2.X + v1.Y * v2.Y;
         }
 
         /// <summary>
@@ -252,43 +252,43 @@ namespace Flare.Math
         /// <summary>
         /// Normalizes the Vector2 structure to have a peak value of one.
         /// </summary>
-        /// <returns>if (Length = 0) return Zero; else return Vector2(x,y)/Length</returns>
+        /// <returns>if (Length = 0) return Zero; else return Vector2(X,Y)/Length</returns>
         public Vector2 Normalize()
         {
             if (Length == 0) return Zero;
-            else return new Vector2(x, y) / Length;
+            else return new Vector2(X, Y) / Length;
         }
 
         /// <summary>
-        /// Checks to see if any value (x, y, z) are within 0.0001 of 0.
+        /// Checks to see if any value (X, Y, Z) are within 0.0001 of 0.
         /// If so this method truncates that value to zero.
         /// </summary>
         /// <returns>A truncated Vector2</returns>
         public Vector2 Truncate()
         {
-            float _x = (System.Math.Abs(x) - 0.0001 < 0) ? 0 : x;
-            float _y = (System.Math.Abs(y) - 0.0001 < 0) ? 0 : y;
+            float _x = (System.Math.Abs(X) - 0.0001 < 0) ? 0 : X;
+            float _y = (System.Math.Abs(Y) - 0.0001 < 0) ? 0 : Y;
             return new Vector2(_x, _y);
         }
 
         /// <summary>
-        /// Store the minimum values of x, and y between the two vectors.
+        /// Store the minimum values of X, and Y between the two vectors.
         /// </summary>
         /// <param name="v">Vector to check against</param>
         public void TakeMin(Vector2 v)
         {
-            if (v.x < x) x = v.x;
-            if (v.y < y) y = v.y;
+            if (v.X < X) X = v.X;
+            if (v.Y < Y) Y = v.Y;
         }
 
         /// <summary>
-        /// Store the maximum values of x, and y between the two vectors.
+        /// Store the maximum values of X, and Y between the two vectors.
         /// </summary>
         /// <param name="v">Vector to check against</param>
         public void TakeMax(Vector2 v)
         {
-            if (v.x > x) x = v.x;
-            if (v.y > y) y = v.y;
+            if (v.X > X) X = v.X;
+            if (v.Y > Y) Y = v.Y;
         }
 
         /// <summary>

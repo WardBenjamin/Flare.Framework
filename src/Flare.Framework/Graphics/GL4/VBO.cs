@@ -9,7 +9,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using Flare.Math;
 
 namespace Flare.Graphics.GL4
 {

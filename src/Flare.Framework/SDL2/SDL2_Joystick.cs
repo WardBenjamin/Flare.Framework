@@ -13,9 +13,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flare.Framework.SDL2
+namespace Flare.SDL2
 {
-    internal class SDL2_Joystick : Input.Joystick
+
+
+
+
+    class SDL2_Joystick : Input.Joystick
     {
     }
 }

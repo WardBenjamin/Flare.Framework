@@ -10,13 +10,13 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Flare.Math
+namespace Flare
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector3 : IEquatable<Vector3>
     {
-        public float x, y, z;
+        public float X, Y, Z;
 
         #region Static Constructors
         private static readonly Vector3 identity = new Vector3(1.0f, 1.0f, 1.0f);
@@ -100,97 +100,97 @@ namespace Flare.Math
         #region Operators
         public static Vector3 operator +(Vector3 v1, Vector3 v2)
         {
-            return new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+            return new Vector3(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
 
         public static Vector3 operator +(Vector3 v, float s)
         {
-            return new Vector3(v.x + s, v.y + s, v.z + s);
+            return new Vector3(v.X + s, v.Y + s, v.Z + s);
         }
 
         public static Vector3 operator +(float s, Vector3 v)
         {
-            return new Vector3(v.x + s, v.y + s, v.z + s);
+            return new Vector3(v.X + s, v.Y + s, v.Z + s);
         }
 
         public static Vector3 operator -(Vector3 v1, Vector3 v2)
         {
-            return new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+            return new Vector3(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
 
         public static Vector3 operator -(Vector3 v, float s)
         {
-            return new Vector3(v.x - s, v.y - s, v.z - s);
+            return new Vector3(v.X - s, v.Y - s, v.Z - s);
         }
 
         public static Vector3 operator -(float s, Vector3 v)
         {
-            return new Vector3(s - v.x, s - v.y, s - v.z);
+            return new Vector3(s - v.X, s - v.Y, s - v.Z);
         }
 
         public static Vector3 operator -(Vector3 v)
         {
-            return new Vector3(-v.x, -v.y, -v.z);
+            return new Vector3(-v.X, -v.Y, -v.Z);
         }
 
         public static Vector3 operator *(Vector3 v1, Vector3 v2)
         {
-            return new Vector3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+            return new Vector3(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
         }
 
         public static Vector3 operator *(float s, Vector3 v)
         {
-            return new Vector3(v.x * s, v.y * s, v.z * s);
+            return new Vector3(v.X * s, v.Y * s, v.Z * s);
         }
 
         public static Vector3 operator *(Vector3 v, float s)
         {
-            return new Vector3(v.x * s, v.y * s, v.z * s);
+            return new Vector3(v.X * s, v.Y * s, v.Z * s);
         }
 
         public static Vector3 operator /(Vector3 v1, Vector3 v2)
         {
-            return new Vector3(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
+            return new Vector3(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
         }
 
         public static Vector3 operator /(float s, Vector3 v)
         {
-            return new Vector3(s / v.x, s / v.y, s / v.z);
+            return new Vector3(s / v.X, s / v.Y, s / v.Z);
         }
 
         public static Vector3 operator /(Vector3 v, float s)
         {
-            return new Vector3(v.x / s, v.y / s, v.z / s);
+            return new Vector3(v.X / s, v.Y / s, v.Z / s);
         }
 
         public static bool operator ==(Vector3 v1, Vector3 v2)
         {
-            return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z);
+            return (v1.X == v2.X && v1.Y == v2.Y && v1.Z == v2.Z);
         }
 
         public static bool operator !=(Vector3 v1, Vector3 v2)
         {
-            return (v1.x != v2.x || v1.y != v2.y || v1.z != v2.z);
+            return (v1.X != v2.X || v1.Y != v2.Y || v1.Z != v2.Z);
         }
         #endregion
 
         #region Constructors
         /// <summary>Create a Vector3 structure, normally used to store Vertex positions.</summary>
-        /// <param name="x">x value</param>
-        /// <param name="y">y value</param>
-        /// <param name="z">z value</param>
+        /// <param name="x">X value</param>
+        /// <param name="y">Y value</param>
+        /// <param name="z">Z value</param>
         public Vector3(float x, float y, float z)
         {
-            this.x = x; this.y = y; this.z = z;
+            this.X = x; this.Y = y; this.Z = z;
         }
 
         /// <summary>Creates a Vector3 structure, normally used to store Vertex positions.  Casted to floats for OpenGL.</summary>
-        /// <param name="x">x value</param>
-        /// <param name="y">y value</param>
-        /// <param name="z">z value</param>
+        /// <param name="x">X value</param>
+        /// <param name="y">Y value</param>
+        /// <param name="z">Z value</param>
         public Vector3(double x, double y, double z)
         {
-            this.x = (float)x; this.y = (float)y; this.z = (float)z;
+            this.X = (float)x; this.Y = (float)y; this.Z = (float)z;
         }
 
         /// <summary>Creates a Vector3 tructure from a float array (assuming the float array is of length 3).</summary>
@@ -198,7 +198,7 @@ namespace Flare.Math
         public Vector3(float[] vector)
         {
             if (vector.Length != 3) throw new Exception(string.Format("float[] vector was of length {0}.  Was expecting a length of 3.", vector.Length));
-            this.x = vector[0]; this.y = vector[1]; this.z = vector[2];
+            this.X = vector[0]; this.Y = vector[1]; this.Z = vector[2];
         }
         #endregion
 
@@ -222,7 +222,7 @@ namespace Flare.Math
 
         public override string ToString()
         {
-            return "{" + x + ", " + y + ", " + z + "}";
+            return "{" + X + ", " + Y + ", " + Z + "}";
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace Flare.Math
 
         public float this[int a]
         {
-            get { return (a == 0) ? x : (a == 1) ? y : z; }
+            get { return (a == 0) ? X : (a == 1) ? Y : Z; }
         }
         #endregion
 
@@ -249,7 +249,7 @@ namespace Flare.Math
         /// <returns>Float array representation of a Vector3</returns>
         public float[] ToFloat()
         {
-            return new float[] { x, y, z };
+            return new float[] { X, Y, Z };
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace Flare.Math
         /// </summary>
         public float Length
         {
-            get { return (float)System.Math.Sqrt(x * x + y * y + z * z); }
+            get { return (float)System.Math.Sqrt(X * X + Y * Y + Z * Z); }
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace Flare.Math
         /// <returns>Scalar dot product value</returns>
         public static float Dot(Vector3 v1, Vector3 v2)
         {
-            return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Flare.Math
         /// </summary>
         public float SquaredLength
         {
-            get { return x * x + y * y + z * z; }
+            get { return X * X + Y * Y + Z * Z; }
         }
 
         /// <summary>
@@ -297,14 +297,14 @@ namespace Flare.Math
         /// <returns>Vector3 cross product value</returns>
         public static Vector3 Cross(Vector3 v1, Vector3 v2)
         {
-            return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+            return new Vector3(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
         }
 
         /// <summary>
         /// Vector3 cross product
         /// </summary>
         /// <param name="v">Second cross product term</param>
-        /// <returns>this x v</returns>
+        /// <returns>this X v</returns>
         public Vector3 Cross(Vector3 v)
         {
             return Vector3.Cross(this, v);
@@ -313,46 +313,46 @@ namespace Flare.Math
         /// <summary>
         /// Normalizes the Vector3 structure to have a peak value of one.
         /// </summary>
-        /// <returns>if (Length = 0) return Zero; else return Vector3(x,y,z)/Length</returns>
+        /// <returns>if (Length = 0) return Zero; else return Vector3(X,Y,Z)/Length</returns>
         public Vector3 Normalize()
         {
             if (Length == 0) return Zero;
-            else return new Vector3(x, y, z) / Length;
+            else return new Vector3(X, Y, Z) / Length;
         }
 
         /// <summary>
-        /// Checks to see if any value (x, y, z) are within 0.0001 of 0.
+        /// Checks to see if any value (X, Y, Z) are within 0.0001 of 0.
         /// If so this method truncates that value to zero.
         /// </summary>
         /// <returns>A truncated Vector3</returns>
         public Vector3 Truncate()
         {
-            float _x = (System.Math.Abs(x) - 0.0001 < 0) ? 0 : x;
-            float _y = (System.Math.Abs(y) - 0.0001 < 0) ? 0 : y;
-            float _z = (System.Math.Abs(z) - 0.0001 < 0) ? 0 : z;
+            float _x = (System.Math.Abs(X) - 0.0001 < 0) ? 0 : X;
+            float _y = (System.Math.Abs(Y) - 0.0001 < 0) ? 0 : Y;
+            float _z = (System.Math.Abs(Z) - 0.0001 < 0) ? 0 : Z;
             return new Vector3(_x, _y, _z);
         }
 
         /// <summary>
-        /// Store the minimum values of x, y, and z between the two vectors.
+        /// Store the minimum values of X, Y, and Z between the two vectors.
         /// </summary>
         /// <param name="v">Vector to check against</param>
         public void TakeMin(Vector3 v)
         {
-            if (v.x < x) x = v.x;
-            if (v.y < y) y = v.y;
-            if (v.z < z) z = v.z;
+            if (v.X < X) X = v.X;
+            if (v.Y < Y) Y = v.Y;
+            if (v.Z < Z) Z = v.Z;
         }
 
         /// <summary>
-        /// Store the maximum values of x, y, and z between the two vectors.
+        /// Store the maximum values of X, Y, and Z between the two vectors.
         /// </summary>
         /// <param name="v">Vector to check against</param>
         public void TakeMax(Vector3 v)
         {
-            if (v.x > x) x = v.x;
-            if (v.y > y) y = v.y;
-            if (v.z > z) z = v.z;
+            if (v.X > X) X = v.X;
+            if (v.Y > Y) Y = v.Y;
+            if (v.Z > Z) Z = v.Z;
         }
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace Flare.Math
         /// <returns>The maximum component of the Vector3</returns>
         public float Max()
         {
-            return (x >= y && x >= z) ? x : (y >= z) ? y : z;
+            return (X >= Y && X >= Z) ? X : (Y >= Z) ? Y : Z;
         }
 
         /// <summary>
@@ -370,7 +370,7 @@ namespace Flare.Math
         /// <returns>The minimum component of the Vector3</returns>
         public float Min()
         {
-            return (x <= y && x <= z) ? x : (y <= z) ? y : z;
+            return (X <= Y && X <= Z) ? X : (Y <= Z) ? Y : Z;
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace Flare.Math
                 float t_invs = 1.0f / t_sqrt;
 
                 Vector3 t_cross = t_source.Cross(t_dest);
-                return new Quaternion(t_cross.x * t_invs, t_cross.y * t_invs, t_cross.z * t_invs, t_sqrt * 0.5f).Normalize();
+                return new Quaternion(t_cross.X * t_invs, t_cross.Y * t_invs, t_cross.Z * t_invs, t_sqrt * 0.5f).Normalize();
             }
         }
         #endregion
