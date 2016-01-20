@@ -140,10 +140,10 @@ namespace Flare
 
         #region Events
 
-        public abstract event EventHandler<EventArgs> Activated;
-        public abstract event EventHandler<EventArgs> Deactivated;
-        public abstract event EventHandler<EventArgs> Disposed;
-        public abstract event EventHandler<EventArgs> Exiting;
+        public event EventHandler<EventArgs> Activated;
+        public event EventHandler<EventArgs> Deactivated;
+        public event EventHandler<EventArgs> Disposed;
+        public event EventHandler<EventArgs> Exiting;
 
         #endregion
 

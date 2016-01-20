@@ -84,6 +84,22 @@ namespace Flare
         }
 
         /// <summary>
+        /// The width and height of this <see cref="Rectangle"/>.
+        /// </summary>
+        public System.Drawing.Size Size
+        {
+            get
+            {
+                return new System.Drawing.Size(this.Width, this.Height);
+            }
+            set
+            {
+                this.Width = value.Width;
+                this.Height = value.Height;
+            }
+        }
+
+        /// <summary>
         /// A <see cref="Point"/> located in the center of this <see cref="Rectangle"/>'s bounds.
         /// </summary>
         /// <remarks>
@@ -196,6 +212,20 @@ namespace Flare
             Y = y;
             Width = width;
             Height = height;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Rectangle"/> with the specified
+        /// position and size.
+        /// </summary>
+        /// <param name="position">The X and Y position of the created <see cref="Rectangle"/>.</param>
+        /// <param name="size">The width and height of the created <see cref="Rectangle"/>.</param>
+        public Rectangle(Point position, System.Drawing.Size size)
+        {
+            X = position.X;
+            Y = position.Y;
+            Width = size.Width;
+            Height = size.Height;
         }
 
         #endregion
@@ -437,5 +467,18 @@ namespace Flare
 
         #endregion
 
+        #region Implicit Type Conversions
+
+        public static implicit operator System.Drawing.Rectangle(Rectangle d)
+        {
+            return new System.Drawing.Rectangle(d.Location, d.Size);
+        }
+
+        public static implicit operator Rectangle(System.Drawing.Rectangle d)
+        {
+            return new Rectangle(d.Location, d.Size);
+        }
+
+        #endregion
     }
 }

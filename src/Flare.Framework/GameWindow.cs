@@ -37,11 +37,6 @@ namespace Flare
             get;
         }
 
-        public abstract string ScreenDeviceName
-        {
-            get;
-        }
-
         public string Title
         {
             get
@@ -58,22 +53,19 @@ namespace Flare
             }
         }
 
-        /// <summary>
-        /// Determines whether the border of the window is visible.
-        /// </summary>
-        /// <exception cref="System.NotImplementedException">
-        /// Thrown when trying to use this property on an unsupported platform.
-        /// </exception>
-        public virtual bool IsBorderlessEXT
+        public int Width { get; protected set; }
+        public int Height { get; protected set; }
+
+        public abstract bool IsBorderless
         {
-            get
-            {
-                return false;
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
+        }
+
+        public abstract bool IsFullscreen
+        {
+            get;
+            set;
         }
 
         #endregion
@@ -86,8 +78,11 @@ namespace Flare
 
         #region Protected Constructors
 
-        protected GameWindow()
+        protected GameWindow(string title, int width, int height)
         {
+            Title = title;
+            Width = width;
+            Height = height;
         }
 
         #endregion

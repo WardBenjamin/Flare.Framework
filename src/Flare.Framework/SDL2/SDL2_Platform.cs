@@ -30,7 +30,7 @@ namespace Flare.SDL2
 
         #region Internal Static Methods
 
-        internal static void Init(Game game)
+        internal static void Init(Game game, string title, int width, int height)
         {
             /* SDL2 might complain if an OS that uses SDL_main has not actually
 			 * used SDL_main by the time you initialize SDL2.
@@ -71,7 +71,7 @@ namespace Flare.SDL2
             }
 
             // Set and initialize the SDL2 window
-            game.Window = new SDL2_GameWindow(game.Title, game.WindowWidth, game.WindowHeight);
+            game.Window = new SDL2_GameWindow(title, width, height);
 
             // Disable the screensaver.
             SDL.SDL_DisableScreenSaver();
@@ -233,7 +233,7 @@ namespace Flare.SDL2
                                 // If we alt-tab away, we lose the 'fullscreen desktop' flag on some WMs
                                 SDL.SDL_SetWindowFullscreen(
                                     game.Window.Handle,
-                                    (game.Window as SDL2_GameWindow).full ?
+                                    (game.Window as SDL2_GameWindow).IsFullscreen ?
                                         (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP :
                                         0
                                 );

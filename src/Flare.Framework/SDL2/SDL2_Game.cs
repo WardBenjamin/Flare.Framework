@@ -229,15 +229,6 @@ namespace Flare.SDL2
 
         #endregion
 
-        #region Events
-
-        public override event EventHandler<EventArgs> Activated;
-        public override event EventHandler<EventArgs> Deactivated;
-        public override event EventHandler<EventArgs> Disposed;
-        public override event EventHandler<EventArgs> Exiting;
-
-        #endregion
-
         #region Public Methods
 
         public override void Exit()

@@ -93,7 +93,7 @@ namespace Flare.SDL2
             }
         }
 
-        public override bool IsBorderlessEXT
+        public override bool IsBorderless
         {
             get
             {
@@ -108,11 +108,23 @@ namespace Flare.SDL2
             }
         }
 
-        public override string ScreenDeviceName
+        public override bool IsFullscreen
         {
             get
             {
-                return _deviceName;
+                return _isFullscreen;
+            }
+            set
+            {
+                // Make the Platform device changes.
+                BeginScreenDeviceChange(
+                    value
+                );
+                EndScreenDeviceChange(
+                    Title,
+                    Width,
+                    Height
+                );
             }
         }
 
@@ -133,7 +145,7 @@ namespace Flare.SDL2
 
         #region  Constructor
 
-        internal SDL2_GameWindow(String title, int width, int height)
+        internal SDL2_GameWindow(string title, int width, int height) : base(title, width, height)
         {
             SDL.SDL_WindowFlags initFlags = (
                 SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL |
