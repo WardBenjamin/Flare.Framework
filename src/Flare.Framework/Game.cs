@@ -39,10 +39,12 @@ namespace Flare
 {
     public class Game
     {
-        #region Internal Fields
+        #region Internal Properties
 
         internal static Game Instance { get; private set; }
         internal bool RunApplication { get; set; }
+
+        internal System.Drawing.Size Backbuffer { get; set; }
 
         #endregion
 

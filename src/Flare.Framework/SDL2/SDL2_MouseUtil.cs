@@ -62,8 +62,8 @@ namespace Flare.SDL2
             if (!_IsWarped)
             {
                 // Scale the mouse coordinates for the faux-backbuffer
-                state.X = (int)((double)x * Game.Instance.GraphicsDevice.GLDevice.Backbuffer.Width / _WindowWidth);
-                state.Y = (int)((double)y * Game.Instance.GraphicsDevice.GLDevice.Backbuffer.Height / _WindowHeight);
+                state.X = (int)((double)x * Game.Instance.Backbuffer.Width / _WindowWidth);
+                state.Y = (int)((double)y * Game.Instance.Backbuffer.Height / _WindowHeight);
             }
 
             state.LeftButton = (ButtonState)(flags & SDL.SDL_BUTTON_LMASK);
@@ -89,8 +89,8 @@ namespace Flare.SDL2
             state.Y = y;
 
             // Scale the mouse coordinates for the faux-backbuffer
-            x = (int)((double)x * _WindowWidth / Game.Instance.GraphicsDevice.GLDevice.Backbuffer.Width);
-            y = (int)((double)y * _WindowHeight / Game.Instance.GraphicsDevice.GLDevice.Backbuffer.Height);
+            x = (int)((double)x * _WindowWidth / Game.Instance.Backbuffer.Width);
+            y = (int)((double)y * _WindowHeight / Game.Instance.Backbuffer.Height);
 
             SDL.SDL_WarpMouseInWindow(WindowHandle, x, y);
             _IsWarped = true;
