@@ -44,8 +44,6 @@ namespace Flare
         internal static Game Instance { get; private set; }
         internal bool RunApplication { get; set; }
 
-        internal System.Drawing.Size Backbuffer { get; set; }
-
         #endregion
 
         #region Private Fields
