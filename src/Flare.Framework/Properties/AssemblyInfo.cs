@@ -1,5 +1,5 @@
 ﻿#region License
-/* Flare - A Framework by Developers, for Developers.
+/* Flare - A framework by developers, for developers.
  * Copyright 2016 Benjamin Ward
  * 
  * Released under the Creative Commons Attribution 4.0 International Public License

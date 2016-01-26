@@ -1,5 +1,5 @@
 #region License
-/* Flare - A Framework by Developers, for Developers.
+/* Flare - A framework by developers, for developers.
  * Copyright 2016 Benjamin Ward
  * 
  * Released under the Creative Commons Attribution 4.0 International Public License
@@ -441,7 +441,7 @@ namespace Flare.SDL2
 			return Keys.None;
 		}
 
-		public static Keys KeyFromScancode(Keys scancode)
+		public static Keys GetKeyFromScancode(Keys scancode)
 		{
 			SDL.SDL_Scancode retVal;
 			if (_xnaMap.TryGetValue((int) scancode, out retVal))

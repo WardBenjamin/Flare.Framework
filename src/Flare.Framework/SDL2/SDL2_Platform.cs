@@ -1,8 +1,8 @@
 #region License
-/* Flare - A Framework by Developers, for Developers.
+/* Flare - A framework by developers, for developers.
  * Copyright 2016 Benjamin Ward
  * 
- * Released under the Creative Commons Attribution 4.0 International  License
+ * Released under the Creative Commons Attribution 4.0 International Public License
  * See LICENSE.md for details.
  */
 #endregion
@@ -465,11 +465,6 @@ namespace Flare.SDL2
             {
                 throw new NotSupportedException("Unrecognized PresentInterval!");
             }
-        }
-
-        internal static Keys GetKeyFromScancode(Keys scancode)
-        {
-            return SDL2_KeyboardUtil.KeyFromScancode(scancode);
         }
 
         internal static void GetMouseState(
