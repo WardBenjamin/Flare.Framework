@@ -58,14 +58,6 @@ namespace Flare.SDL2
             int x, y;
             uint flags = SDL.SDL_GetMouseState(out x, out y);
 
-            // If we warped the mouse, we've already done this in SetPosition.
-            if (!_IsWarped)
-            {
-                // Scale the mouse coordinates for the faux-backbuffer
-                state.X = (int)((double)x * Game.Instance.Window.Width / _WindowWidth);
-                state.Y = (int)((double)y * Game.Instance.Window.Height / _WindowHeight);
-            }
-
             state.LeftButton = (ButtonState)(flags & SDL.SDL_BUTTON_LMASK);
             state.MiddleButton = (ButtonState)((flags & SDL.SDL_BUTTON_MMASK) >> 1);
             state.RightButton = (ButtonState)((flags & SDL.SDL_BUTTON_RMASK) >> 2);
