@@ -75,6 +75,12 @@ namespace Flare.Graphics.GL4
             Delegates.glBindAttribLocation(program, index, name);
         }
 
+        public static void BindAttribLocation(UInt32 program, Int32 index, String name)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glBindAttribLocation(program, (UInt32)index, name);
+        }
+
         public static void BindBuffer(GL4.BufferTarget target, UInt32 buffer)
         {
             Delegates.glBindBuffer(target, buffer);
@@ -810,9 +816,21 @@ namespace Flare.Graphics.GL4
             Delegates.glEnableVertexAttribArray(index);
         }
 
+        public static void EnableVertexAttribArray(Int32 index)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glEnableVertexAttribArray((UInt32)index);
+        }
+
         public static void DisableVertexAttribArray(UInt32 index)
         {
             Delegates.glDisableVertexAttribArray(index);
+        }
+
+        public static void DisableVertexAttribArray(Int32 index)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glDisableVertexAttribArray((UInt32)index);
         }
 
         public static void EnableVertexArrayAttrib(UInt32 vaobj, UInt32 index)
@@ -820,9 +838,21 @@ namespace Flare.Graphics.GL4
             Delegates.glEnableVertexArrayAttrib(vaobj, index);
         }
 
+        public static void EnableVertexArrayAttrib(UInt32 vaobj, Int32 index)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glEnableVertexArrayAttrib(vaobj, (UInt32)index);
+        }
+
         public static void DisableVertexArrayAttrib(UInt32 vaobj, UInt32 index)
         {
             Delegates.glDisableVertexArrayAttrib(vaobj, index);
+        }
+
+        public static void DisableVertexArrayAttrib(UInt32 vaobj, Int32 index)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glDisableVertexArrayAttrib(vaobj, (UInt32)index);
         }
 
         public static IntPtr FenceSync(GL4.ArbSync condition, UInt32 flags)
@@ -1025,6 +1055,12 @@ namespace Flare.Graphics.GL4
             Delegates.glGetActiveAttrib(program, index, bufSize, length, size, type, name);
         }
 
+        public static void GetActiveAttrib(UInt32 program, Int32 index, Int32 bufSize, [OutAttribute] Int32[] length, [OutAttribute] Int32[] size, [OutAttribute] GL4.ActiveAttribType[] type, [OutAttribute] System.Text.StringBuilder name)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetActiveAttrib(program, (UInt32)index, bufSize, length, size, type, name);
+        }
+
         public static void GetActiveSubroutineName(UInt32 program, GL4.ShaderType shadertype, UInt32 index, Int32 bufsize, [OutAttribute] Int32[] length, [OutAttribute] System.Text.StringBuilder name)
         {
             Delegates.glGetActiveSubroutineName(program, shadertype, index, bufsize, length, name);
@@ -1035,14 +1071,32 @@ namespace Flare.Graphics.GL4
             Delegates.glGetActiveSubroutineUniformiv(program, shadertype, index, pname, values);
         }
 
+        public static void GetActiveSubroutineUniformiv(UInt32 program, GL4.ShaderType shadertype, Int32 index, GL4.SubroutineParameterName pname, [OutAttribute] Int32[] values)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetActiveSubroutineUniformiv(program, shadertype, (UInt32)index, pname, values);
+        }
+
         public static void GetActiveSubroutineUniformName(UInt32 program, GL4.ShaderType shadertype, UInt32 index, Int32 bufsize, [OutAttribute] Int32[] length, [OutAttribute] System.Text.StringBuilder name)
         {
             Delegates.glGetActiveSubroutineUniformName(program, shadertype, index, bufsize, length, name);
         }
 
+        public static void GetActiveSubroutineUniformName(UInt32 program, GL4.ShaderType shadertype, Int32 index, Int32 bufsize, [OutAttribute] Int32[] length, [OutAttribute] System.Text.StringBuilder name)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetActiveSubroutineUniformName(program, shadertype, (UInt32)index, bufsize, length, name);
+        }
+
         public static void GetActiveUniform(UInt32 program, UInt32 index, Int32 bufSize, [OutAttribute] Int32[] length, [OutAttribute] Int32[] size, [OutAttribute] GL4.ActiveUniformType[] type, [OutAttribute] System.Text.StringBuilder name)
         {
             Delegates.glGetActiveUniform(program, index, bufSize, length, size, type, name);
+        }
+
+        public static void GetActiveUniform(UInt32 program, Int32 index, Int32 bufSize, [OutAttribute] Int32[] length, [OutAttribute] Int32[] size, [OutAttribute] GL4.ActiveUniformType[] type, [OutAttribute] System.Text.StringBuilder name)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetActiveUniform(program, (UInt32)index, bufSize, length, size, type, name);
         }
 
         public static void GetActiveUniformBlockiv(UInt32 program, UInt32 uniformBlockIndex, GL4.ActiveUniformBlockParameter pname, [OutAttribute] Int32[] @params)
@@ -1550,9 +1604,21 @@ namespace Flare.Graphics.GL4
             Delegates.glGetVertexAttribdv(index, pname, @params);
         }
 
+        public static void GetVertexAttribdv(Int32 index, GL4.VertexAttribParameter pname, [OutAttribute] Double[] @params)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribdv((UInt32)index, pname, @params);
+        }
+
         public static void GetVertexAttribfv(UInt32 index, GL4.VertexAttribParameter pname, [OutAttribute] Single[] @params)
         {
             Delegates.glGetVertexAttribfv(index, pname, @params);
+        }
+
+        public static void GetVertexAttribfv(Int32 index, GL4.VertexAttribParameter pname, [OutAttribute] Single[] @params)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribfv((UInt32)index, pname, @params);
         }
 
         public static void GetVertexAttribiv(UInt32 index, GL4.VertexAttribParameter pname, [OutAttribute] Int32[] @params)
@@ -1560,9 +1626,21 @@ namespace Flare.Graphics.GL4
             Delegates.glGetVertexAttribiv(index, pname, @params);
         }
 
+        public static void GetVertexAttribiv(Int32 index, GL4.VertexAttribParameter pname, [OutAttribute] Int32[] @params)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribiv((UInt32)index, pname, @params);
+        }
+
         public static void GetVertexAttribIiv(UInt32 index, GL4.VertexAttribParameter pname, [OutAttribute] Int32[] @params)
         {
             Delegates.glGetVertexAttribIiv(index, pname, @params);
+        }
+
+        public static void GetVertexAttribIiv(Int32 index, GL4.VertexAttribParameter pname, [OutAttribute] Int32[] @params)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribIiv((UInt32)index, pname, @params);
         }
 
         public static void GetVertexAttribIuiv(UInt32 index, GL4.VertexAttribParameter pname, [OutAttribute] UInt32[] @params)
@@ -1570,14 +1648,32 @@ namespace Flare.Graphics.GL4
             Delegates.glGetVertexAttribIuiv(index, pname, @params);
         }
 
+        public static void GetVertexAttribIuiv(Int32 index, GL4.VertexAttribParameter pname, [OutAttribute] UInt32[] @params)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribIuiv((UInt32)index, pname, @params);
+        }
+
         public static void GetVertexAttribLdv(UInt32 index, GL4.VertexAttribParameter pname, [OutAttribute] Double[] @params)
         {
             Delegates.glGetVertexAttribLdv(index, pname, @params);
         }
 
+        public static void GetVertexAttribLdv(Int32 index, GL4.VertexAttribParameter pname, [OutAttribute] Double[] @params)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribLdv((UInt32)index, pname, @params);
+        }
+
         public static void GetVertexAttribPointerv(UInt32 index, GL4.VertexAttribPointerParameter pname, [OutAttribute] IntPtr pointer)
         {
             Delegates.glGetVertexAttribPointerv(index, pname, pointer);
+        }
+
+        public static void GetVertexAttribPointerv(Int32 index, GL4.VertexAttribPointerParameter pname, [OutAttribute] IntPtr pointer)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glGetVertexAttribPointerv((UInt32)index, pname, pointer);
         }
 
         public static void Hint(GL4.HintTarget target, GL4.HintMode mode)
@@ -2597,9 +2693,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib1f(index, v0);
         }
 
+        public static void VertexAttrib1f(Int32 index, Single v0)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib1f((UInt32)index, v0);
+        }
+
         public static void VertexAttrib1s(UInt32 index, Int16 v0)
         {
             Delegates.glVertexAttrib1s(index, v0);
+        }
+
+        public static void VertexAttrib1s(Int32 index, Int16 v0)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib1s((UInt32)index, v0);
         }
 
         public static void VertexAttrib1d(UInt32 index, Double v0)
@@ -2607,9 +2715,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib1d(index, v0);
         }
 
+        public static void VertexAttrib1d(Int32 index, Double v0)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib1d((UInt32)index, v0);
+        }
+
         public static void VertexAttribI1i(UInt32 index, Int32 v0)
         {
             Delegates.glVertexAttribI1i(index, v0);
+        }
+
+        public static void VertexAttribI1i(Int32 index, Int32 v0)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI1i((UInt32)index, v0);
         }
 
         public static void VertexAttribI1ui(UInt32 index, UInt32 v0)
@@ -2617,9 +2737,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI1ui(index, v0);
         }
 
+        public static void VertexAttribI1ui(Int32 index, UInt32 v0)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI1ui((UInt32)index, v0);
+        }
+
         public static void VertexAttrib2f(UInt32 index, Single v0, Single v1)
         {
             Delegates.glVertexAttrib2f(index, v0, v1);
+        }
+
+        public static void VertexAttrib2f(Int32 index, Single v0, Single v1)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib2f((UInt32)index, v0, v1);
         }
 
         public static void VertexAttrib2s(UInt32 index, Int16 v0, Int16 v1)
@@ -2627,9 +2759,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib2s(index, v0, v1);
         }
 
+        public static void VertexAttrib2s(Int32 index, Int16 v0, Int16 v1)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib2s((UInt32)index, v0, v1);
+        }
+
         public static void VertexAttrib2d(UInt32 index, Double v0, Double v1)
         {
             Delegates.glVertexAttrib2d(index, v0, v1);
+        }
+
+        public static void VertexAttrib2d(Int32 index, Double v0, Double v1)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib2d((UInt32)index, v0, v1);
         }
 
         public static void VertexAttribI2i(UInt32 index, Int32 v0, Int32 v1)
@@ -2637,9 +2781,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI2i(index, v0, v1);
         }
 
+        public static void VertexAttribI2i(Int32 index, Int32 v0, Int32 v1)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI2i((UInt32)index, v0, v1);
+        }
+
         public static void VertexAttribI2ui(UInt32 index, UInt32 v0, UInt32 v1)
         {
             Delegates.glVertexAttribI2ui(index, v0, v1);
+        }
+
+        public static void VertexAttribI2ui(Int32 index, UInt32 v0, UInt32 v1)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI2ui((UInt32)index, v0, v1);
         }
 
         public static void VertexAttrib3f(UInt32 index, Single v0, Single v1, Single v2)
@@ -2647,9 +2803,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib3f(index, v0, v1, v2);
         }
 
+        public static void VertexAttrib3f(Int32 index, Single v0, Single v1, Single v2)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib3f((UInt32)index, v0, v1, v2);
+        }
+
         public static void VertexAttrib3s(UInt32 index, Int16 v0, Int16 v1, Int16 v2)
         {
             Delegates.glVertexAttrib3s(index, v0, v1, v2);
+        }
+
+        public static void VertexAttrib3s(Int32 index, Int16 v0, Int16 v1, Int16 v2)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib3s((UInt32)index, v0, v1, v2);
         }
 
         public static void VertexAttrib3d(UInt32 index, Double v0, Double v1, Double v2)
@@ -2657,9 +2825,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib3d(index, v0, v1, v2);
         }
 
+        public static void VertexAttrib3d(Int32 index, Double v0, Double v1, Double v2)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib3d((UInt32)index, v0, v1, v2);
+        }
+
         public static void VertexAttribI3i(UInt32 index, Int32 v0, Int32 v1, Int32 v2)
         {
             Delegates.glVertexAttribI3i(index, v0, v1, v2);
+        }
+
+        public static void VertexAttribI3i(Int32 index, Int32 v0, Int32 v1, Int32 v2)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI3i((UInt32)index, v0, v1, v2);
         }
 
         public static void VertexAttribI3ui(UInt32 index, UInt32 v0, UInt32 v1, UInt32 v2)
@@ -2667,9 +2847,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI3ui(index, v0, v1, v2);
         }
 
+        public static void VertexAttribI3ui(Int32 index, UInt32 v0, UInt32 v1, UInt32 v2)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI3ui((UInt32)index, v0, v1, v2);
+        }
+
         public static void VertexAttrib4f(UInt32 index, Single v0, Single v1, Single v2, Single v3)
         {
             Delegates.glVertexAttrib4f(index, v0, v1, v2, v3);
+        }
+
+        public static void VertexAttrib4f(Int32 index, Single v0, Single v1, Single v2, Single v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4f((UInt32)index, v0, v1, v2, v3);
         }
 
         public static void VertexAttrib4s(UInt32 index, Int16 v0, Int16 v1, Int16 v2, Int16 v3)
@@ -2677,9 +2869,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4s(index, v0, v1, v2, v3);
         }
 
+        public static void VertexAttrib4s(Int32 index, Int16 v0, Int16 v1, Int16 v2, Int16 v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4s((UInt32)index, v0, v1, v2, v3);
+        }
+
         public static void VertexAttrib4d(UInt32 index, Double v0, Double v1, Double v2, Double v3)
         {
             Delegates.glVertexAttrib4d(index, v0, v1, v2, v3);
+        }
+
+        public static void VertexAttrib4d(Int32 index, Double v0, Double v1, Double v2, Double v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4d((UInt32)index, v0, v1, v2, v3);
         }
 
         public static void VertexAttrib4Nub(UInt32 index, Byte v0, Byte v1, Byte v2, Byte v3)
@@ -2687,9 +2891,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4Nub(index, v0, v1, v2, v3);
         }
 
+        public static void VertexAttrib4Nub(Int32 index, Byte v0, Byte v1, Byte v2, Byte v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Nub((UInt32)index, v0, v1, v2, v3);
+        }
+
         public static void VertexAttribI4i(UInt32 index, Int32 v0, Int32 v1, Int32 v2, Int32 v3)
         {
             Delegates.glVertexAttribI4i(index, v0, v1, v2, v3);
+        }
+
+        public static void VertexAttribI4i(Int32 index, Int32 v0, Int32 v1, Int32 v2, Int32 v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4i((UInt32)index, v0, v1, v2, v3);
         }
 
         public static void VertexAttribI4ui(UInt32 index, UInt32 v0, UInt32 v1, UInt32 v2, UInt32 v3)
@@ -2697,9 +2913,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI4ui(index, v0, v1, v2, v3);
         }
 
+        public static void VertexAttribI4ui(Int32 index, UInt32 v0, UInt32 v1, UInt32 v2, UInt32 v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4ui((UInt32)index, v0, v1, v2, v3);
+        }
+
         public static void VertexAttribL1d(UInt32 index, Double v0)
         {
             Delegates.glVertexAttribL1d(index, v0);
+        }
+
+        public static void VertexAttribL1d(Int32 index, Double v0)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL1d((UInt32)index, v0);
         }
 
         public static void VertexAttribL2d(UInt32 index, Double v0, Double v1)
@@ -2707,9 +2935,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribL2d(index, v0, v1);
         }
 
+        public static void VertexAttribL2d(Int32 index, Double v0, Double v1)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL2d((UInt32)index, v0, v1);
+        }
+
         public static void VertexAttribL3d(UInt32 index, Double v0, Double v1, Double v2)
         {
             Delegates.glVertexAttribL3d(index, v0, v1, v2);
+        }
+
+        public static void VertexAttribL3d(Int32 index, Double v0, Double v1, Double v2)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL3d((UInt32)index, v0, v1, v2);
         }
 
         public static void VertexAttribL4d(UInt32 index, Double v0, Double v1, Double v2, Double v3)
@@ -2717,9 +2957,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribL4d(index, v0, v1, v2, v3);
         }
 
+        public static void VertexAttribL4d(Int32 index, Double v0, Double v1, Double v2, Double v3)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL4d((UInt32)index, v0, v1, v2, v3);
+        }
+
         public static void VertexAttrib1fv(UInt32 index, Single[] v)
         {
             Delegates.glVertexAttrib1fv(index, v);
+        }
+
+        public static void VertexAttrib1fv(Int32 index, Single[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib1fv((UInt32)index, v);
         }
 
         public static void VertexAttrib1sv(UInt32 index, Int16[] v)
@@ -2727,9 +2979,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib1sv(index, v);
         }
 
+        public static void VertexAttrib1sv(Int32 index, Int16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib1sv((UInt32)index, v);
+        }
+
         public static void VertexAttrib1dv(UInt32 index, Double[] v)
         {
             Delegates.glVertexAttrib1dv(index, v);
+        }
+
+        public static void VertexAttrib1dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib1dv((UInt32)index, v);
         }
 
         public static void VertexAttribI1iv(UInt32 index, Int32[] v)
@@ -2737,9 +3001,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI1iv(index, v);
         }
 
+        public static void VertexAttribI1iv(Int32 index, Int32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI1iv((UInt32)index, v);
+        }
+
         public static void VertexAttribI1uiv(UInt32 index, UInt32[] v)
         {
             Delegates.glVertexAttribI1uiv(index, v);
+        }
+
+        public static void VertexAttribI1uiv(Int32 index, UInt32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI1uiv((UInt32)index, v);
         }
 
         public static void VertexAttrib2fv(UInt32 index, Single[] v)
@@ -2747,9 +3023,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib2fv(index, v);
         }
 
+        public static void VertexAttrib2fv(Int32 index, Single[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib2fv((UInt32)index, v);
+        }
+
         public static void VertexAttrib2sv(UInt32 index, Int16[] v)
         {
             Delegates.glVertexAttrib2sv(index, v);
+        }
+
+        public static void VertexAttrib2sv(Int32 index, Int16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib2sv((UInt32)index, v);
         }
 
         public static void VertexAttrib2dv(UInt32 index, Double[] v)
@@ -2757,9 +3045,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib2dv(index, v);
         }
 
+        public static void VertexAttrib2dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib2dv((UInt32)index, v);
+        }
+
         public static void VertexAttribI2iv(UInt32 index, Int32[] v)
         {
             Delegates.glVertexAttribI2iv(index, v);
+        }
+
+        public static void VertexAttribI2iv(Int32 index, Int32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI2iv((UInt32)index, v);
         }
 
         public static void VertexAttribI2uiv(UInt32 index, UInt32[] v)
@@ -2767,9 +3067,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI2uiv(index, v);
         }
 
+        public static void VertexAttribI2uiv(Int32 index, UInt32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI2uiv((UInt32)index, v);
+        }
+
         public static void VertexAttrib3fv(UInt32 index, Single[] v)
         {
             Delegates.glVertexAttrib3fv(index, v);
+        }
+
+        public static void VertexAttrib3fv(Int32 index, Single[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib3fv((UInt32)index, v);
         }
 
         public static void VertexAttrib3sv(UInt32 index, Int16[] v)
@@ -2777,9 +3089,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib3sv(index, v);
         }
 
+        public static void VertexAttrib3sv(Int32 index, Int16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib3sv((UInt32)index, v);
+        }
+
         public static void VertexAttrib3dv(UInt32 index, Double[] v)
         {
             Delegates.glVertexAttrib3dv(index, v);
+        }
+
+        public static void VertexAttrib3dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib3dv((UInt32)index, v);
         }
 
         public static void VertexAttribI3iv(UInt32 index, Int32[] v)
@@ -2787,9 +3111,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI3iv(index, v);
         }
 
+        public static void VertexAttribI3iv(Int32 index, Int32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI3iv((UInt32)index, v);
+        }
+
         public static void VertexAttribI3uiv(UInt32 index, UInt32[] v)
         {
             Delegates.glVertexAttribI3uiv(index, v);
+        }
+
+        public static void VertexAttribI3uiv(Int32 index, UInt32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI3uiv((UInt32)index, v);
         }
 
         public static void VertexAttrib4fv(UInt32 index, Single[] v)
@@ -2797,9 +3133,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4fv(index, v);
         }
 
+        public static void VertexAttrib4fv(Int32 index, Single[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4fv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4sv(UInt32 index, Int16[] v)
         {
             Delegates.glVertexAttrib4sv(index, v);
+        }
+
+        public static void VertexAttrib4sv(Int32 index, Int16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4sv((UInt32)index, v);
         }
 
         public static void VertexAttrib4dv(UInt32 index, Double[] v)
@@ -2807,9 +3155,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4dv(index, v);
         }
 
+        public static void VertexAttrib4dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4dv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4iv(UInt32 index, Int32[] v)
         {
             Delegates.glVertexAttrib4iv(index, v);
+        }
+
+        public static void VertexAttrib4iv(Int32 index, Int32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4iv((UInt32)index, v);
         }
 
         public static void VertexAttrib4bv(UInt32 index, SByte[] v)
@@ -2817,9 +3177,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4bv(index, v);
         }
 
+        public static void VertexAttrib4bv(Int32 index, SByte[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4bv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4ubv(UInt32 index, Byte[] v)
         {
             Delegates.glVertexAttrib4ubv(index, v);
+        }
+
+        public static void VertexAttrib4ubv(Int32 index, Byte[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4ubv((UInt32)index, v);
         }
 
         public static void VertexAttrib4usv(UInt32 index, UInt16[] v)
@@ -2827,9 +3199,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4usv(index, v);
         }
 
+        public static void VertexAttrib4usv(Int32 index, UInt16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4usv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4uiv(UInt32 index, UInt32[] v)
         {
             Delegates.glVertexAttrib4uiv(index, v);
+        }
+
+        public static void VertexAttrib4uiv(Int32 index, UInt32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4uiv((UInt32)index, v);
         }
 
         public static void VertexAttrib4Nbv(UInt32 index, SByte[] v)
@@ -2837,9 +3221,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4Nbv(index, v);
         }
 
+        public static void VertexAttrib4Nbv(Int32 index, SByte[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Nbv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4Nsv(UInt32 index, Int16[] v)
         {
             Delegates.glVertexAttrib4Nsv(index, v);
+        }
+
+        public static void VertexAttrib4Nsv(Int32 index, Int16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Nsv((UInt32)index, v);
         }
 
         public static void VertexAttrib4Niv(UInt32 index, Int32[] v)
@@ -2847,9 +3243,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4Niv(index, v);
         }
 
+        public static void VertexAttrib4Niv(Int32 index, Int32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Niv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4Nubv(UInt32 index, Byte[] v)
         {
             Delegates.glVertexAttrib4Nubv(index, v);
+        }
+
+        public static void VertexAttrib4Nubv(Int32 index, Byte[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Nubv((UInt32)index, v);
         }
 
         public static void VertexAttrib4Nusv(UInt32 index, UInt16[] v)
@@ -2857,9 +3265,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttrib4Nusv(index, v);
         }
 
+        public static void VertexAttrib4Nusv(Int32 index, UInt16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Nusv((UInt32)index, v);
+        }
+
         public static void VertexAttrib4Nuiv(UInt32 index, UInt32[] v)
         {
             Delegates.glVertexAttrib4Nuiv(index, v);
+        }
+
+        public static void VertexAttrib4Nuiv(Int32 index, UInt32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttrib4Nuiv((UInt32)index, v);
         }
 
         public static void VertexAttribI4bv(UInt32 index, SByte[] v)
@@ -2867,9 +3287,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI4bv(index, v);
         }
 
+        public static void VertexAttribI4bv(Int32 index, SByte[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4bv((UInt32)index, v);
+        }
+
         public static void VertexAttribI4ubv(UInt32 index, Byte[] v)
         {
             Delegates.glVertexAttribI4ubv(index, v);
+        }
+
+        public static void VertexAttribI4ubv(Int32 index, Byte[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4ubv((UInt32)index, v);
         }
 
         public static void VertexAttribI4sv(UInt32 index, Int16[] v)
@@ -2877,9 +3309,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI4sv(index, v);
         }
 
+        public static void VertexAttribI4sv(Int32 index, Int16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4sv((UInt32)index, v);
+        }
+
         public static void VertexAttribI4usv(UInt32 index, UInt16[] v)
         {
             Delegates.glVertexAttribI4usv(index, v);
+        }
+
+        public static void VertexAttribI4usv(Int32 index, UInt16[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4usv((UInt32)index, v);
         }
 
         public static void VertexAttribI4iv(UInt32 index, Int32[] v)
@@ -2887,9 +3331,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribI4iv(index, v);
         }
 
+        public static void VertexAttribI4iv(Int32 index, Int32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4iv((UInt32)index, v);
+        }
+
         public static void VertexAttribI4uiv(UInt32 index, UInt32[] v)
         {
             Delegates.glVertexAttribI4uiv(index, v);
+        }
+
+        public static void VertexAttribI4uiv(Int32 index, UInt32[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribI4uiv((UInt32)index, v);
         }
 
         public static void VertexAttribL1dv(UInt32 index, Double[] v)
@@ -2897,9 +3353,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribL1dv(index, v);
         }
 
+        public static void VertexAttribL1dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL1dv((UInt32)index, v);
+        }
+
         public static void VertexAttribL2dv(UInt32 index, Double[] v)
         {
             Delegates.glVertexAttribL2dv(index, v);
+        }
+
+        public static void VertexAttribL2dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL2dv((UInt32)index, v);
         }
 
         public static void VertexAttribL3dv(UInt32 index, Double[] v)
@@ -2907,9 +3375,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribL3dv(index, v);
         }
 
+        public static void VertexAttribL3dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL3dv((UInt32)index, v);
+        }
+
         public static void VertexAttribL4dv(UInt32 index, Double[] v)
         {
             Delegates.glVertexAttribL4dv(index, v);
+        }
+
+        public static void VertexAttribL4dv(Int32 index, Double[] v)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribL4dv((UInt32)index, v);
         }
 
         public static void VertexAttribP1ui(UInt32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
@@ -2917,9 +3397,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribP1ui(index, type, normalized, value);
         }
 
+        public static void VertexAttribP1ui(Int32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribP1ui((UInt32)index, type, normalized, value);
+        }
+
         public static void VertexAttribP2ui(UInt32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
         {
             Delegates.glVertexAttribP2ui(index, type, normalized, value);
+        }
+
+        public static void VertexAttribP2ui(Int32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribP2ui((UInt32)index, type, normalized, value);
         }
 
         public static void VertexAttribP3ui(UInt32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
@@ -2927,9 +3419,21 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribP3ui(index, type, normalized, value);
         }
 
+        public static void VertexAttribP3ui(Int32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribP3ui((UInt32)index, type, normalized, value);
+        }
+
         public static void VertexAttribP4ui(UInt32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
         {
             Delegates.glVertexAttribP4ui(index, type, normalized, value);
+        }
+
+        public static void VertexAttribP4ui(Int32 index, GL4.VertexAttribPType type, Boolean normalized, UInt32 value)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribP4ui((UInt32)index, type, normalized, value);
         }
 
         public static void VertexAttribBinding(UInt32 attribindex, UInt32 bindingindex)
@@ -2945,6 +3449,12 @@ namespace Flare.Graphics.GL4
         public static void VertexAttribDivisor(UInt32 index, UInt32 divisor)
         {
             Delegates.glVertexAttribDivisor(index, divisor);
+        }
+
+        public static void VertexAttribDivisor(Int32 index, UInt32 divisor)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribDivisor((UInt32)index, divisor);
         }
 
         public static void VertexAttribFormat(UInt32 attribindex, Int32 size, GL4.VertexAttribFormat type, Boolean normalized, UInt32 relativeoffset)
@@ -2982,14 +3492,32 @@ namespace Flare.Graphics.GL4
             Delegates.glVertexAttribPointer(index, size, type, normalized, stride, pointer);
         }
 
+        public static void VertexAttribPointer(Int32 index, Int32 size, GL4.VertexAttribPointerType type, Boolean normalized, Int32 stride, IntPtr pointer)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribPointer((UInt32)index, size, type, normalized, stride, pointer);
+        }
+
         public static void VertexAttribIPointer(UInt32 index, Int32 size, GL4.VertexAttribPointerType type, Int32 stride, IntPtr pointer)
         {
             Delegates.glVertexAttribIPointer(index, size, type, stride, pointer);
         }
 
+        public static void VertexAttribIPointer(Int32 index, Int32 size, GL4.VertexAttribPointerType type, Int32 stride, IntPtr pointer)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribIPointer((UInt32)index, size, type, stride, pointer);
+        }
+
         public static void VertexAttribLPointer(UInt32 index, Int32 size, GL4.VertexAttribPointerType type, Int32 stride, IntPtr pointer)
         {
             Delegates.glVertexAttribLPointer(index, size, type, stride, pointer);
+        }
+
+        public static void VertexAttribLPointer(Int32 index, Int32 size, GL4.VertexAttribPointerType type, Int32 stride, IntPtr pointer)
+        {
+            if (index < 0) throw new ArgumentOutOfRangeException("index");
+            Delegates.glVertexAttribLPointer((UInt32)index, size, type, stride, pointer);
         }
 
         public static void VertexBindingDivisor(UInt32 bindingindex, UInt32 divisor)
