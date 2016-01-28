@@ -30,9 +30,8 @@ namespace Flare.SDL2
                 {
                     /* FIXME: SDL2 bug!
 					 * SDL's a little weird about SDL_GetWindowSize.
-					 * If you call it early enough (for example,
-					 * Game.Initialize()), it reports outdated ints.
-					 * So you know what, let's just use this.
+					 * If you call it early enough, it reports outdated ints.
+					 * Instead we can do the following:
 					 */
                     SDL.SDL_DisplayMode mode;
                     SDL.SDL_GetCurrentDisplayMode(
@@ -99,7 +98,6 @@ namespace Flare.SDL2
                     value
                 );
                 EndScreenDeviceChange(
-                    Title,
                     Width,
                     Height
                 );
@@ -127,7 +125,6 @@ namespace Flare.SDL2
         private IntPtr _sdlWindow;
         private bool _isFullscreen;
         private bool _wantsFullscreen;
-        private string _deviceName;
         private Point _lastWindowPosition;
 
         private string _icon;
@@ -206,14 +203,10 @@ namespace Flare.SDL2
         }
 
         public override void EndScreenDeviceChange(
-            string screenDeviceName,
             int clientWidth,
             int clientHeight
         )
         {
-            // Set screen device name, not that we use it...
-            _deviceName = screenDeviceName;
-
             // Fullscreen
             if (_wantsFullscreen &&
                 (SDL.SDL_GetWindowFlags(_sdlWindow) & (uint)SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN) == 0)
@@ -327,7 +320,7 @@ namespace Flare.SDL2
             }
             catch (DllNotFoundException)
             {
-                // Not that big a deal guys.
+                // Fail silently if SDL_image is not being used.
             }
 
             fileIn = _GetIconName(title, ".bmp");

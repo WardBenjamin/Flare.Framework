@@ -92,8 +92,6 @@ namespace Flare
         #region Events
 
         public event EventHandler<EventArgs> ClientSizeChanged;
-        public event EventHandler<EventArgs> OrientationChanged;
-        public event EventHandler<EventArgs> ScreenDeviceNameChanged;
 
         #endregion
 
@@ -102,15 +100,13 @@ namespace Flare
         public abstract void BeginScreenDeviceChange(bool willBeFullScreen);
 
         public abstract void EndScreenDeviceChange(
-            string screenDeviceName,
             int clientWidth,
             int clientHeight
         );
 
-        public void EndScreenDeviceChange(string screenDeviceName)
+        public void EndScreenDeviceChange()
         {
             EndScreenDeviceChange(
-                screenDeviceName,
                 ClientBounds.Width,
                 ClientBounds.Height
             );
@@ -120,39 +116,11 @@ namespace Flare
 
         #region Protected Methods
 
-        protected void OnActivated()
-        {
-        }
-
         protected void OnClientSizeChanged()
         {
             if (ClientSizeChanged != null)
             {
                 ClientSizeChanged(this, EventArgs.Empty);
-            }
-        }
-
-        protected void OnDeactivated()
-        {
-        }
-
-        protected void OnOrientationChanged()
-        {
-            if (OrientationChanged != null)
-            {
-                OrientationChanged(this, EventArgs.Empty);
-            }
-        }
-
-        protected void OnPaint()
-        {
-        }
-
-        protected void OnScreenDeviceNameChanged()
-        {
-            if (ScreenDeviceNameChanged != null)
-            {
-                ScreenDeviceNameChanged(this, EventArgs.Empty);
             }
         }
 
