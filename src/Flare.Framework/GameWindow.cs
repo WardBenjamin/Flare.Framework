@@ -20,13 +20,6 @@ namespace Flare
     {
         #region Public Properties
 
-        [DefaultValue(false)]
-        public abstract bool AllowUserResizing
-        {
-            get;
-            set;
-        }
-
         public abstract Rectangle ClientBounds
         {
             get;

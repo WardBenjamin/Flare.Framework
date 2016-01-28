@@ -21,27 +21,6 @@ namespace Flare.SDL2
     {
         #region Public GameWindow Properties
 
-        [DefaultValue(false)]
-        public override bool AllowUserResizing
-        {
-            /* FIXME: This change should happen immediately. However, SDL2 does
-			 * not yet have an SDL_SetWindowResizable, so for now this is
-			 * basically just a check for when the window is first made.
-			 * -flibit
-			 */
-            get
-            {
-                return Environment.GetEnvironmentVariable(
-                    "FLARE_WORKAROUND_WINDOW_RESIZABLE"
-                ) == "1";
-            }
-            set
-            {
-                if (!_sdlWindow.Equals(IntPtr.Zero))
-                    throw new Exception("SDL does not support changing resizable parameter of the window after it's already been created.");
-            }
-        }
-
         public override Rectangle ClientBounds
         {
             get
@@ -166,11 +145,12 @@ namespace Flare.SDL2
                 SDL.SDL_WindowFlags.SDL_WINDOW_MOUSE_FOCUS
             );
 
-            // FIXME: Once we have SDL_SetWindowResizable, remove this. -flibit
-            if (AllowUserResizing)
+            // TODO: Support user resizing? SDL2 does not support setting this after window creation, unlike SDL1.2
+            // aka FIXME: Once we have SDL_SetWindowResizable, remove this.
+            /*if (AllowUserResizing)
             {
                 initFlags |= SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE;
-            }
+            }*/
 
             SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_RED_SIZE, 8);
             SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_GREEN_SIZE, 8);
