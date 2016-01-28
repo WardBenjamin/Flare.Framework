@@ -68,6 +68,15 @@ namespace Flare
             set;
         }
 
+        /// <summary>
+        /// The file name of the Icon. If SDL_image is present, this can be a PNG. Otherwise, this will load only bitmap images.
+        /// </summary>
+        public abstract string Icon
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Private Variables

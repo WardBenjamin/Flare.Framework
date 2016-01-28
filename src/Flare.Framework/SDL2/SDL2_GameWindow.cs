@@ -54,7 +54,6 @@ namespace Flare.SDL2
 					 * If you call it early enough (for example,
 					 * Game.Initialize()), it reports outdated ints.
 					 * So you know what, let's just use this.
-					 * -flibit
 					 */
                     SDL.SDL_DisplayMode mode;
                     SDL.SDL_GetCurrentDisplayMode(
@@ -128,18 +127,31 @@ namespace Flare.SDL2
             }
         }
 
+        public override string Icon
+        {
+            get
+            {
+                return _icon;
+            }
+
+            set
+            {
+                _icon = value;
+                _SetIcon(value);
+            }
+        }
+
         #endregion
 
-        #region Private SDL2 Window Variables
+        #region Private Fields
 
         private IntPtr _sdlWindow;
-
         private bool _isFullscreen;
         private bool _wantsFullscreen;
-
         private string _deviceName;
-
         private Point _lastWindowPosition;
+
+        private string _icon;
 
         #endregion
 
@@ -192,11 +204,12 @@ namespace Flare.SDL2
                 title,
                 SDL.SDL_WINDOWPOS_CENTERED,
                 SDL.SDL_WINDOWPOS_CENTERED,
-                width, 
+                width,
                 height,
                 initFlags
             );
-            _SetIcon(title);
+
+            Icon = title;
 
             _isFullscreen = false;
             _wantsFullscreen = false;
@@ -338,6 +351,7 @@ namespace Flare.SDL2
             }
 
             fileIn = _GetIconName(title, ".bmp");
+            Console.WriteLine(fileIn);
             if (!String.IsNullOrEmpty(fileIn))
             {
                 IntPtr icon = SDL.SDL_LoadBMP(fileIn);
