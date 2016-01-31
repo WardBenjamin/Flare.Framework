@@ -77,7 +77,7 @@ namespace Flare
         #region Public Properties
 
         /// <summary>
-        /// Reference to the current GameWindow implementation.
+        /// Gets the underlying operating system window implementation.
         /// </summary>
         public GameWindow Window
         {
@@ -92,6 +92,9 @@ namespace Flare
             }
         }
 
+        /// <summary>
+        /// Gets or sets the time to sleep when the game is inactive. 
+        /// </summary>
         public TimeSpan InactiveSleepTime
         {
             get
@@ -114,6 +117,9 @@ namespace Flare
             }
         }
 
+        /// <summary>
+        /// Indicates whether the game is currently the active application. 
+        /// </summary>
         public bool IsActive
         {
             get
@@ -130,6 +136,9 @@ namespace Flare
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the mouse cursor should be visible. 
+        /// </summary>
         public bool IsMouseVisible
         {
             get
@@ -146,6 +155,9 @@ namespace Flare
             }
         }
 
+        /// <summary>
+        /// Gets or sets the target time between calls to Update when IsFixedTimeStep is true.
+        /// </summary>
         public TimeSpan TargetElapsedTime
         {
             get
@@ -166,6 +178,9 @@ namespace Flare
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to use fixed time steps. 
+        /// </summary>
         public bool IsFixedTimeStep
         {
             get
