@@ -74,6 +74,8 @@ namespace Flare
         #endregion
         #endregion
 
+        #region Public Properties
+
         /// <summary>
         /// Reference to the current GameWindow implementation.
         /// </summary>
@@ -89,8 +91,6 @@ namespace Flare
                 _window = value;
             }
         }
-
-        #region Public Properties
 
         public TimeSpan InactiveSleepTime
         {
@@ -179,7 +179,6 @@ namespace Flare
         }
 
         #endregion
-
 
         #region Public Constructors
 

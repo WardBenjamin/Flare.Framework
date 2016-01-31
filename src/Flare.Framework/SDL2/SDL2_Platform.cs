@@ -32,15 +32,9 @@ namespace Flare.SDL2
 
         internal static void Init(Game game, string title, int width, int height)
         {
-            /* SDL2 might complain if an OS that uses SDL_main has not actually
-			 * used SDL_main by the time you initialize SDL2.
-			 * The only platform that is affected is Windows, but we can skip
-			 * their WinMain. This was only added to prevent iOS from exploding.
-			 * -flibit
-			 */
             SDL.SDL_SetMainReady();
 
-            // This _should_ be the first real SDL call we make...
+            // This _should_ be the first real SDL call we make.
             SDL.SDL_Init(
                 SDL.SDL_INIT_VIDEO |
                 SDL.SDL_INIT_JOYSTICK |
@@ -48,7 +42,7 @@ namespace Flare.SDL2
                 SDL.SDL_INIT_HAPTIC
             );
 
-            // Set any hints to match XNA4 behavior...
+            // Set up hinting for joystick.
             string hint = SDL.SDL_GetHint(SDL.SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS);
             if (String.IsNullOrEmpty(hint))
             {
@@ -58,7 +52,7 @@ namespace Flare.SDL2
                 );
             }
 
-            // If available, load the SDL_GameControllerDB
+            // If available, load the SDL_GameControllerDB.
             string mappingsDB = Path.Combine(
                 Directory.GetCurrentDirectory(),
                 "gamecontrollerdb.txt"
@@ -70,7 +64,7 @@ namespace Flare.SDL2
                 );
             }
 
-            // Set and initialize the SDL2 window
+            // Set and initialize the SDL2 window.
             game.Window = new SDL2_GameWindow(title, width, height);
 
             // Disable the screensaver.
@@ -87,7 +81,6 @@ namespace Flare.SDL2
                 /* Some window managers might try to minimize the window as we're
 				 * destroying it. This looks pretty stupid and could cause problems,
 				 * so set this hint right before we destroy everything.
-				 * -flibit
 				 */
                 SDL.SDL_SetHintWithPriority(
                     SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,
@@ -100,7 +93,7 @@ namespace Flare.SDL2
                 game.Window = null;
             }
 
-            // This _should_ be the last SDL call we make...
+            // This should be the last SDL call we make.
             SDL.SDL_Quit();
         }
 
@@ -113,7 +106,7 @@ namespace Flare.SDL2
                 game.Window.Handle
             );
 
-            // OSX has some fancy fullscreen features, let's use them!
+            // OSX has some interesting fullscreen features that we can use.
             bool osxUseSpaces;
             if (OSVersion.Equals("Mac OS X"))
             {
@@ -216,11 +209,11 @@ namespace Flare.SDL2
                     }
                     else if (evt.type == SDL.SDL_EventType.SDL_MOUSEWHEEL)
                     {
-                        // 120 units per notch. Because reasons.
+                        // 120 units per notch. TODO: Be able to set this somewhere.
                         SDL2_MouseUtil._MouseWheel += evt.wheel.y * 120;
                     }
 
-                    // Various Window Events...
+                    // Misc. window events
                     else if (evt.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
                     {
                         // Window Focus
@@ -230,7 +223,7 @@ namespace Flare.SDL2
 
                             if (!osxUseSpaces)
                             {
-                                // If we alt-tab away, we lose the 'fullscreen desktop' flag on some WMs
+                                // If we alt-tab away, we lose the 'fullscreen desktop' flag on some window managers.
                                 SDL.SDL_SetWindowFullscreen(
                                     game.Window.Handle,
                                     (game.Window as SDL2_GameWindow).IsFullscreen ?
@@ -255,62 +248,25 @@ namespace Flare.SDL2
                             SDL.SDL_EnableScreenSaver();
                         }
 
-                        // Window Resize
+                        // Window resize
                         else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_RESIZED)
                         {
                             SDL2_MouseUtil._WindowWidth = evt.window.data1;
                             SDL2_MouseUtil._WindowHeight = evt.window.data2;
 
-                            // Should be called on user resize only, NOT ApplyChanges!
+                            // This should be called on user resize only.
                             ((SDL2_GameWindow)game.Window)._ClientSizeChanged();
                         }
                         else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_SIZE_CHANGED)
                         {
                             SDL2_MouseUtil._WindowWidth = evt.window.data1;
                             SDL2_MouseUtil._WindowHeight = evt.window.data2;
-
-                            // Need to reset the graphics device any time the window size changes
-                            /*
-                            GraphicsDeviceManager gdm = game.Services.GetService(
-                                typeof(IGraphicsDeviceService)
-                            ) as GraphicsDeviceManager;
-                            // FIXME: gdm == null? -flibit
-                            if (gdm.IsFullScreen)
-                            {
-                                GraphicsDevice device = game.GraphicsDevice;
-                                gdm._ResizeGraphicsDevice(
-                                    device.GLDevice.Backbuffer.Width,
-                                    device.GLDevice.Backbuffer.Height
-                                );
-                            }
-                            else
-                            {
-                                gdm._ResizeGraphicsDevice(
-                                    evt.window.data1,
-                                    evt.window.data2
-                                );
-                            }*/
                         }
 
                         // Window Move
                         else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_MOVED)
                         {
-                            /* Apparently if you move the window to a new
-							 * display, a GraphicsDevice Reset occurs.
-							 * -flibit
-							 */
-                             /*
-                            int newIndex = SDL.SDL_GetWindowDisplayIndex(
-                                game.Window.Handle
-                            );
-                            if (newIndex != displayIndex)
-                            {
-                                displayIndex = newIndex;
-                                game.GraphicsDevice.Reset(
-                                    game.GraphicsDevice.PresentationParameters,
-                                    GraphicsAdapter.Adapters[displayIndex]
-                                );
-                            }*/
+                            // We don't actually do anything here.
                         }
 
                         // Mouse Focus
@@ -324,7 +280,7 @@ namespace Flare.SDL2
                         }
                     }
 
-                    // Controller device management
+                    // Controller device management TODO: Controller implementation
                     /*else if (evt.type == SDL.SDL_EventType.SDL_CONTROLLERDEVICEADDED)
                     {
                         _AddInstance(evt.cdevice.which);
@@ -334,7 +290,7 @@ namespace Flare.SDL2
                         _RemoveInstance(evt.cdevice.which);
                     }*/
 
-                    // Text Input
+                    // Text input
                     else if (evt.type == SDL.SDL_EventType.SDL_TEXTINPUT && !_TextInputSuppress)
                     {
                         string text;
@@ -365,7 +321,7 @@ namespace Flare.SDL2
                         break;
                     }
                 }
-                // Text Input Controls Key Handling
+                // Text input controls key handling
                 if (_TextInputControlDown[0] && _TextInputControlRepeat[0] <= Environment.TickCount)
                 {
                     game.OnKeyPress((char)8);
@@ -393,7 +349,7 @@ namespace Flare.SDL2
 
         internal static void BeforeInitialize()
         {
-            /*
+            /* TODO: Controller implementation
             // We want to initialize the controllers ASAP!
             SDL.SDL_Event[] evt = new SDL.SDL_Event[1];
             SDL.SDL_PumpEvents(); // Required to get OSX device events this early.
@@ -577,13 +533,13 @@ namespace Flare.SDL2
            bool zoom = false
        )
         {
-            // Load the Stream into an SDL_RWops*
+            // Load the Stream into an SDL_RWops*.
             byte[] mem = new byte[stream.Length];
             GCHandle handle = GCHandle.Alloc(mem, GCHandleType.Pinned);
             stream.Read(mem, 0, mem.Length);
             IntPtr rwops = SDL.SDL_RWFromMem(mem, mem.Length);
 
-            // Load the SDL_Surface* from RWops, get the image data
+            // Load the SDL_Surface* from RWops, get the image data.
             IntPtr surface = SDL_image.IMG_Load_RW(rwops, 1);
             handle.Free();
             if (surface == IntPtr.Zero)
@@ -596,10 +552,10 @@ namespace Flare.SDL2
             }
             surface = _convertSurfaceFormat(surface);
 
-            // Image scaling, if applicable
+            // Image scaling, if applicable.
             if (reqWidth != -1 && reqHeight != -1)
             {
-                // Get the file surface dimensions now...
+                // Get the file surface dimensions now.
                 int rw;
                 int rh;
                 unsafe
@@ -609,7 +565,7 @@ namespace Flare.SDL2
                     rh = surPtr->h;
                 }
 
-                // Calculate the image scale factor
+                // Calculate the image scale factor.
                 bool scaleWidth;
                 if (zoom)
                 {
@@ -629,7 +585,7 @@ namespace Flare.SDL2
                     scale = reqHeight / (float)rh;
                 }
 
-                // Calculate the scaled image size, crop if zoomed
+                // Calculate the scaled image size, crop if zoomed.
                 int resultWidth;
                 int resultHeight;
                 SDL.SDL_Rect crop = new SDL.SDL_Rect();
@@ -792,7 +748,7 @@ namespace Flare.SDL2
             SDL_image.IMG_SavePNG_RW(surface, dst, 1);
             SDL.SDL_FreeSurface(surface); // We're done with the surface.
 
-            // Get PNG size, write to Stream
+            // Get PNG size, write to stream.
             int size = (
                 (pngOut[33] << 24) |
                 (pngOut[34] << 16) |
