@@ -107,37 +107,37 @@ namespace Flare.Graphics.GL4
         public void SetValue(bool param)
         {
             if (Type != typeof(bool)) throw new Exception(string.Format("SetValue({0}) was given a bool.", Type));
-            Gl.Uniform1i(location, (param) ? 1 : 0);
+            GL.Uniform1i(location, (param) ? 1 : 0);
         }
 
         public void SetValue(int param)
         {
             if (Type != typeof(int) && Type != typeof(Texture)) throw new Exception(string.Format("SetValue({0}) was given a int.", Type));
-            Gl.Uniform1i(location, param);
+            GL.Uniform1i(location, param);
         }
 
         public void SetValue(float param)
         {
             if (Type != typeof(float)) throw new Exception(string.Format("SetValue({0}) was given a float.", Type));
-            Gl.Uniform1f(location, param);
+            GL.Uniform1f(location, param);
         }
 
         public void SetValue(Vector2 param)
         {
             if (Type != typeof(Vector2)) throw new Exception(string.Format("SetValue({0}) was given a Vector2.", Type));
-            Gl.Uniform2f(location, param.X, param.Y);
+            GL.Uniform2f(location, param.X, param.Y);
         }
 
         public void SetValue(Vector3 param)
         {
             if (Type != typeof(Vector3)) throw new Exception(string.Format("SetValue({0}) was given a Vector3.", Type));
-            Gl.Uniform3f(location, param.X, param.Y, param.Z);
+            GL.Uniform3f(location, param.X, param.Y, param.Z);
         }
 
         public void SetValue(Vector4 param)
         {
             if (Type != typeof(Vector4)) throw new Exception(string.Format("SetValue({0}) was given a Vector4.", Type));
-            Gl.Uniform4f(location, param.X, param.Y, param.Z, param.W);
+            GL.Uniform4f(location, param.X, param.Y, param.Z, param.W);
         }
 
         
@@ -146,14 +146,14 @@ namespace Flare.Graphics.GL4
         {
             if (Type != typeof(Matrix4)) throw new Exception(string.Format("SetValue({0}) was given a Matrix4.", Type));
 
-            Gl.UniformMatrix4fv(location, param);
+            GL.UniformMatrix4fv(location, param);
         }
 
         public void SetValue(float[] param)
         {
             if (Type != typeof(Matrix4)) throw new Exception(string.Format("SetValue({0}) was given a Matrix4.", Type));
             if (param.Length != 16) throw new Exception(string.Format("Expected a float[] of 16 for a Matrix4, but instead got {0}.", param.Length));
-            Gl.UniformMatrix4fv(location, 1, false, param);
+            GL.UniformMatrix4fv(location, 1, false, param);
         }
 
         /*public void SetValue(Texture param)
@@ -187,7 +187,7 @@ namespace Flare.Graphics.GL4
         /// </summary>
         public string ShaderLog
         {
-            get { return Gl.GetShaderInfoLog(ShaderID); }
+            get { return GL.GetShaderInfoLog(ShaderID); }
         }
         #endregion
 
@@ -200,10 +200,10 @@ namespace Flare.Graphics.GL4
         public Shader(string source, ShaderType type)
         {
             this.ShaderType = type;
-            this.ShaderID = Gl.CreateShader(type);
+            this.ShaderID = GL.CreateShader(type);
 
-            Gl.ShaderSource(ShaderID, source);
-            Gl.CompileShader(ShaderID);
+            GL.ShaderSource(ShaderID, source);
+            GL.CompileShader(ShaderID);
 
             GetParams(source);
         }
@@ -280,7 +280,7 @@ namespace Flare.Graphics.GL4
         {
             if (ShaderID != 0)
             {
-                Gl.DeleteShader(ShaderID);
+                GL.DeleteShader(ShaderID);
                 this.ShaderID = 0;
             }
         }
@@ -328,7 +328,7 @@ namespace Flare.Graphics.GL4
         /// </summary>
         public string ProgramLog
         {
-            get { return Gl.GetProgramInfoLog(ProgramID); }
+            get { return GL.GetProgramInfoLog(ProgramID); }
         }
         #endregion
 
@@ -342,12 +342,12 @@ namespace Flare.Graphics.GL4
         {
             this.VertexShader = vertexShader;
             this.FragmentShader = fragmentShader;
-            this.ProgramID = Gl.CreateProgram();
+            this.ProgramID = GL.CreateProgram();
             this.DisposeChildren = false;
 
-            Gl.AttachShader(ProgramID, vertexShader.ShaderID);
-            Gl.AttachShader(ProgramID, fragmentShader.ShaderID);
-            Gl.LinkProgram(ProgramID);
+            GL.AttachShader(ProgramID, vertexShader.ShaderID);
+            GL.AttachShader(ProgramID, fragmentShader.ShaderID);
+            GL.LinkProgram(ProgramID);
 
             GetParams();
         }
@@ -399,19 +399,19 @@ namespace Flare.Graphics.GL4
         #region Methods
         public void Use()
         {
-            if (Gl.CurrentProgram != ProgramID) Gl.UseProgram(this.ProgramID);
+            if (GL.CurrentProgram != ProgramID) GL.UseProgram(this.ProgramID);
         }
 
         public int GetUniformLocation(string Name)
         {
             Use();
-            return Gl.GetUniformLocation(ProgramID, Name);
+            return GL.GetUniformLocation(ProgramID, Name);
         }
 
         public int GetAttributeLocation(string Name)
         {
             Use();
-            return Gl.GetAttribLocation(ProgramID, Name);
+            return GL.GetAttribLocation(ProgramID, Name);
         }
         #endregion
 
@@ -421,11 +421,11 @@ namespace Flare.Graphics.GL4
             if (ProgramID != 0)
             {
                 // Make sure this program isn't being used
-                if (Gl.CurrentProgram == ProgramID) Gl.UseProgram(0);
+                if (GL.CurrentProgram == ProgramID) GL.UseProgram(0);
 
-                Gl.DetachShader(ProgramID, VertexShader.ShaderID);
-                Gl.DetachShader(ProgramID, FragmentShader.ShaderID);
-                Gl.DeleteProgram(ProgramID);
+                GL.DetachShader(ProgramID, VertexShader.ShaderID);
+                GL.DetachShader(ProgramID, FragmentShader.ShaderID);
+                GL.DeleteProgram(ProgramID);
 
                 if (DisposeChildren)
                 {

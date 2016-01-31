@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace Flare.Graphics.GL4
 {
-    partial class Gl
+    partial class GL
     {
         #region Preallocated Memory
         // pre-allocate the float[] for matrix data
@@ -57,7 +57,7 @@ namespace Flare.Graphics.GL4
         public static uint GenBuffer()
         {
             int1[0] = 0;
-            Gl.GenBuffers(1, int1);
+            GL.GenBuffers(1, int1);
             return int1[0];
         }
 
@@ -69,7 +69,7 @@ namespace Flare.Graphics.GL4
         public static uint GenTexture()
         {
             int1[0] = 0;
-            Gl.GenTextures(1, int1);
+            GL.GenTextures(1, int1);
             return int1[0];
         }
 
@@ -81,7 +81,7 @@ namespace Flare.Graphics.GL4
         public static uint GenVertexArray()
         {
             int1[0] = 0;
-            Gl.GenVertexArrays(1, int1);
+            GL.GenVertexArrays(1, int1);
             return int1[0];
         }
 
@@ -93,7 +93,7 @@ namespace Flare.Graphics.GL4
         public static uint GenFramebuffer()
         {
             uint[] id = new uint[1];
-            Gl.GenFramebuffers(1, id);
+            GL.GenFramebuffers(1, id);
             return id[0];
         }
 
@@ -105,7 +105,7 @@ namespace Flare.Graphics.GL4
         public static uint GenRenderbuffer()
         {
             int1[0] = 0;
-            Gl.GenRenderbuffers(1, int1);
+            GL.GenRenderbuffers(1, int1);
             return int1[0];
         }
 
@@ -116,10 +116,10 @@ namespace Flare.Graphics.GL4
         public static string GetProgramInfoLog(UInt32 program)
         {
             int[] length = new int[1];
-            Gl.GetProgramiv(program, ProgramParameter.InfoLogLength, length);
+            GL.GetProgramiv(program, ProgramParameter.InfoLogLength, length);
             if (length[0] == 0) return String.Empty;
             System.Text.StringBuilder sb = new System.Text.StringBuilder(length[0]);
-            Gl.GetProgramInfoLog(program, sb.Capacity, length, sb);
+            GL.GetProgramInfoLog(program, sb.Capacity, length, sb);
             return sb.ToString();
         }
 
@@ -130,10 +130,10 @@ namespace Flare.Graphics.GL4
         public static string GetShaderInfoLog(UInt32 shader)
         {
             int[] length = new int[1];
-            Gl.GetShaderiv(shader, ShaderParameter.InfoLogLength, length);
+            GL.GetShaderiv(shader, ShaderParameter.InfoLogLength, length);
             if (length[0] == 0) return String.Empty;
             System.Text.StringBuilder sb = new System.Text.StringBuilder(length[0]);
-            Gl.GetShaderInfoLog(shader, sb.Capacity, length, sb);
+            GL.GetShaderInfoLog(shader, sb.Capacity, length, sb);
             return sb.ToString();
         }
 
@@ -202,12 +202,12 @@ namespace Flare.Graphics.GL4
         public static uint CreateVBO<T>(BufferTarget target, [InAttribute, OutAttribute] T[] data, BufferUsageHint hint)
             where T : struct
         {
-            uint vboHandle = Gl.GenBuffer();
+            uint vboHandle = GL.GenBuffer();
             if (vboHandle == 0) return 0;
 
-            Gl.BindBuffer(target, vboHandle);
-            Gl.BufferData<T>(target, data.Length * Marshal.SizeOf(typeof(T)), data, hint);
-            Gl.BindBuffer(target, 0);
+            GL.BindBuffer(target, vboHandle);
+            GL.BufferData<T>(target, data.Length * Marshal.SizeOf(typeof(T)), data, hint);
+            GL.BindBuffer(target, 0);
             return vboHandle;
         }
 
@@ -223,12 +223,12 @@ namespace Flare.Graphics.GL4
         public static uint CreateVBO<T>(BufferTarget target, [InAttribute, OutAttribute] T[] data, BufferUsageHint hint, int length)
             where T : struct
         {
-            uint vboHandle = Gl.GenBuffer();
+            uint vboHandle = GL.GenBuffer();
             if (vboHandle == 0) return 0;
 
-            Gl.BindBuffer(target, vboHandle);
-            Gl.BufferData<T>(target, length * Marshal.SizeOf(typeof(T)), data, hint);
-            Gl.BindBuffer(target, 0);
+            GL.BindBuffer(target, vboHandle);
+            GL.BufferData<T>(target, length * Marshal.SizeOf(typeof(T)), data, hint);
+            GL.BindBuffer(target, 0);
             return vboHandle;
         }
 
@@ -244,12 +244,12 @@ namespace Flare.Graphics.GL4
         public static uint CreateVBO<T>(BufferTarget target, [InAttribute, OutAttribute] T[] data, BufferUsageHint hint, int position, int length)
             where T : struct
         {
-            uint vboHandle = Gl.GenBuffer();
+            uint vboHandle = GL.GenBuffer();
             if (vboHandle == 0) return 0;
 
-            Gl.BindBuffer(target, vboHandle);
-            Gl.BufferData<T>(target, position * Marshal.SizeOf(typeof(T)), length * Marshal.SizeOf(typeof(T)), data, hint);
-            Gl.BindBuffer(target, 0);
+            GL.BindBuffer(target, vboHandle);
+            GL.BufferData<T>(target, position * Marshal.SizeOf(typeof(T)), length * Marshal.SizeOf(typeof(T)), data, hint);
+            GL.BindBuffer(target, 0);
             return vboHandle;
         }
 
@@ -363,21 +363,21 @@ namespace Flare.Graphics.GL4
         /// <returns>The vertex array object (VAO) ID.</returns>
         public static uint CreateVAO(ShaderProgram program, uint vbo, int[] sizes, VertexAttribPointerType[] types, BufferTarget[] targets, string[] names, int stride, uint eboHandle)
         {
-            uint vaoHandle = Gl.GenVertexArray();
-            Gl.BindVertexArray(vaoHandle);
+            uint vaoHandle = GL.GenVertexArray();
+            GL.BindVertexArray(vaoHandle);
 
             int offset = 0;
 
             for (uint i = 0; i < names.Length; i++)
             {
-                Gl.EnableVertexAttribArray(i);
-                Gl.BindBuffer(targets[i], vbo);
-                Gl.VertexAttribPointer(i, sizes[i], types[i], true, stride, new IntPtr(offset));
-                Gl.BindAttribLocation(program.ProgramID, i, names[i]);
+                GL.EnableVertexAttribArray(i);
+                GL.BindBuffer(targets[i], vbo);
+                GL.VertexAttribPointer(i, sizes[i], types[i], true, stride, new IntPtr(offset));
+                GL.BindAttribLocation(program.ProgramID, i, names[i]);
             }
 
-            Gl.BindBuffer(BufferTarget.ElementArrayBuffer, eboHandle);
-            Gl.BindVertexArray(0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, eboHandle);
+            GL.BindVertexArray(0);
 
             return vaoHandle;
         }
@@ -392,7 +392,7 @@ namespace Flare.Graphics.GL4
             
             try
             {
-                string version = Gl.GetString(StringName.Version);
+                string version = GL.GetString(StringName.Version);
                 return (_version = int.Parse(version.Substring(0, version.IndexOf('.'))));
             }
             catch (Exception)
@@ -408,7 +408,7 @@ namespace Flare.Graphics.GL4
         /// <param name="Program">Specifies the handle of the program object whose executables are to be used as part of current rendering state.</param>
         public static void UseProgram(ShaderProgram Program)
         {
-            Gl.UseProgram(Program.ProgramID);
+            GL.UseProgram(Program.ProgramID);
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace Flare.Graphics.GL4
         /// <param name="Texture">Specifies the texture.</param>
         public static void BindTexture(Texture Texture)
         {
-            Gl.BindTexture(Texture.TextureTarget, Texture.TextureID);
+            GL.BindTexture(Texture.TextureTarget, Texture.TextureID);
         }
 
         private static int[] getInteger = new int[1];
@@ -453,7 +453,7 @@ namespace Flare.Graphics.GL4
         public static void BindBuffer<T>(VBO<T> buffer) 
             where T : struct
         {
-            Gl.BindBuffer(buffer.BufferTarget, buffer.vboID);
+            GL.BindBuffer(buffer.BufferTarget, buffer.vboID);
         }
 
         /// <summary>
@@ -465,11 +465,11 @@ namespace Flare.Graphics.GL4
         public static void BindBufferToShaderAttribute<T>(VBO<T> buffer, ShaderProgram program, string attributeName) 
             where T : struct
         {
-            uint location = (uint)Gl.GetAttribLocation(program.ProgramID, attributeName);
+            uint location = (uint)GL.GetAttribLocation(program.ProgramID, attributeName);
 
-            Gl.EnableVertexAttribArray(location);
-            Gl.BindBuffer(buffer);
-            Gl.VertexAttribPointer(location, buffer.Size, buffer.PointerType, true, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
+            GL.EnableVertexAttribArray(location);
+            GL.BindBuffer(buffer);
+            GL.VertexAttribPointer(location, buffer.Size, buffer.PointerType, true, Marshal.SizeOf(typeof(T)), IntPtr.Zero);
         }
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace Flare.Graphics.GL4
             matrixFloat[8] = param[2].X; matrixFloat[9] = param[2].Y; matrixFloat[10] = param[2].Z; matrixFloat[11] = param[2].W;
             matrixFloat[12] = param[3].X; matrixFloat[13] = param[3].Y; matrixFloat[14] = param[3].Z; matrixFloat[15] = param[3].W;
 
-            Gl.UniformMatrix4fv(location, 1, false, matrixFloat);
+            GL.UniformMatrix4fv(location, 1, false, matrixFloat);
         }
     }
 }

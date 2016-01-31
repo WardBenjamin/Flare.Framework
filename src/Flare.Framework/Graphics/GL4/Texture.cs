@@ -50,7 +50,7 @@ namespace Flare.Graphics.GL4
                     break;
             }
 
-            Gl.BindTexture(TextureTarget, 0);
+            GL.BindTexture(TextureTarget, 0);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Flare.Graphics.GL4
         {
             this.Filename = BitmapImage.GetHashCode().ToString();
             LoadBitmap(BitmapImage, FlipY);
-            Gl.BindTexture(TextureTarget, 0);
+            GL.BindTexture(TextureTarget, 0);
         }
         
         ~Texture()
@@ -76,7 +76,7 @@ namespace Flare.Graphics.GL4
         {
             if (TextureID != 0)
             {
-                Gl.DeleteTextures(1, new uint[] { TextureID });
+                GL.DeleteTextures(1, new uint[] { TextureID });
                 TextureID = 0;
             }
         }
@@ -94,15 +94,15 @@ namespace Flare.Graphics.GL4
 
             // set the texture target and then generate the texture ID
             this.TextureTarget = TextureTarget.Texture2D;
-            this.TextureID = Gl.GenTexture();
+            this.TextureID = GL.GenTexture();
 
-            Gl.PixelStorei(PixelStoreParameter.UnpackAlignment, 1); // set pixel alignment
-            Gl.BindTexture(TextureTarget, TextureID);     // bind the texture to memory in OpenGL
+            GL.PixelStorei(PixelStoreParameter.UnpackAlignment, 1); // set pixel alignment
+            GL.BindTexture(TextureTarget, TextureID);     // bind the texture to memory in OpenGL
 
             //Gl.TexParameteri(TextureTarget, TextureParameterName.GenerateMipmap, 0);
-            Gl.TexImage2D(TextureTarget, 0, PixelInternalFormat.Rgba8, BitmapImage.Width, BitmapImage.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
-            Gl.TexParameteri(TextureTarget, TextureParameterName.TextureMagFilter, TextureParameter.Nearest);
-            Gl.TexParameteri(TextureTarget, TextureParameterName.TextureMinFilter, TextureParameter.Nearest);//(int)TextureParam.Linear);   // linear filter
+            GL.TexImage2D(TextureTarget, 0, PixelInternalFormat.Rgba8, BitmapImage.Width, BitmapImage.Height, 0, PixelFormat.Bgra, PixelType.UnsignedByte, bitmapData.Scan0);
+            GL.TexParameteri(TextureTarget, TextureParameterName.TextureMagFilter, TextureParameter.Nearest);
+            GL.TexParameteri(TextureTarget, TextureParameterName.TextureMinFilter, TextureParameter.Nearest);//(int)TextureParam.Linear);   // linear filter
 
             BitmapImage.UnlockBits(bitmapData);
             BitmapImage.Dispose();
@@ -165,10 +165,10 @@ namespace Flare.Graphics.GL4
                 try
                 {
                     this.TextureTarget = (imageData.Height == 1 || imageData.Width == 1) ? TextureTarget.Texture1D : TextureTarget.Texture2D;
-                    this.TextureID = Gl.GenTexture();
-                    Gl.BindTexture(TextureTarget, TextureID);
-                    Gl.TexParameteri(TextureTarget, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
-                    Gl.TexParameteri(TextureTarget, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                    this.TextureID = GL.GenTexture();
+                    GL.BindTexture(TextureTarget, TextureID);
+                    GL.TexParameteri(TextureTarget, TextureParameterName.TextureMinFilter, TextureParameter.Linear);
+                    GL.TexParameteri(TextureTarget, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
 
                     int nOffset = 0, nWidth = (int)imageData.Width, nHeight = (int)imageData.Height;
 
@@ -181,12 +181,12 @@ namespace Flare.Graphics.GL4
                         if (compressed)
                         {
                             nSize = ((nWidth + 3) / 4) * ((nHeight + 3) / 4) * blocksize;
-                            Gl.CompressedTexImage2D(TextureTarget, i, format, nWidth, nHeight, 0, nSize, (IntPtr)(pinned.AddrOfPinnedObject().ToInt64() + nOffset));
+                            GL.CompressedTexImage2D(TextureTarget, i, format, nWidth, nHeight, 0, nSize, (IntPtr)(pinned.AddrOfPinnedObject().ToInt64() + nOffset));
                         }
                         else
                         {
                             nSize = nWidth * nHeight * 4 * ((int)imageData.PixelFormat.RGBBitCount / 8);
-                            Gl.TexImage2D(TextureTarget, i, format, nWidth, nHeight, 0, PixelFormat.Bgra, PixelType.UnsignedShort4444, (IntPtr)(pinned.AddrOfPinnedObject().ToInt64() + nOffset));
+                            GL.TexImage2D(TextureTarget, i, format, nWidth, nHeight, 0, PixelFormat.Bgra, PixelType.UnsignedShort4444, (IntPtr)(pinned.AddrOfPinnedObject().ToInt64() + nOffset));
                         }
 
                         nOffset += nSize;

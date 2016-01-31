@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 namespace Flare.Graphics.GL4
 {
     // Automatically generated from GlCore.cs using BuildGl
-    partial class Gl
+    partial class GL
     {
         public static void ActiveShaderProgram(UInt32 pipeline, UInt32 program)
         {
@@ -2663,13 +2663,13 @@ namespace Flare.Graphics.GL4
 
         public static void UseProgram(UInt32 program)
         {
-            Gl.currentProgram = program;
+            GL.currentProgram = program;
             Delegates.glUseProgram(program);
         }
 
         public static void UseProgramStages(UInt32 pipeline, UInt32 stages, UInt32 program)
         {
-            Gl.currentProgram = program;
+            GL.currentProgram = program;
             Delegates.glUseProgramStages(pipeline, stages, program);
         }
 

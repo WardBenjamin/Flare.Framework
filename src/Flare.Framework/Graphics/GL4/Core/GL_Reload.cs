@@ -18,7 +18,7 @@ using System.IO;
 
 namespace Flare.Graphics.GL4
 {
-    public partial class Gl
+    public partial class GL
     {
         #region Fields
 
@@ -34,9 +34,9 @@ namespace Flare.Graphics.GL4
 
         #region Constructor
 
-        static Gl()
+        static GL()
         {
-            glClass = typeof(Gl);
+            glClass = typeof(GL);
             delegatesClass = glClass.GetNestedType("Delegates", BindingFlags.Static | BindingFlags.NonPublic);
             coreClass = glClass.GetNestedType("Core", BindingFlags.Static | BindingFlags.NonPublic);
             // 'Touch' Imports class to force initialization. We don't want anything yet, just to have

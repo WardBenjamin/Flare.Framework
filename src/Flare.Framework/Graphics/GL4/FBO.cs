@@ -80,72 +80,72 @@ namespace Flare.Graphics.GL4
             this.mipmaps = Mipmaps;
 
             // First create the framebuffer
-            BufferID = Gl.GenFramebuffer();
-            Gl.BindFramebuffer(FramebufferTarget.Framebuffer, BufferID);
+            BufferID = GL.GenFramebuffer();
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, BufferID);
 
             if (Attachments.Length == 1 && Attachments[0] == FramebufferAttachment.DepthAttachment)
             {
                 // if this is a depth attachment only
-                TextureID = new uint[] { Gl.GenTexture() };
-                Gl.BindTexture(TextureTarget.Texture2D, TextureID[0]);
+                TextureID = new uint[] { GL.GenTexture() };
+                GL.BindTexture(TextureTarget.Texture2D, TextureID[0]);
 
-                Gl.TexImage2D(TextureTarget.Texture2D, 0, Format, Size.Width, Size.Height, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Nearest);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Nearest);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, Format, Size.Width, Size.Height, 0, PixelFormat.DepthComponent, PixelType.Float, IntPtr.Zero);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Nearest);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Nearest);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
 
-                Gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, TextureID[0], 0);
-                Gl.DrawBuffer(DrawBufferMode.None);
-                Gl.ReadBuffer(ReadBufferMode.None);
+                GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, TextureID[0], 0);
+                GL.DrawBuffer(DrawBufferMode.None);
+                GL.ReadBuffer(ReadBufferMode.None);
             }
             else
             {
                 // Create n texture buffers (known by the number of attachments)
                 TextureID = new uint[Attachments.Length];
-                Gl.GenTextures(Attachments.Length, TextureID);
+                GL.GenTextures(Attachments.Length, TextureID);
 
                 // Bind the n texture buffers to the framebuffer
                 for (int i = 0; i < Attachments.Length; i++)
                 {
-                    Gl.BindTexture(TextureTarget.Texture2D, TextureID[i]);
-                    Gl.TexImage2D(TextureTarget.Texture2D, 0, Format, Size.Width, Size.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+                    GL.BindTexture(TextureTarget.Texture2D, TextureID[i]);
+                    GL.TexImage2D(TextureTarget.Texture2D, 0, Format, Size.Width, Size.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
                     if (Mipmaps)
                     {
-                        Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
-                        Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.LinearMipMapLinear);
-                        Gl.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+                        GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Linear);
+                        GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.LinearMipMapLinear);
+                        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
                     }
                     else
                     {
-                        Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, filterType);
-                        Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, filterType);
+                        GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, filterType);
+                        GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, filterType);
                     }
-                    Gl.FramebufferTexture(FramebufferTarget.Framebuffer, Attachments[i], TextureID[i], 0);
+                    GL.FramebufferTexture(FramebufferTarget.Framebuffer, Attachments[i], TextureID[i], 0);
                 }
 
                 // Create and attach a 24-bit depth buffer to the framebuffer
-                DepthID = Gl.GenTexture();
-                Gl.BindTexture(TextureTarget.Texture2D, DepthID);
+                DepthID = GL.GenTexture();
+                GL.BindTexture(TextureTarget.Texture2D, DepthID);
 
-                Gl.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, Size.Width, Size.Height, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Nearest);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Nearest);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
-                Gl.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, Size.Width, Size.Height, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, TextureParameter.Nearest);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, TextureParameter.Nearest);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, TextureParameter.ClampToEdge);
+                GL.TexParameteri(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, TextureParameter.ClampToEdge);
 
-                Gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, DepthID, 0);
-                Gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.StencilAttachment, DepthID, 0);
+                GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, DepthID, 0);
+                GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.StencilAttachment, DepthID, 0);
             }
 
             // Build the framebuffer and check for errors
-            FramebufferErrorCode status = Gl.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+            FramebufferErrorCode status = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
             if (status != FramebufferErrorCode.FramebufferComplete)
             {
-                Console.WriteLine("Frame buffer did not compile correctly.  Returned {0}, glError: {1}", status.ToString(), Gl.GetError().ToString());
+                Console.WriteLine("Frame buffer did not compile correctly.  Returned {0}, glError: {1}", status.ToString(), GL.GetError().ToString());
             }
 
-            Gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
         /// <summary>
@@ -169,11 +169,11 @@ namespace Flare.Graphics.GL4
         /// <param name="clear">True to clear both the color and depth buffer bits of the FBO before enabling.</param>
         public void Enable(bool clear = true)
         {
-            Gl.BindFramebuffer(FramebufferTarget.Framebuffer, BufferID);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, BufferID);
             if (Attachments.Length == 1)
             {
-                Gl.BindTexture(TextureTarget.Texture2D, TextureID[0]);
-                Gl.FramebufferTexture(FramebufferTarget.Framebuffer, Attachments[0], TextureID[0], 0);
+                GL.BindTexture(TextureTarget.Texture2D, TextureID[0]);
+                GL.FramebufferTexture(FramebufferTarget.Framebuffer, Attachments[0], TextureID[0], 0);
             }
             else
             {
@@ -181,26 +181,26 @@ namespace Flare.Graphics.GL4
 
                 for (int i = 0; i < Attachments.Length; i++)
                 {
-                    Gl.BindTexture(TextureTarget.Texture2D, TextureID[i]);
-                    Gl.FramebufferTexture(FramebufferTarget.Framebuffer, Attachments[i], TextureID[i], 0);
+                    GL.BindTexture(TextureTarget.Texture2D, TextureID[i]);
+                    GL.FramebufferTexture(FramebufferTarget.Framebuffer, Attachments[i], TextureID[i], 0);
                     buffers[i] = (DrawBuffersEnum)Attachments[i];
                 }
 
-                Gl.BindTexture(TextureTarget.Texture2D, DepthID);
-                Gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, DepthID, 0);
+                GL.BindTexture(TextureTarget.Texture2D, DepthID);
+                GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, DepthID, 0);
 
-                if (Attachments.Length > 1) Gl.DrawBuffers(Attachments.Length, buffers);
+                if (Attachments.Length > 1) GL.DrawBuffers(Attachments.Length, buffers);
             }
 
-            Gl.Viewport(0, 0, Size.Width, Size.Height);
+            GL.Viewport(0, 0, Size.Width, Size.Height);
 
             // configurably clear the buffer and color bits
             if (clear)
             {
                 if (Attachments.Length == 1 && Attachments[0] == FramebufferAttachment.DepthAttachment)
-                    Gl.Clear(ClearBufferMask.DepthBufferBit);
+                    GL.Clear(ClearBufferMask.DepthBufferBit);
                 else
-                    Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+                    GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             }
         }
 
@@ -210,13 +210,13 @@ namespace Flare.Graphics.GL4
         public void Disable()
         {
             // unbind this framebuffer (does not guarantee the correct framebuffer is bound)
-            Gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
             // have to generate mipmaps here
             for (int i = 0; i < Attachments.Length && mipmaps; i++)
             {
-                Gl.BindTexture(TextureTarget.Texture2D, TextureID[i]);
-                Gl.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+                GL.BindTexture(TextureTarget.Texture2D, TextureID[i]);
+                GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             }
         }
         #endregion
@@ -226,9 +226,9 @@ namespace Flare.Graphics.GL4
         {
             if (DepthID != 0 || BufferID != 0 || TextureID != null)
             {
-                Gl.DeleteTextures(TextureID.Length, TextureID);
-                Gl.DeleteFramebuffers(1, new uint[] { BufferID });
-                Gl.DeleteFramebuffers(1, new uint[] { DepthID });
+                GL.DeleteTextures(TextureID.Length, TextureID);
+                GL.DeleteFramebuffers(1, new uint[] { BufferID });
+                GL.DeleteFramebuffers(1, new uint[] { DepthID });
 
                 BufferID = 0;
                 DepthID = 0;

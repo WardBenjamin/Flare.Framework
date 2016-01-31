@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace Flare.Graphics.GL4
 {
     // Automatically generated from GlCore.cs using BuildGl
-    partial class Gl
+    partial class GL
     {
         internal static partial class Delegates
         {

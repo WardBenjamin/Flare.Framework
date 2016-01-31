@@ -51,8 +51,8 @@ namespace Flare.Graphics.GL4
             Program.Use();
 
             // bind the active texture
-            Gl.ActiveTexture(TextureUnit.Texture0);
-            Gl.BindTexture(Texture);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(Texture);
 
             // draw the billboard
             billboard.Draw();

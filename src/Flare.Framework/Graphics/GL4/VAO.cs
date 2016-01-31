@@ -244,15 +244,15 @@ namespace Flare.Graphics.GL4
         {
             this.vbos = vbos;
 
-            if (Gl.Version() >= 3)
+            if (GL.Version() >= 3)
             {
-                vaoID = Gl.GenVertexArray();
+                vaoID = GL.GenVertexArray();
                 if (vaoID != 0)
                 {
-                    Gl.BindVertexArray(vaoID);
+                    GL.BindVertexArray(vaoID);
                     BindAttributes(this.Program);
                 }
-                Gl.BindVertexArray(0);
+                GL.BindVertexArray(0);
 
                 Draw = DrawOGL3;
             }
@@ -339,17 +339,17 @@ namespace Flare.Graphics.GL4
                     continue;
                 }
 
-                int loc = Gl.GetAttribLocation(program.ProgramID, vbos[i].name);
+                int loc = GL.GetAttribLocation(program.ProgramID, vbos[i].name);
                 if (loc == -1) throw new Exception(string.Format("Shader did not contain '{0}'.", vbos[i].name));
 
-                Gl.EnableVertexAttribArray((uint)loc);
-                Gl.BindBuffer(vbos[i].bufferTarget, vbos[i].vboID);
-                Gl.VertexAttribPointer((uint)loc, vbos[i].size, vbos[i].pointerType, true, vbos[i].size * SizeOfType(vbos[i].pointerType), IntPtr.Zero);
+                GL.EnableVertexAttribArray((uint)loc);
+                GL.BindBuffer(vbos[i].bufferTarget, vbos[i].vboID);
+                GL.VertexAttribPointer((uint)loc, vbos[i].size, vbos[i].pointerType, true, vbos[i].size * SizeOfType(vbos[i].pointerType), IntPtr.Zero);
             }
 
             if (elementArray.vboID != 0)
             {
-                Gl.BindBuffer(BufferTarget.ElementArrayBuffer, elementArray.vboID);
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementArray.vboID);
                 VertexCount = elementArray.length;
             }
         }
@@ -364,9 +364,9 @@ namespace Flare.Graphics.GL4
         private void DrawOGL3()
         {
             if (vaoID == 0 || VertexCount == 0) return;
-            Gl.BindVertexArray(vaoID);
-            Gl.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-            Gl.BindVertexArray(0);
+            GL.BindVertexArray(vaoID);
+            GL.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            GL.BindVertexArray(0);
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace Flare.Graphics.GL4
         {
             if (VertexCount == 0) return;
             BindAttributes(this.Program);
-            Gl.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            GL.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace Flare.Graphics.GL4
         public void DrawProgram(ShaderProgram program)
         {
             BindAttributes(program);
-            Gl.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            GL.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
         #endregion
 
@@ -399,7 +399,7 @@ namespace Flare.Graphics.GL4
             // first try to dispose of the vertex array
             if (vaoID != 0)
             {
-                Gl.DeleteVertexArrays(1, new uint[] { vaoID });
+                GL.DeleteVertexArrays(1, new uint[] { vaoID });
 
                 vaoID = 0;
             }
@@ -410,7 +410,7 @@ namespace Flare.Graphics.GL4
                 for (int i = 0; i < vbos.Length; i++)
                 {
                     if (vbos[i].bufferTarget == BufferTarget.ElementArrayBuffer && !DisposeElementArray) continue;
-                    Gl.DeleteBuffer(vbos[i].vboID);
+                    GL.DeleteBuffer(vbos[i].vboID);
                 }
             }
         }
@@ -506,15 +506,15 @@ namespace Flare.Graphics.GL4
             this.uv = uv;
             this.element = element;
 
-            if (Gl.Version() >= 3)
+            if (GL.Version() >= 3)
             {
-                vaoID = Gl.GenVertexArray();
+                vaoID = GL.GenVertexArray();
                 if (vaoID != 0)
                 {
-                    Gl.BindVertexArray(vaoID);
+                    GL.BindVertexArray(vaoID);
                     BindAttributes(this.Program);
                 }
-                Gl.BindVertexArray(0);
+                GL.BindVertexArray(0);
 
                 Draw = DrawOGL3;
             }
@@ -535,23 +535,23 @@ namespace Flare.Graphics.GL4
         {
             if (normalAttributeLocation != -1 && normal.vboID != 0)
             {
-                Gl.EnableVertexAttribArray((uint)normalAttributeLocation);
-                Gl.BindBuffer(normal.BufferTarget, normal.vboID);
-                Gl.VertexAttribPointer((uint)normalAttributeLocation, normal.Size, normal.PointerType, true, 12, IntPtr.Zero);
+                GL.EnableVertexAttribArray((uint)normalAttributeLocation);
+                GL.BindBuffer(normal.BufferTarget, normal.vboID);
+                GL.VertexAttribPointer((uint)normalAttributeLocation, normal.Size, normal.PointerType, true, 12, IntPtr.Zero);
             }
 
             if (uvAttributeLocation != -1 && uv.vboID != 0)
             {
-                Gl.EnableVertexAttribArray((uint)uvAttributeLocation);
-                Gl.BindBuffer(uv.BufferTarget, uv.vboID);
-                Gl.VertexAttribPointer((uint)uvAttributeLocation, uv.Size, uv.PointerType, true, 8, IntPtr.Zero);
+                GL.EnableVertexAttribArray((uint)uvAttributeLocation);
+                GL.BindBuffer(uv.BufferTarget, uv.vboID);
+                GL.VertexAttribPointer((uint)uvAttributeLocation, uv.Size, uv.PointerType, true, 8, IntPtr.Zero);
             }
 
             if (tangentAttributeLocation != -1 && tangent.vboID != 0)
             {
-                Gl.EnableVertexAttribArray((uint)tangentAttributeLocation);
-                Gl.BindBuffer(tangent.BufferTarget, tangent.vboID);
-                Gl.VertexAttribPointer((uint)tangentAttributeLocation, tangent.Size, tangent.PointerType, true, 12, IntPtr.Zero);
+                GL.EnableVertexAttribArray((uint)tangentAttributeLocation);
+                GL.BindBuffer(tangent.BufferTarget, tangent.vboID);
+                GL.VertexAttribPointer((uint)tangentAttributeLocation, tangent.Size, tangent.PointerType, true, 12, IntPtr.Zero);
             }
 
             BindCachedAttributes(vertexAttributeLocation, program);
@@ -562,11 +562,11 @@ namespace Flare.Graphics.GL4
             if (vertex == null || vertex.vboID == 0) throw new Exception("Error binding attributes.  No vertices were supplied.");
             if (element == null || element.vboID == 0) throw new Exception("Error binding attributes.  No element array was supplied.");
 
-            Gl.EnableVertexAttribArray((uint)vertexAttributeLocation);
-            Gl.BindBuffer(vertex.BufferTarget, vertex.vboID);
-            Gl.VertexAttribPointer((uint)vertexAttributeLocation, vertex.Size, vertex.PointerType, true, 12, IntPtr.Zero);
+            GL.EnableVertexAttribArray((uint)vertexAttributeLocation);
+            GL.BindBuffer(vertex.BufferTarget, vertex.vboID);
+            GL.VertexAttribPointer((uint)vertexAttributeLocation, vertex.Size, vertex.PointerType, true, 12, IntPtr.Zero);
 
-            Gl.BindBuffer(BufferTarget.ElementArrayBuffer, element.vboID);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, element.vboID);
         }
 
         /// <summary>
@@ -584,47 +584,47 @@ namespace Flare.Graphics.GL4
 
             // Note:  Since the shader is already compiled, we cannot set the attribute locations.
             //  Instead we must query the shader for the locations that the linker chose and use them.
-            int loc = Gl.GetAttribLocation(program.ProgramID, "in_position");
+            int loc = GL.GetAttribLocation(program.ProgramID, "in_position");
             if (loc == -1) throw new Exception("Shader did not contain 'in_position'.");
 
-            Gl.EnableVertexAttribArray((uint)loc);
-            Gl.BindBuffer(vertex.BufferTarget, vertex.vboID);
-            Gl.VertexAttribPointer((uint)loc, vertex.Size, vertex.PointerType, true, 12, IntPtr.Zero);
+            GL.EnableVertexAttribArray((uint)loc);
+            GL.BindBuffer(vertex.BufferTarget, vertex.vboID);
+            GL.VertexAttribPointer((uint)loc, vertex.Size, vertex.PointerType, true, 12, IntPtr.Zero);
 
             if (normal != null && normal.vboID != 0)
             {
-                loc = Gl.GetAttribLocation(program.ProgramID, "in_normal");
+                loc = GL.GetAttribLocation(program.ProgramID, "in_normal");
                 if (loc != -1)
                 {
-                    Gl.EnableVertexAttribArray((uint)loc);
-                    Gl.BindBuffer(normal.BufferTarget, normal.vboID);
-                    Gl.VertexAttribPointer((uint)loc, normal.Size, normal.PointerType, true, 12, IntPtr.Zero);
+                    GL.EnableVertexAttribArray((uint)loc);
+                    GL.BindBuffer(normal.BufferTarget, normal.vboID);
+                    GL.VertexAttribPointer((uint)loc, normal.Size, normal.PointerType, true, 12, IntPtr.Zero);
                 }
             }
 
             if (uv != null && uv.vboID != 0)
             {
-                loc = Gl.GetAttribLocation(program.ProgramID, "in_uv");
+                loc = GL.GetAttribLocation(program.ProgramID, "in_uv");
                 if (loc != -1)
                 {
-                    Gl.EnableVertexAttribArray((uint)loc);
-                    Gl.BindBuffer(uv.BufferTarget, uv.vboID);
-                    Gl.VertexAttribPointer((uint)loc, uv.Size, uv.PointerType, true, 8, IntPtr.Zero);
+                    GL.EnableVertexAttribArray((uint)loc);
+                    GL.BindBuffer(uv.BufferTarget, uv.vboID);
+                    GL.VertexAttribPointer((uint)loc, uv.Size, uv.PointerType, true, 8, IntPtr.Zero);
                 }
             }
 
             if (tangent != null && tangent.vboID != 0)
             {
-                loc = Gl.GetAttribLocation(program.ProgramID, "in_tangent");
+                loc = GL.GetAttribLocation(program.ProgramID, "in_tangent");
                 if (loc != -1)
                 {
-                    Gl.EnableVertexAttribArray((uint)loc);
-                    Gl.BindBuffer(tangent.BufferTarget, tangent.vboID);
-                    Gl.VertexAttribPointer((uint)loc, tangent.Size, tangent.PointerType, true, 12, IntPtr.Zero);
+                    GL.EnableVertexAttribArray((uint)loc);
+                    GL.BindBuffer(tangent.BufferTarget, tangent.vboID);
+                    GL.VertexAttribPointer((uint)loc, tangent.Size, tangent.PointerType, true, 12, IntPtr.Zero);
                 }
             }
 
-            Gl.BindBuffer(BufferTarget.ElementArrayBuffer, element.vboID);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, element.vboID);
         }
 
         public delegate void DrawFunc();
@@ -637,12 +637,12 @@ namespace Flare.Graphics.GL4
         private void DrawOGL3()
         {
             if (vaoID == 0) return;
-            Gl.BindVertexArray(vaoID);
+            GL.BindVertexArray(vaoID);
 
             IntPtr offset = (IntPtr)(Offset * 4);
-            Gl.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, offset);
+            GL.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, offset);
 
-            Gl.BindVertexArray(0);
+            GL.BindVertexArray(0);
         }
 
         /// <summary>
@@ -653,7 +653,7 @@ namespace Flare.Graphics.GL4
             BindAttributes(this.Program);
 
             IntPtr offset = (IntPtr)(Offset * 4);
-            Gl.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, offset);
+            GL.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, offset);
         }
 
         /// <summary>
@@ -663,8 +663,8 @@ namespace Flare.Graphics.GL4
         public void DrawProgram(ShaderProgram program)
         {
             BindAttributes(program);
-            if (Offset == 0) Gl.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-            else Gl.DrawElementsBaseVertex(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero, Offset);
+            if (Offset == 0) GL.DrawElements(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            else GL.DrawElementsBaseVertex(DrawMode, VertexCount, DrawElementsType.UnsignedInt, IntPtr.Zero, Offset);
         }
         #endregion
 
@@ -677,7 +677,7 @@ namespace Flare.Graphics.GL4
             // first try to dispose of the vertex array
             if (vaoID != 0)
             {
-                Gl.DeleteVertexArrays(1, new uint[] { vaoID });
+                GL.DeleteVertexArrays(1, new uint[] { vaoID });
 
                 vaoID = 0;
             }

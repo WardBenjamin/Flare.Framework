@@ -56,7 +56,7 @@ namespace Flare.Graphics.GL4
         {
             Length = System.Math.Max(0, System.Math.Min(Length, Data.Length));
 
-            vboID = Gl.CreateVBO<T>(BufferTarget = Target, Data, Hint, Length);
+            vboID = GL.CreateVBO<T>(BufferTarget = Target, Data, Hint, Length);
 
             this.Size = (Data is int[] ? 1 : (Data is Vector2[] ? 2 : (Data is Vector3[] ? 3 : (Data is Vector4[] ? 4 : 0))));
             this.PointerType = (Data is int[] ? VertexAttribPointerType.Int : VertexAttribPointerType.Float);
@@ -76,7 +76,7 @@ namespace Flare.Graphics.GL4
         {
             Length = System.Math.Max(0, System.Math.Min(Length, Data.Length));
 
-            vboID = Gl.CreateVBO<T>(BufferTarget = Target, Data, Hint, Position, Length);
+            vboID = GL.CreateVBO<T>(BufferTarget = Target, Data, Hint, Position, Length);
 
             this.Size = (Data is int[] ? 1 : (Data is Vector2[] ? 2 : (Data is Vector3[] ? 3 : (Data is Vector4[] ? 4 : 0))));
             this.PointerType = (Data is int[] ? VertexAttribPointerType.Int : VertexAttribPointerType.Float);
@@ -91,7 +91,7 @@ namespace Flare.Graphics.GL4
         /// <param name="Hint">Specifies the expected usage of the data store.</param>
         public VBO(T[] Data, BufferTarget Target = GL4.BufferTarget.ArrayBuffer, BufferUsageHint Hint = BufferUsageHint.StaticDraw)
         {
-            vboID = Gl.CreateVBO<T>(BufferTarget = Target, Data, Hint);
+            vboID = GL.CreateVBO<T>(BufferTarget = Target, Data, Hint);
 
             Size = (Data is int[] ? 1 : (Data is Vector2[] ? 2 : (Data is Vector3[] ? 3 : (Data is Vector4[] ? 4 : 0))));
             PointerType = (Data is int[] ? VertexAttribPointerType.Int : VertexAttribPointerType.Float);
@@ -124,7 +124,7 @@ namespace Flare.Graphics.GL4
         {
             if (vboID != 0)
             {
-                Gl.DeleteBuffer(vboID);
+                GL.DeleteBuffer(vboID);
                 vboID = 0;
             }
         }
