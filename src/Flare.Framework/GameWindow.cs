@@ -99,17 +99,11 @@ namespace Flare
 
         public abstract void BeginScreenDeviceChange(bool willBeFullScreen);
 
-        public abstract void EndScreenDeviceChange(
-            int clientWidth,
-            int clientHeight
-        );
+        public abstract void EndScreenDeviceChange(int clientWidth, int clientHeight);
 
         public void EndScreenDeviceChange()
         {
-            EndScreenDeviceChange(
-                ClientBounds.Width,
-                ClientBounds.Height
-            );
+            EndScreenDeviceChange(ClientBounds.Width, ClientBounds.Height);
         }
 
         #endregion

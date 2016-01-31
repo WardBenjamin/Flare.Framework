@@ -423,29 +423,6 @@ namespace Flare.SDL2
             }
         }
 
-        internal static void GetMouseState(
-           out int x,
-           out int y,
-           out ButtonState left,
-           out ButtonState middle,
-           out ButtonState right,
-           out ButtonState x1,
-           out ButtonState x2
-       )
-        {
-            uint flags = SDL.SDL_GetMouseState(out x, out y);
-            left = (ButtonState)(flags & SDL.SDL_BUTTON_LMASK);
-            middle = (ButtonState)((flags & SDL.SDL_BUTTON_MMASK) >> 1);
-            right = (ButtonState)((flags & SDL.SDL_BUTTON_RMASK) >> 2);
-            x1 = (ButtonState)((flags & SDL.SDL_BUTTON_X1MASK) >> 3);
-            x2 = (ButtonState)((flags & SDL.SDL_BUTTON_X2MASK) >> 4);
-        }
-
-        static void SetMousePosition(IntPtr window, int x, int y)
-        {
-            SDL.SDL_WarpMouseInWindow(window, x, y);
-        }
-
         internal static void OnIsMouseVisibleChanged(bool visible)
         {
             SDL.SDL_ShowCursor(visible ? 1 : 0);
@@ -523,15 +500,8 @@ namespace Flare.SDL2
             );
         }
 
-        internal static void TextureDataFromStream(
-           Stream stream,
-           out int width,
-           out int height,
-           out byte[] pixels,
-           int reqWidth = -1,
-           int reqHeight = -1,
-           bool zoom = false
-       )
+        internal static void TextureDataFromStream(Stream stream, out int width, out int height, 
+            out byte[] pixels, int reqWidth = -1, int reqHeight = -1, bool zoom = false)
         {
             // Load the Stream into an SDL_RWops*.
             byte[] mem = new byte[stream.Length];
@@ -678,14 +648,7 @@ namespace Flare.SDL2
             }
         }
 
-        internal static void SavePNG(
-           Stream stream,
-           int width,
-           int height,
-           int imgWidth,
-           int imgHeight,
-           byte[] data
-       )
+        internal static void SavePNG(Stream stream, int width, int height, int imgWidth, int imgHeight, byte[] data)
         {
             // Create an SDL_Surface*, write the pixel data
             IntPtr surface = SDL.SDL_CreateRGBSurface(

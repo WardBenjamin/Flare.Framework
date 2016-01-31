@@ -40,15 +40,6 @@ namespace Flare.Input
 
         #endregion
 
-        #region Public Static FNA Extensions
-
-        public static Keys GetKeyFromScancode(Keys scancode)
-        {
-            return SDL2.SDL2_KeyboardUtil.GetKeyFromScancode(scancode);
-        }
-
-        #endregion
-
         #region Internal Static Methods
 
         internal static void SetKeys(List<Keys> newKeys)

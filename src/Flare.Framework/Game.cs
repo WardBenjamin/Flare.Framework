@@ -94,6 +94,7 @@ namespace Flare
 
         /// <summary>
         /// Gets or sets the time to sleep when the game is inactive. 
+        /// TODO: Will be depricated.
         /// </summary>
         public TimeSpan InactiveSleepTime
         {
@@ -157,6 +158,7 @@ namespace Flare
 
         /// <summary>
         /// Gets or sets the target time between calls to Update when IsFixedTimeStep is true.
+        /// TODO: Will be depricated.
         /// </summary>
         public TimeSpan TargetElapsedTime
         {
@@ -180,6 +182,7 @@ namespace Flare
 
         /// <summary>
         /// Gets or sets a value indicating whether to use fixed time steps. 
+        /// TODO: Will be depricated.
         /// </summary>
         public bool IsFixedTimeStep
         {
@@ -217,7 +220,7 @@ namespace Flare
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("An exception was not handled! " + e.ToString());
         }
 
         #endregion
@@ -591,7 +594,6 @@ namespace Flare
             // TODO: Event and DrawEventArgs
         }
 
-
         protected virtual void Update(GameTime gameTime)
         {
             // TODO: Event and UpdateEventArgs
@@ -671,7 +673,6 @@ namespace Flare
                 handler(this, e);
             }
         }
-
 
         #endregion
 
