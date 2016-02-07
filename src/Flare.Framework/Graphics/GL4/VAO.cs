@@ -315,10 +315,10 @@ namespace Flare.Graphics.GL4
         {
             switch (type)
             {
-                case VertexAttribPointerType.Byte: 
+                case VertexAttribPointerType.Byte:
                 case VertexAttribPointerType.UnsignedByte: return 1;
                 case VertexAttribPointerType.Short:
-                case VertexAttribPointerType.UnsignedShort: 
+                case VertexAttribPointerType.UnsignedShort:
                 case VertexAttribPointerType.HalfFloat: return 2;
                 case VertexAttribPointerType.Int:
                 case VertexAttribPointerType.Float: return 4;
@@ -524,9 +524,12 @@ namespace Flare.Graphics.GL4
             }
         }
 
+        /// <summary>
+        /// Check to make sure the VAO and children were disposed properly.
+        /// </summary>
         ~VAO()
         {
-            if (vaoID != 0) System.Diagnostics.Debug.Fail("VAO was not disposed of properly.");
+            Dispose(false);
         }
         #endregion
 
@@ -670,34 +673,52 @@ namespace Flare.Graphics.GL4
 
         #region IDisposable
         /// <summary>
-        /// Deletes the vertex array from the GPU and will also dispose of any child VBOs if (DisposeChildren == true).
+        /// Deletes the vertex array from the GPU and will also dispose of any child VBOs if DisposeChildren is true.
         /// </summary>
         public void Dispose()
         {
-            // first try to dispose of the vertex array
-            if (vaoID != 0)
-            {
-                GL.DeleteVertexArrays(1, new uint[] { vaoID });
-
-                vaoID = 0;
-            }
-
-            // children must be disposed of separately since OpenGL 2.1 will not have a vertex array
-            if (DisposeChildren)
-            {
-                if (vertex != null) vertex.Dispose();
-                if (normal != null) normal.Dispose();
-                if (tangent != null) tangent.Dispose();
-                if (uv != null) uv.Dispose();
-                if (element != null && DisposeElementArray) element.Dispose();
-
-                vertex = null;
-                normal = null;
-                tangent = null;
-                uv = null;
-                element = null;
-            }
         }
+        #endregion
+
+        #region IDisposable Support
+
+        private bool isDisposed = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                isDisposed = true;
+                // First, try to dispose of the vertex array.
+                if (vaoID != 0)
+                {
+                    GL_Cleanup.AddVAO(this.vaoID);
+                    vaoID = 0;
+                }
+
+                // Children must be disposed of separately since OpenGL 2.1 will not have a vertex array.
+                if (DisposeChildren)
+                {
+                    // We can take care of this here instead of waiting for 
+                    // their destructors to trigger, which is not guaranteed.
+                    if (vertex != null) vertex.Dispose();
+                    if (normal != null) normal.Dispose();
+                    if (tangent != null) tangent.Dispose();
+                    if (uv != null) uv.Dispose();
+                    if (element != null && DisposeElementArray) element.Dispose();
+
+                    vertex = null;
+                    normal = null;
+                    tangent = null;
+                    uv = null;
+                    element = null;
+                }
+
+                GC.SuppressFinalize(this);
+            }
+
+        }
+
         #endregion
     }
 }

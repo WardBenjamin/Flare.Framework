@@ -278,6 +278,7 @@ namespace Flare.Graphics.GL4
         #region IDisposable
         public void Dispose()
         {
+            // TODO: Move this to GL_Cleanup
             if (ShaderID != 0)
             {
                 GL.DeleteShader(ShaderID);
@@ -418,6 +419,7 @@ namespace Flare.Graphics.GL4
         #region IDisposable
         public void Dispose()
         {
+            // TODO: Move this to GL_Cleanup
             if (ProgramID != 0)
             {
                 // Make sure this program isn't being used

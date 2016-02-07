@@ -112,22 +112,34 @@ namespace Flare.Graphics.GL4
         /// </summary>
         ~VBO()
         {
-            if (vboID != 0) System.Diagnostics.Debug.Fail("VBO was not disposed of properly.");
+            Dispose(false);
         }
+    
         #endregion
 
-        #region IDisposable
-        /// <summary>
-        /// Deletes this buffer from GPU memory.
-        /// </summary>
-        public void Dispose()
+        #region IDisposable Support
+
+        private bool isDisposed = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (vboID != 0)
+            if (!isDisposed)
             {
-                GL.DeleteBuffer(vboID);
-                vboID = 0;
+                isDisposed = true;
+                if (vboID != 0)
+                {
+                    GL_Cleanup.AddVBO(this.vboID);
+                    vboID = 0;
+                }
             }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         #endregion
     }
 }

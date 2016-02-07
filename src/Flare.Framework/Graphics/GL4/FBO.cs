@@ -226,9 +226,8 @@ namespace Flare.Graphics.GL4
         {
             if (DepthID != 0 || BufferID != 0 || TextureID != null)
             {
-                GL.DeleteTextures(TextureID.Length, TextureID);
-                GL.DeleteFramebuffers(1, new uint[] { BufferID });
-                GL.DeleteFramebuffers(1, new uint[] { DepthID });
+                GL_Cleanup.AddTextures(TextureID.Length, TextureID);
+                GL_Cleanup.AddFBO(DepthID, BufferID);
 
                 BufferID = 0;
                 DepthID = 0;
