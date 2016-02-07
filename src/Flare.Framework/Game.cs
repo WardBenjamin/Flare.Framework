@@ -37,6 +37,11 @@ using Flare.SDL2;
 
 namespace Flare
 {
+    using KeyPressedEvent = Action<char>;
+    using FrameEvent = Action<GameTime>;
+    using DefaultEvent = Action;
+    using FocusChangedEvent = Action<bool>;
+
     public class Game
     {
         #region Internal Properties
@@ -49,7 +54,7 @@ namespace Flare
         #region Private Fields
         private GameWindow _window;
 
-        private bool _isActive = true;
+        private bool _isFocused = true;
         private bool _isMouseVisible = false;
 
         private bool _initialized = false;
@@ -119,20 +124,23 @@ namespace Flare
         }
 
         /// <summary>
-        /// Indicates whether the game is currently the active application. 
+        /// Indicates whether the game is currently the active application (aka the window is focused).
         /// </summary>
-        public bool IsActive
+        public bool IsFocused
         {
             get
             {
-                return _isActive;
+                return _isFocused;
             }
             internal set
             {
-                if (_isActive != value)
+                if (_isFocused != value)
                 {
-                    _isActive = value;
-                    Raise(_isActive ? Activated : Deactivated, EventArgs.Empty);
+                    _isFocused = value;
+                    RaiseAction(_isFocused ? FocusGained : FocusLost);
+                    RaiseAction(FocusChanged, _isFocused);
+                    // TODO: Fix this
+                    // Raise(FocusedChanged, FocusEventArgs(!value, value));
                 }
             }
         }
@@ -220,7 +228,7 @@ namespace Flare
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine("An exception was not handled! " + e.ToString());
+            Log.Write("An exception was not handled! " + e.ToString());
         }
 
         #endregion
@@ -241,7 +249,7 @@ namespace Flare
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-            Raise(Disposed, EventArgs.Empty);
+            RaiseAction(Disposed);
         }
 
         protected void Dispose(bool disposing)
@@ -281,18 +289,58 @@ namespace Flare
 
         #region Events
 
-        public static event EventHandler<EventArgs>         Activated;
-        public static event EventHandler<EventArgs>         Deactivated;
-        public static event EventHandler<EventArgs>         Disposed;
-        public static event EventHandler<EventArgs>         Exited;
-        public static event EventHandler<EventArgs>         Exiting;
+        /// <summary>
+        /// Event that fires when window focus is gained. This will always fire before FocusChanged.
+        /// </summary>
+        public static event DefaultEvent FocusGained;
 
-        public static event Action<GameTime>                Draw;
-        public static event Action<GameTime>                Update;
+        /// <summary>
+        /// Event that fires when window focus is lost. This will always fire before FocusChanged.
+        /// </summary>
+        public static event DefaultEvent FocusLost;
 
+        /// <summary>
+        /// Event that fires on a window focus change. This will always be called directly 
+        /// after FocusGained or FocusLost, and will contain the new value of the focus.
+        /// </summary>
+        public static event FocusChangedEvent FocusChanged;
 
-        public static event EventHandler<EventArgs> FocusedChanged;
-        public static event EventHandler<EventArgs> IconChanged;
+        /// <summary>
+        /// Event that fires when the game is disposed.
+        /// </summary>
+        public static event DefaultEvent Disposed;
+
+        /// <summary>
+        /// Event that fires when the game has exited. This will always be called after Exiting.
+        /// </summary>
+        public static event DefaultEvent Exited;
+
+        /// <summary>
+        /// Event that fires when the game is exiting. This will always be called before Exited.
+        /// </summary>
+        public static event DefaultEvent Exiting;
+
+        /// <summary>
+        /// Event that fires when the game has finished initialization, and has a valid OpenGL context.
+        /// </summary>
+        public static event DefaultEvent Initialize;
+
+        /// <summary>
+        /// Event that fires when the game is ready to draw. This is where all draw calls should be attached.
+        /// </summary>
+        public static event FrameEvent Draw;
+
+        /// <summary>
+        /// Event that fires when the game is ready to update. This is where all update calls should be attached.
+        /// </summary>
+        public static event FrameEvent Update;
+
+        /// <summary>
+        /// Use this event to retrieve text for objects like textboxes.
+        /// This event is not raised by noncharacter keys, and supports key repeat.
+        /// For more information, this event is based off of System.Windows.Forms.Control.KeyPress
+        /// </summary>
+        public event KeyPressedEvent KeyPress;
 
         /*
         public static event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyDown;
@@ -317,28 +365,42 @@ namespace Flare
 
         #endregion
 
-        public void Exit()
-        {
-            _suppressDraw = true;
-            // TODO: Add to event
-        }
+        #region Event Handling
 
-        public void ResetElapsedTime()
+        private void Raise<TEventArgs>(EventHandler<TEventArgs> handler, TEventArgs e)
+            where TEventArgs : EventArgs
         {
-            if (_initialized)
+            if (handler != null)
             {
-                _gameTimer.Reset();
-                _gameTimer.Start();
-                _accumulatedElapsedTime = TimeSpan.Zero;
-                _gameTime.ElapsedGameTime = TimeSpan.Zero;
-                _previousTicks = 0L;
+                handler(this, e);
             }
         }
 
-        public void SuppressDraw()
+        private void RaiseAction(DefaultEvent handler)
         {
-            _suppressDraw = true;
+            if (handler != null)
+                handler();
         }
+
+        private void RaiseAction<T>(Action<T> handler, T e)
+        {
+            if (handler != null)
+                handler(e);
+        }
+
+        #endregion
+
+        #region Input
+
+        internal void OnKeyPress(char c)
+        {
+            if (KeyPress != null)
+            {
+                KeyPress(c);
+            }
+        }
+        
+        #endregion
 
         #region Run Methods
 
@@ -359,7 +421,6 @@ namespace Flare
             EndRun();
         }
 
-
         public void Run()
         {
             AssertNotDisposed();
@@ -376,8 +437,6 @@ namespace Flare
             SDL2_Platform.RunLoop(this);
 
             EndRun();
-
-            OnExiting(this, EventArgs.Empty);
         }
 
 
@@ -431,6 +490,8 @@ namespace Flare
 			profileEffect.Dispose();
 #endif
             #endregion
+            this.Dispose(true);
+            RaiseAction(Disposed);
         }
 
         #endregion
@@ -541,19 +602,25 @@ namespace Flare
 
                 DoUpdate(_gameTime);
             }
+            DoDraw(_gameTime);
+        }
 
-            // Draw unless the update suppressed it.
-            if (_suppressDraw)
+        public void Exit()
+        {
+            _suppressDraw = true;
+            RaiseAction(Exiting);
+            RaiseAction(Exited);
+        }
+
+        public void ResetElapsedTime()
+        {
+            if (_initialized)
             {
-                _suppressDraw = false;
-            }
-            else
-            {
-                if (BeginDraw())
-                {
-                    OnDraw(_gameTime);
-                    EndDraw();
-                }
+                _gameTimer.Reset();
+                _gameTimer.Start();
+                _accumulatedElapsedTime = TimeSpan.Zero;
+                _gameTime.ElapsedGameTime = TimeSpan.Zero;
+                _previousTicks = 0L;
             }
         }
 
@@ -620,45 +687,40 @@ namespace Flare
             #endregion
         }
 
-        #endregion
-
-        #region Event support
-
-        protected void OnInitialize()
+        public void SuppressDraw()
         {
-            // TODO: Event
-        }
-
-        protected virtual void OnDraw(GameTime gameTime)
-        {
-            RaiseAction(Draw, gameTime);
-        }
-
-        protected virtual void OnUpdate(GameTime gameTime)
-        {
-            RaiseAction(Update, gameTime);
-        }
-
-        protected void OnExiting(object sender, EventArgs args)
-        {
-            Raise(Exiting, args);
-        }
-
-        protected void OnActivated(object sender, EventArgs args)
-        {
-            AssertNotDisposed();
-            Raise(Activated, args);
-        }
-
-        protected void OnDeactivated(object sender, EventArgs args)
-        {
-            AssertNotDisposed();
-            Raise(Deactivated, args);
+            _suppressDraw = true;
         }
 
         #endregion
 
         #region Private Methods
+
+        private void DoInitialize()
+        {
+            AssertNotDisposed();
+
+            SDL2_Platform.BeforeInitialize();
+            RaiseAction(Initialize);
+
+        }
+
+        private void DoDraw(GameTime gameTime)
+        {
+            // Draw unless the update suppressed it.
+            if (_suppressDraw)
+            {
+                _suppressDraw = false;
+            }
+            else
+            {
+                if (BeginDraw())
+                {
+                    RaiseAction(Draw, gameTime);
+                    EndDraw();
+                }
+            }
+        }
 
         private void DoUpdate(GameTime gameTime)
         {
@@ -667,82 +729,9 @@ namespace Flare
             // TODO: Audio
             //AudioDevice.Update();
 
-            OnUpdate(gameTime);
-        }
-
-        private void DoInitialize()
-        {
-            AssertNotDisposed();
-
-            SDL2_Platform.BeforeInitialize();
-            OnInitialize();
-        }
-
-        private void Raise<TEventArgs>(EventHandler<TEventArgs> handler, TEventArgs e)
-    where TEventArgs : EventArgs
-        {
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        private void RaiseAction<T>(Action<T> handler, T e)
-        {
-            if (handler != null)
-                handler(e);
+            RaiseAction(Update, gameTime);
         }
 
         #endregion
-
-        // TODO: Some attention
-        #region Input events
-
-        /// <summary>
-        /// Use this event to retrieve text for objects like textboxes.
-        /// This event is not raised by noncharacter keys.
-        /// This event also supports key repeat.
-        /// For more information this event is based off:
-        /// http://msdn.microsoft.com/en-AU/library/system.windows.forms.control.keypress.aspx
-        /// </summary>
-        public event Action<char> KeyPress;
-
-
-        public void OnKeyPress(char c)
-        {
-            if (KeyPress != null)
-            {
-                KeyPress(c);
-            }
-        }
-        #endregion
-
-        protected bool ShowMissingRequirementMessage(Exception exception)
-        {
-            // TODO: Audio
-            /*if (exception is NoAudioHardwareException)
-            {
-                SDL2_Platform.ShowRuntimeError(
-                    Window.Title,
-                    "Could not find a suitable audio device. " +
-                    " Verify that a sound card is\ninstalled," +
-                    " and check the driver properties to make" +
-                    " sure it is not disabled."
-                );
-                return true;
-            }*/
-            /* TODO: Load graphics methods by hand to catch errors?
-            if (exception is NoSuitableGraphicsDeviceException)
-            {
-                SDL2_Platform.ShowRuntimeError(
-                    Window.Title,
-                    "Could not find a suitable graphics device." +
-                    " More information:\n\n" + exception.Message
-                );
-                return true;
-            }*/
-            return false;
-        }
-
     }
 }

@@ -219,7 +219,7 @@ namespace Flare.SDL2
                         // Window Focus
                         if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED)
                         {
-                            game.IsActive = true;
+                            game.IsFocused = true;
 
                             if (!osxUseSpaces)
                             {
@@ -237,7 +237,7 @@ namespace Flare.SDL2
                         }
                         else if (evt.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST)
                         {
-                            game.IsActive = false;
+                            game.IsFocused = false;
 
                             if (!osxUseSpaces)
                             {
