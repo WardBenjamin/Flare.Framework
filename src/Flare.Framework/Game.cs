@@ -281,18 +281,46 @@ namespace Flare
 
         #region Events
 
-        public event EventHandler<EventArgs> Activated;
-        public event EventHandler<EventArgs> Deactivated;
-        public event EventHandler<EventArgs> Disposed;
-        public event EventHandler<EventArgs> Exiting;
+        public static event EventHandler<EventArgs>         Activated;
+        public static event EventHandler<EventArgs>         Deactivated;
+        public static event EventHandler<EventArgs>         Disposed;
+        public static event EventHandler<EventArgs>         Exited;
+        public static event EventHandler<EventArgs>         Exiting;
+
+        public static event Action<GameTime>                Draw;
+        public static event Action<GameTime>                Update;
+
+
+        public static event EventHandler<EventArgs> FocusedChanged;
+        public static event EventHandler<EventArgs> IconChanged;
+
+        /*
+        public static event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyDown;
+        public static event EventHandler<KeyPressEventArgs> KeyPress;
+        public static event EventHandler<OpenTK.Input.KeyboardKeyEventArgs> KeyUp;
+        public static event EventHandler<OpenTK.Input.MouseButtonEventArgs> MouseDown;
+        public static event EventHandler<EventArgs> MouseEnter;
+        public static event EventHandler<EventArgs> MouseLeave;
+        public static event EventHandler<OpenTK.Input.MouseMoveEventArgs> MouseMove;
+        public static event EventHandler<OpenTK.Input.MouseButtonEventArgs> MouseUp;
+        public static event EventHandler<OpenTK.Input.MouseWheelEventArgs> MouseWheel;
+        */
+        /*
+        public static event EventHandler<EventArgs> Move;
+        public static event EventHandler<EventArgs> Resize;
+        public static event EventHandler<EventArgs> TitleChanged;
+        public static event EventHandler<EventArgs> Unload;
+        public static event EventHandler<EventArgs> VisibleChanged;
+        public static event EventHandler<EventArgs> WindowBorderChanged;
+        public static event EventHandler<EventArgs> WindowStateChanged;
+        */
 
         #endregion
-
-        #region Public Methods
 
         public void Exit()
         {
             _suppressDraw = true;
+            // TODO: Add to event
         }
 
         public void ResetElapsedTime()
@@ -312,6 +340,8 @@ namespace Flare
             _suppressDraw = true;
         }
 
+        #region Run Methods
+
         public void RunOneFrame()
         {
             if (!_initialized)
@@ -328,6 +358,7 @@ namespace Flare
 
             EndRun();
         }
+
 
         public void Run()
         {
@@ -348,6 +379,63 @@ namespace Flare
 
             OnExiting(this, EventArgs.Empty);
         }
+
+
+        protected void BeginRun()
+        {
+            #region BASIC_PROFILER Support
+#if BASIC_PROFILER
+			profileEffect = new BasicEffect(GraphicsDevice);
+			profileEffect.FogEnabled = false;
+			profileEffect.LightingEnabled = false;
+			profileEffect.TextureEnabled = false;
+			profileEffect.VertexColorEnabled = true;
+			projection = new Matrix(
+				1337.0f,
+				0.0f,
+				0.0f,
+				0.0f,
+				0.0f,
+				-1337.0f,
+				0.0f,
+				0.0f,
+				0.0f,
+				0.0f,
+				1.0f,
+				0.0f,
+				-1.0f,
+				1.0f,
+				0.0f,
+				1.0f
+			);
+			profilePrimitives = new VertexPositionColor[12];
+			int i = 0;
+			do
+			{
+				profilePrimitives[i].Position = Vector3.Zero;
+				profilePrimitives[i].Color = Color.Blue;
+			} while (++i < 6);
+			do
+			{
+				profilePrimitives[i].Position = Vector3.Zero;
+				profilePrimitives[i].Color = Color.Red;
+			} while (++i < 12);
+#endif
+            #endregion
+        }
+
+        protected void EndRun()
+        {
+            #region BASIC_PROFILER Support
+#if BASIC_PROFILER
+			profileEffect.Dispose();
+#endif
+            #endregion
+        }
+
+        #endregion
+
+        #region Tick and support variables
 
         private TimeSpan _accumulatedElapsedTime;
         private readonly GameTime _gameTime = new GameTime();
@@ -463,7 +551,7 @@ namespace Flare
             {
                 if (BeginDraw())
                 {
-                    Draw(_gameTime);
+                    OnDraw(_gameTime);
                     EndDraw();
                 }
             }
@@ -471,7 +559,7 @@ namespace Flare
 
         #endregion
 
-        #region Protected Methods
+        #region Draw methods
 
         protected bool BeginDraw()
         {
@@ -532,71 +620,23 @@ namespace Flare
             #endregion
         }
 
-        protected void BeginRun()
-        {
-            #region BASIC_PROFILER Support
-#if BASIC_PROFILER
-			profileEffect = new BasicEffect(GraphicsDevice);
-			profileEffect.FogEnabled = false;
-			profileEffect.LightingEnabled = false;
-			profileEffect.TextureEnabled = false;
-			profileEffect.VertexColorEnabled = true;
-			projection = new Matrix(
-				1337.0f,
-				0.0f,
-				0.0f,
-				0.0f,
-				0.0f,
-				-1337.0f,
-				0.0f,
-				0.0f,
-				0.0f,
-				0.0f,
-				1.0f,
-				0.0f,
-				-1.0f,
-				1.0f,
-				0.0f,
-				1.0f
-			);
-			profilePrimitives = new VertexPositionColor[12];
-			int i = 0;
-			do
-			{
-				profilePrimitives[i].Position = Vector3.Zero;
-				profilePrimitives[i].Color = Color.Blue;
-			} while (++i < 6);
-			do
-			{
-				profilePrimitives[i].Position = Vector3.Zero;
-				profilePrimitives[i].Color = Color.Red;
-			} while (++i < 12);
-#endif
-            #endregion
-        }
+        #endregion
 
-        protected void EndRun()
-        {
-            #region BASIC_PROFILER Support
-#if BASIC_PROFILER
-			profileEffect.Dispose();
-#endif
-            #endregion
-        }
+        #region Event support
 
-        protected void Initialize()
+        protected void OnInitialize()
         {
             // TODO: Event
         }
 
-        protected virtual void Draw(GameTime gameTime)
+        protected virtual void OnDraw(GameTime gameTime)
         {
-            // TODO: Event and DrawEventArgs
+            RaiseAction(Draw, gameTime);
         }
 
-        protected virtual void Update(GameTime gameTime)
+        protected virtual void OnUpdate(GameTime gameTime)
         {
-            // TODO: Event and UpdateEventArgs
+            RaiseAction(Update, gameTime);
         }
 
         protected void OnExiting(object sender, EventArgs args)
@@ -615,6 +655,67 @@ namespace Flare
             AssertNotDisposed();
             Raise(Deactivated, args);
         }
+
+        #endregion
+
+        #region Private Methods
+
+        private void DoUpdate(GameTime gameTime)
+        {
+            AssertNotDisposed();
+
+            // TODO: Audio
+            //AudioDevice.Update();
+
+            OnUpdate(gameTime);
+        }
+
+        private void DoInitialize()
+        {
+            AssertNotDisposed();
+
+            SDL2_Platform.BeforeInitialize();
+            OnInitialize();
+        }
+
+        private void Raise<TEventArgs>(EventHandler<TEventArgs> handler, TEventArgs e)
+    where TEventArgs : EventArgs
+        {
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        private void RaiseAction<T>(Action<T> handler, T e)
+        {
+            if (handler != null)
+                handler(e);
+        }
+
+        #endregion
+
+        // TODO: Some attention
+        #region Input events
+
+        /// <summary>
+        /// Use this event to retrieve text for objects like textboxes.
+        /// This event is not raised by noncharacter keys.
+        /// This event also supports key repeat.
+        /// For more information this event is based off:
+        /// http://msdn.microsoft.com/en-AU/library/system.windows.forms.control.keypress.aspx
+        /// </summary>
+        public event Action<char> KeyPress;
+
+
+        public void OnKeyPress(char c)
+        {
+            if (KeyPress != null)
+            {
+                KeyPress(c);
+            }
+        }
+        #endregion
 
         protected bool ShowMissingRequirementMessage(Exception exception)
         {
@@ -642,61 +743,6 @@ namespace Flare
             }*/
             return false;
         }
-
-        #endregion
-
-        #region Private Methods
-
-        private void DoUpdate(GameTime gameTime)
-        {
-            AssertNotDisposed();
-
-            // TODO: Audio
-            //AudioDevice.Update();
-
-            Update(gameTime);
-        }
-
-        private void DoInitialize()
-        {
-            AssertNotDisposed();
-
-            SDL2_Platform.BeforeInitialize();
-            Initialize();
-        }
-
-        private void Raise<TEventArgs>(EventHandler<TEventArgs> handler, TEventArgs e)
-    where TEventArgs : EventArgs
-        {
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        #endregion
-
-        // TODO: Some attention
-        #region Input events
-
-        /// <summary>
-        /// Use this event to retrieve text for objects like textboxes.
-        /// This event is not raised by noncharacter keys.
-        /// This event also supports key repeat.
-        /// For more information this event is based off:
-        /// http://msdn.microsoft.com/en-AU/library/system.windows.forms.control.keypress.aspx
-        /// </summary>
-        public event Action<char> KeyPress;
-
-
-        public void OnKeyPress(char c)
-        {
-            if (KeyPress != null)
-            {
-                KeyPress(c);
-            }
-        }
-        #endregion
 
     }
 }
