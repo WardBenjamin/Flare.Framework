@@ -22,7 +22,12 @@ namespace Flare.Graphics.GL4
         static GL_Cleanup()
         {
             Queue = new List<GL_Data>();
-            // TODO: Add Cleanup to Game.Update when implemented
+            Game.Update += Game_Update;
+        }
+
+        private static void Game_Update(GameTime time)
+        {
+            Cleanup();
         }
 
         public static void Cleanup()

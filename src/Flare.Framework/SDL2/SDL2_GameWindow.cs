@@ -216,7 +216,6 @@ namespace Flare.SDL2
 				 * like to be high-DPI if you set fullscreen
 				 * while the window is hidden. But, if you just
 				 * show the window first, everything is fine.
-				 * -flibit
 				 */
                 SDL.SDL_ShowWindow(_sdlWindow);
             }
@@ -230,7 +229,6 @@ namespace Flare.SDL2
             /* Because Mac windows resize from the bottom, we have to get the
 			 * position before changing the size so we can keep the window
 			 * centered when resizing in windowed mode.
-			 * -Nick
 			 */
             Rectangle prevBounds = Rectangle.Empty;
             if (!_wantsFullscreen)
