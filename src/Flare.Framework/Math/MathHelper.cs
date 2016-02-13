@@ -333,7 +333,6 @@ namespace Flare
 
         #region Internal Static Methods
 
-        // FIXME: This could be an extension! ClampIntEXT? -flibit
         /// <summary>
         /// Restricts a value to be within a specified range.
         /// </summary>
@@ -364,7 +363,6 @@ namespace Flare
             /* Checking for the highest power of two _after_ than the given int:
 			 * http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
 			 * Take result, divide by 2, get the highest power of two _before_!
-			 * -flibit
 			 */
             if (value == 1)
             {

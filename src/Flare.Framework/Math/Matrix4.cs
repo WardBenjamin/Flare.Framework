@@ -16,84 +16,220 @@ namespace Flare
     [StructLayout(LayoutKind.Sequential)]
     public struct Matrix4 : IEquatable<Matrix4>
     {
-        private Vector4 row1, row2, row3, row4;
+        #region Public Fields
 
-        [System.Obsolete("This property no longer has the same functionality, and should be modified to this[].  This property will be removed in a future build.", false)]
-        public Vector4[] Matrix
-        {
-            get { return new Vector4[] { row1, row2, row3, row4 }; }
-        }
+        /// <summary>
+        /// The first row and first column value.
+        /// </summary>
+        public float M11;
 
-        #region Static Constructors
+        /// <summary>
+        /// The first row and second column value.
+        /// </summary>
+        public float M12;
+
+        /// <summary>
+        /// The first row and third column value.
+        /// </summary>
+        public float M13;
+
+        /// <summary>
+        /// The first row and fourth column value.
+        /// </summary>
+        public float M14;
+
+        /// <summary>
+        /// The second row and first column value.
+        /// </summary>
+        public float M21;
+
+        /// <summary>
+        /// The second row and second column value.
+        /// </summary>
+        public float M22;
+
+        /// <summary>
+        /// The second row and third column value.
+        /// </summary>
+        public float M23;
+
+        /// <summary>
+        /// The second row and fourth column value.
+        /// </summary>
+        public float M24;
+
+        /// <summary>
+        /// The third row and first column value.
+        /// </summary>
+        public float M31;
+
+        /// <summary>
+        /// The third row and second column value.
+        /// </summary>
+        public float M32;
+
+        /// <summary>
+        /// The third row and third column value.
+        /// </summary>
+        public float M33;
+
+        /// <summary>
+        /// The third row and fourth column value.
+        /// </summary>
+        public float M34;
+
+        /// <summary>
+        /// The fourth row and first column value.
+        /// </summary>
+        public float M41;
+
+        /// <summary>
+        /// The fourth row and second column value.
+        /// </summary>
+        public float M42;
+
+        /// <summary>
+        /// The fourth row and third column value.
+        /// </summary>
+        public float M43;
+
+        /// <summary>
+        /// The fourth row and fourth column value.
+        /// </summary>
+        public float M44;
+
+        #endregion
+
+        #region Static Members
+
+        private static Matrix4 identity = new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW);
+
         public static Matrix4 Identity
         {
-            get { return new Matrix4(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW); }
+            get { return identity; }
         }
+
         #endregion
 
         #region Operators
+
         public static Matrix4 operator +(Matrix4 m1, Matrix4 m2)
         {
-            return new Matrix4(m1.row1 + m2.row1, m1.row2 + m2.row2, m1.row3 + m2.row3, m1.row4 + m2.row4);
+            return new Matrix4
+            (
+                m1.M11 + m2.M11,
+                m2.M12 + m2.M12,
+                m2.M13 + m2.M13,
+                m2.M14 + m2.M14,
+                m2.M21 + m2.M21,
+                m2.M22 + m2.M22,
+                m2.M23 + m2.M23,
+                m2.M24 + m2.M24,
+                m2.M31 + m2.M31,
+                m2.M32 + m2.M32,
+                m2.M33 + m2.M33,
+                m2.M34 + m2.M34,
+                m2.M41 + m2.M41,
+                m2.M42 + m2.M42,
+                m2.M43 + m2.M43,
+                m2.M44 + m2.M44
+            );
         }
 
         public static Matrix4 operator -(Matrix4 m1, Matrix4 m2)
         {
-            return new Matrix4(m1.row1 - m2.row1, m1.row2 - m2.row2, m1.row3 - m2.row3, m1.row4 - m2.row4);
+            return new Matrix4
+            (
+                m1.M11 - m2.M11,
+                m2.M12 - m2.M12,
+                m2.M13 - m2.M13,
+                m2.M14 - m2.M14,
+                m2.M21 - m2.M21,
+                m2.M22 - m2.M22,
+                m2.M23 - m2.M23,
+                m2.M24 - m2.M24,
+                m2.M31 - m2.M31,
+                m2.M32 - m2.M32,
+                m2.M33 - m2.M33,
+                m2.M34 - m2.M34,
+                m2.M41 - m2.M41,
+                m2.M42 - m2.M42,
+                m2.M43 - m2.M43,
+                m2.M44 - m2.M44
+            );
         }
 
-        public static Matrix4 operator *(Matrix4 m, Matrix4 m2)
+        public static Matrix4 operator *(Matrix4 m1, Matrix4 m2)
         {
-            Matrix4 r = new Matrix4(
-            new Vector4(m[0].X * m2[0].X + m[0].Y * m2[1].X + m[0].Z * m2[2].X + m[0].W * m2[3].X,
-                m[0].X * m2[0].Y + m[0].Y * m2[1].Y + m[0].Z * m2[2].Y + m[0].W * m2[3].Y,
-                m[0].X * m2[0].Z + m[0].Y * m2[1].Z + m[0].Z * m2[2].Z + m[0].W * m2[3].Z,
-                m[0].X * m2[0].W + m[0].Y * m2[1].W + m[0].Z * m2[2].W + m[0].W * m2[3].W),
-            new Vector4(m[1].X * m2[0].X + m[1].Y * m2[1].X + m[1].Z * m2[2].X + m[1].W * m2[3].X,
-                m[1].X * m2[0].Y + m[1].Y * m2[1].Y + m[1].Z * m2[2].Y + m[1].W * m2[3].Y,
-                m[1].X * m2[0].Z + m[1].Y * m2[1].Z + m[1].Z * m2[2].Z + m[1].W * m2[3].Z,
-                m[1].X * m2[0].W + m[1].Y * m2[1].W + m[1].Z * m2[2].W + m[1].W * m2[3].W),
-            new Vector4(m[2].X * m2[0].X + m[2].Y * m2[1].X + m[2].Z * m2[2].X + m[2].W * m2[3].X,
-                m[2].X * m2[0].Y + m[2].Y * m2[1].Y + m[2].Z * m2[2].Y + m[2].W * m2[3].Y,
-                m[2].X * m2[0].Z + m[2].Y * m2[1].Z + m[2].Z * m2[2].Z + m[2].W * m2[3].Z,
-                m[2].X * m2[0].W + m[2].Y * m2[1].W + m[2].Z * m2[2].W + m[2].W * m2[3].W),
-            new Vector4(m[3].X * m2[0].X + m[3].Y * m2[1].X + m[3].Z * m2[2].X + m[3].W * m2[3].X,
-                m[3].X * m2[0].Y + m[3].Y * m2[1].Y + m[3].Z * m2[2].Y + m[3].W * m2[3].Y,
-                m[3].X * m2[0].Z + m[3].Y * m2[1].Z + m[3].Z * m2[2].Z + m[3].W * m2[3].Z,
-                m[3].X * m2[0].W + m[3].Y * m2[1].W + m[3].Z * m2[2].W + m[3].W * m2[3].W));
-            return r;
+            return new Matrix4
+            (
+                m1.M11 * m2.M11 + m1.M12 * m2.M21 + m1.M13 * m2.M31 + m1.M14 * m2.M41,
+                m1.M11 * m2.M12 + m1.M12 * m2.M22 + m1.M13 * m2.M32 + m1.M14 * m2.M42,
+                m1.M11 * m2.M13 + m1.M12 * m2.M23 + m1.M13 * m2.M33 + m1.M14 * m2.M43,
+                m1.M11 * m2.M14 + m1.M12 * m2.M24 + m1.M13 * m2.M34 + m1.M14 * m2.M44,
+
+                m1.M21 * m2.M11 + m1.M22 * m2.M21 + m1.M23 * m2.M31 + m1.M24 * m2.M41,
+                m1.M21 * m2.M12 + m1.M22 * m2.M22 + m1.M23 * m2.M32 + m1.M24 * m2.M42,
+                m1.M21 * m2.M13 + m1.M22 * m2.M23 + m1.M23 * m2.M33 + m1.M24 * m2.M43,
+                m1.M21 * m2.M14 + m1.M22 * m2.M24 + m1.M23 * m2.M34 + m1.M24 * m2.M44,
+
+                m1.M31 * m2.M11 + m1.M32 * m2.M21 + m1.M33 * m2.M31 + m1.M34 * m2.M41,
+                m1.M31 * m2.M12 + m1.M32 * m2.M22 + m1.M33 * m2.M32 + m1.M34 * m2.M42,
+                m1.M31 * m2.M13 + m1.M32 * m2.M23 + m1.M33 * m2.M33 + m1.M34 * m2.M43,
+                m1.M31 * m2.M14 + m1.M32 * m2.M24 + m1.M33 * m2.M34 + m1.M34 * m2.M44,
+
+                m1.M41 * m2.M11 + m1.M42 * m2.M21 + m1.M43 * m2.M31 + m1.M44 * m2.M41,
+                m1.M41 * m2.M12 + m1.M42 * m2.M22 + m1.M43 * m2.M32 + m1.M44 * m2.M42,
+                m1.M41 * m2.M13 + m1.M42 * m2.M23 + m1.M43 * m2.M33 + m1.M44 * m2.M43,
+                m1.M41 * m2.M14 + m1.M42 * m2.M24 + m1.M43 * m2.M34 + m1.M44 * m2.M44
+            );
         }
 
         public static Matrix4 operator *(Matrix4 m1, float d)
         {
-            return new Matrix4(m1.row1 * d, m1.row2 * d, m1.row3 * d, m1.row4 * d);
+            Matrix4 ret = Matrix4.Identity;
+            for (int i = 0; i < 16; i++)
+                ret[i] = m1[i] * d;
+            return ret;
         }
 
         public static Matrix4 operator /(Matrix4 m1, float d)
         {
-            return new Matrix4(m1.row1 / d, m1.row2 / d, m1.row3 / d, m1.row4 / d);
+            Matrix4 ret = Matrix4.Identity;
+            for (int i = 0; i < 16; i++)
+                ret[i] = m1[i] / d;
+            return ret;
         }
 
         public static Vector3 operator *(Matrix4 m1, Vector3 v)
         {
-            return new Vector3(m1[0].X * v.X + m1[0].Y * v.Y + m1[0].Z * v.Z,
-                m1[1].X * v.X + m1[1].Y * v.Y + m1[1].Z * v.Z,
-                m1[2].X * v.X + m1[2].Y * v.Y + m1[2].Z * v.Z);
+            return new Vector3
+            (
+                m1.M11 * v.X + m1.M12 * v.Y + m1.M13 * v.Z,
+                m1.M21 * v.X + m1.M22 * v.Y + m1.M23 * v.Z,
+                m1.M31 * v.X + m1.M32 * v.Y + m1.M33 * v.Z
+            );
         }
 
         public static Vector3 operator *(Vector3 v, Matrix4 m1)
         {
-            return new Vector3(v.X * m1[0].X + v.Y * m1[1].X + v.Z * m1[2].X,
-                v.X * m1[0].Y + v.Y * m1[1].Y + v.Z * m1[2].Y,
-                v.X * m1[0].Z + v.Y * m1[1].Z + v.Z * m1[2].Z);
+            return new Vector3
+            (
+                v.X * m1.M11 + v.Y * m1.M21 + v.Z * m1.M31,
+                v.X * m1.M12 + v.Y * m1.M22 + v.Z * m1.M32,
+                v.X * m1.M13 + v.Y * m1.M23 + v.Z * m1.M33
+            );
         }
 
         public static Vector4 operator *(Matrix4 m1, Vector4 v)
         {
-            return new Vector4(m1[0].X * v.X + m1[0].Y * v.Y + m1[0].Z * v.Z + m1[0].W * v.W,
+            return new Vector4
+            (
+                m1.M11 * v.X + m1.M21 * v.Y + m1[0].Z * v.Z + m1[0].W * v.W,
                 m1[1].X * v.X + m1[1].Y * v.Y + m1[1].Z * v.Z + m1[1].W * v.W,
                 m1[2].X * v.X + m1[2].Y * v.Y + m1[2].Z * v.Z + m1[2].W * v.W,
-                m1[3].X * v.X + m1[3].Y * v.Y + m1[3].Z * v.Z + m1[3].W * v.W);
+                m1[3].X * v.X + m1[3].Y * v.Y + m1[3].Z * v.Z + m1[3].W * v.W
+            );
         }
 
         public static Vector4 operator *(Vector4 v, Matrix4 m1)
@@ -104,30 +240,113 @@ namespace Flare
                 v.X * m1[0].W + v.Y * m1[1].W + v.Z * m1[2].W + v.W * m1[3].W);
         }
 
-        public Vector4 this[int a]
+        public float this[int index]
         {
             get
             {
-                if (a > 3 || a < 0) return Vector4.Zero;
-                return (a == 0 ? row1 : (a == 1 ? row2 : (a == 2 ? row3 : row4)));
+                switch (index)
+                {
+                    case 0: return M11;
+                    case 1: return M12;
+                    case 2: return M13;
+                    case 3: return M14;
+                    case 4: return M21;
+                    case 5: return M22;
+                    case 6: return M23;
+                    case 7: return M24;
+                    case 8: return M31;
+                    case 9: return M32;
+                    case 10: return M33;
+                    case 11: return M34;
+                    case 12: return M41;
+                    case 13: return M42;
+                    case 14: return M43;
+                    case 15: return M44;
+                }
+                throw new ArgumentOutOfRangeException();
             }
             set
             {
-                if (a == 0) row1 = value;
-                else if (a == 1) row2 = value;
-                else if (a == 2) row3 = value;
-                else if (a == 3) row4 = value;
+                switch (index)
+                {
+                    case 0: M11 = value; break;
+                    case 1: M12 = value; break;
+                    case 2: M13 = value; break;
+                    case 3: M14 = value; break;
+                    case 4: M21 = value; break;
+                    case 5: M22 = value; break;
+                    case 6: M23 = value; break;
+                    case 7: M24 = value; break;
+                    case 8: M31 = value; break;
+                    case 9: M32 = value; break;
+                    case 10: M33 = value; break;
+                    case 11: M34 = value; break;
+                    case 12: M41 = value; break;
+                    case 13: M42 = value; break;
+                    case 14: M43 = value; break;
+                    case 15: M44 = value; break;
+                    default: throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        public float this[int row, int column]
+        {
+            get
+            {
+                return this[(row * 4) + column];
+            }
+
+            set
+            {
+                this[(row * 4) + column] = value;
             }
         }
 
         public static bool operator ==(Matrix4 m1, Matrix4 m2)
         {
-            return (m1[0] == m2[0] && m1[1] == m2[1] && m1[2] == m2[2] && m1[3] == m2[3]);
+            return
+            (
+                m1.M11 == m2.M11 ||
+                m1.M12 == m2.M12 ||
+                m1.M13 == m2.M13 ||
+                m1.M14 == m2.M14 ||
+                m1.M21 == m2.M21 ||
+                m1.M22 == m2.M22 ||
+                m1.M23 == m2.M23 ||
+                m1.M24 == m2.M24 ||
+                m1.M31 == m2.M31 ||
+                m1.M32 == m2.M32 ||
+                m1.M33 == m2.M33 ||
+                m1.M34 == m2.M34 ||
+                m1.M41 == m2.M41 ||
+                m1.M42 == m2.M42 ||
+                m1.M43 == m2.M43 ||
+                m1.M44 == m2.M44
+            );
         }
 
         public static bool operator !=(Matrix4 m1, Matrix4 m2)
         {
-            return (m1[0] != m2[0] || m1[1] != m2[1] || m1[2] != m2[2] || m1[3] != m2[3]);
+            return
+            (
+                m1.M11 != m2.M11 ||
+                m1.M12 != m2.M12 ||
+                m1.M13 != m2.M13 ||
+                m1.M14 != m2.M14 ||
+                m1.M21 != m2.M21 ||
+                m1.M22 != m2.M22 ||
+                m1.M23 != m2.M23 ||
+                m1.M24 != m2.M24 ||
+                m1.M31 != m2.M31 ||
+                m1.M32 != m2.M32 ||
+                m1.M33 != m2.M33 ||
+                m1.M34 != m2.M34 ||
+                m1.M41 != m2.M41 ||
+                m1.M42 != m2.M42 ||
+                m1.M43 != m2.M43 ||
+                m1.M44 != m2.M44
+            );
         }
 
         public override bool Equals(object obj)
@@ -149,53 +368,110 @@ namespace Flare
 
         public override string ToString()
         {
-            return "[ " + row1.ToString() + " ] [ " + row2.ToString() + " ] [ " + row3.ToString() + " ] [ " + row4.ToString() + " ]";
+            string c = ", ";
+            return "[ "
+                + M11 + c + M12 + c + M13 + c + M14 + " ] [ "
+                + M21 + c + M22 + c + M23 + c + M24 + " ] [ "
+                + M31 + c + M32 + c + M33 + c + M34 + " ] [ "
+                + M41 + c + M42 + c + M43 + c + M44
+                + " ]";
         }
         #endregion
 
         #region Constructors
-        public Matrix4(Matrix4 existingMatrix)
+
+        public Matrix4(float M11, float M12, float M13, float M14,
+            float M21, float M22, float M23, float M24,
+            float M31, float M32, float M33, float M34,
+            float M41, float M42, float M43, float M44)
         {
-            row1 = existingMatrix[0];
-            row2 = existingMatrix[1];
-            row3 = existingMatrix[2];
-            row4 = existingMatrix[3];
+            this.M11 = M11;
+            this.M12 = M12;
+            this.M13 = M13;
+            this.M14 = M14;
+            this.M21 = M21;
+            this.M22 = M22;
+            this.M23 = M23;
+            this.M24 = M24;
+            this.M31 = M31;
+            this.M32 = M32;
+            this.M33 = M33;
+            this.M34 = M34;
+            this.M41 = M41;
+            this.M42 = M42;
+            this.M43 = M43;
+            this.M44 = M44;
         }
 
-        public Matrix4(Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
+        public Matrix4(Matrix4 existingMatrix)
         {
-            row1 = v0;
-            row2 = v1;
-            row3 = v2;
-            row4 = v3;
+            this.M11 = existingMatrix.M11;
+            this.M12 = existingMatrix.M12;
+            this.M13 = existingMatrix.M13;
+            this.M14 = existingMatrix.M14;
+            this.M21 = existingMatrix.M21;
+            this.M22 = existingMatrix.M22;
+            this.M23 = existingMatrix.M23;
+            this.M24 = existingMatrix.M24;
+            this.M31 = existingMatrix.M31;
+            this.M32 = existingMatrix.M32;
+            this.M33 = existingMatrix.M33;
+            this.M34 = existingMatrix.M34;
+            this.M41 = existingMatrix.M41;
+            this.M42 = existingMatrix.M42;
+            this.M43 = existingMatrix.M43;
+            this.M44 = existingMatrix.M44;
+        }
+
+        public Matrix4(Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3) : this()
+        {
+            SetMatrix(v0, v1, v2, v3);
         }
 
         public Matrix4(float[] array)
         {
-            row1 = new Vector4(array[0], array[1], array[2], array[3]);
-            row2 = new Vector4(array[4], array[5], array[6], array[7]);
-            row3 = new Vector4(array[8], array[9], array[10], array[11]);
-            row4 = new Vector4(array[12], array[13], array[14], array[15]);
+            this.M11 = array[0];
+            this.M12 = array[1];
+            this.M13 = array[2];
+            this.M14 = array[3];
+            this.M21 = array[4];
+            this.M22 = array[5];
+            this.M23 = array[6];
+            this.M24 = array[7];
+            this.M31 = array[8];
+            this.M32 = array[9];
+            this.M33 = array[10];
+            this.M34 = array[11];
+            this.M41 = array[12];
+            this.M42 = array[13];
+            this.M43 = array[14];
+            this.M44 = array[15];
         }
 
         public Matrix4(double[] array)
         {
-            row1 = new Vector4(array[0], array[1], array[2], array[3]);
-            row2 = new Vector4(array[4], array[5], array[6], array[7]);
-            row3 = new Vector4(array[8], array[9], array[10], array[11]);
-            row4 = new Vector4(array[12], array[13], array[14], array[15]);
+            this.M11 = (float)array[0];
+            this.M12 = (float)array[1];
+            this.M13 = (float)array[2];
+            this.M14 = (float)array[3];
+            this.M21 = (float)array[4];
+            this.M22 = (float)array[5];
+            this.M23 = (float)array[6];
+            this.M24 = (float)array[7];
+            this.M31 = (float)array[8];
+            this.M32 = (float)array[9];
+            this.M33 = (float)array[10];
+            M34 = (float)array[11];
+            M41 = (float)array[12];
+            M42 = (float)array[13];
+            M43 = (float)array[14];
+            M44 = (float)array[15];
         }
 
-        public void SetMatrix(Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
-        {
-            row1 = v0;
-            row2 = v1;
-            row3 = v2;
-            row4 = v3;
-        }
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Creates a matrix which contains information on how to translate.
         /// </summary>
@@ -204,7 +480,10 @@ namespace Flare
         public static Matrix4 CreateTranslation(Vector3 translation)
         {
             Matrix4 result = Matrix4.Identity;
-            result[3] = new Vector4(translation, 1.0f);
+            result.M41 = translation.X;
+            result.M42 = translation.Y;
+            result.M43 = translation.Z;
+            result.M44 = 1.0f;
             return result;
         }
 
@@ -218,7 +497,13 @@ namespace Flare
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
 
-            return new Matrix4(Vector4.UnitX, new Vector4(0.0f, cos, sin, 0.0f), new Vector4(0.0f, -sin, cos, 0.0f), Vector4.UnitW);
+            return new Matrix4
+            (
+                1, 0, 0, 0,
+                0, cos, sin, 0,
+                0, -sin, cos, 0,
+                0, 0, 0, 1
+            );
         }
 
         /// <summary>
@@ -231,7 +516,13 @@ namespace Flare
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
 
-            return new Matrix4(new Vector4(cos, 0.0f, -sin, 0.0f), Vector4.UnitY, new Vector4(sin, 0.0f, cos, 0.0f), Vector4.UnitW);
+            return new Matrix4
+            (
+                cos, 0, -sin, 0,
+                0, 1, 0, 0,
+                sin, 0, cos, 0,
+                0, 0, 0, 1
+            );
         }
 
         /// <summary>
@@ -244,7 +535,13 @@ namespace Flare
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
 
-            return new Matrix4(new Vector4(cos, sin, 0.0f, 0.0f), new Vector4(-sin, cos, 0.0f, 0.0f), Vector4.UnitZ, Vector4.UnitW);
+            return new Matrix4
+            (
+                cos, sin, 0.0f, 0,
+                -sin, cos, 0.0f, 0.0f,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            );
         }
 
         /// <summary>
@@ -258,16 +555,26 @@ namespace Flare
             float cos = (float)System.Math.Cos(angle);
             float sin = (float)System.Math.Sin(angle);
             float tan = 1.0f - cos;
-            return new Matrix4(new Vector4(tan * axis.X * axis.X + cos,
-                    tan * axis.X * axis.Y - sin * axis.Z,
-                    tan * axis.X * axis.Z + sin * axis.Y, 0.0f),
-                new Vector4(tan * axis.Y * axis.X + sin * axis.Z,
-                    tan * axis.Y * axis.Y + cos,
-                    tan * axis.Y * axis.Z - sin * axis.X, 0.0f),
-                new Vector4(tan * axis.Z * axis.X - sin * axis.Y,
-                    tan * axis.Z * axis.Y + sin * axis.X,
-                    tan * axis.Z * axis.Z + cos, 0.0f),
-                new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+
+            return new Matrix4
+            (
+                tan * axis.X * axis.X + cos,
+                tan * axis.X * axis.Y - sin * axis.Z,
+                tan * axis.X * axis.Z + sin * axis.Y,
+                0,
+
+                tan * axis.Y * axis.X + sin * axis.Z,
+                tan * axis.Y * axis.Y + cos,
+                tan * axis.Y * axis.Z - sin * axis.X,
+                0,
+
+                tan * axis.Z * axis.X - sin * axis.Y,
+                tan * axis.Z * axis.Y + sin * axis.X,
+                tan * axis.Z * axis.Z + cos,
+                0,
+
+                0, 0, 0, 1
+            );
         }
 
         /// <summary>
@@ -394,7 +701,13 @@ namespace Flare
             float c = -(zFar + zNear) / (zFar - zNear);
             float d = -(2.0f * zFar * zNear) / (zFar - zNear);
 
-            return new Matrix4(new Vector4(x, 0, 0, 0), new Vector4(0, y, 0, 0), new Vector4(a, b, c, -1), new Vector4(0, 0, d, 0));
+            return new Matrix4
+            (
+                x, 0, 0, 0,
+                0, y, 0, 0,
+                a, b, c, -1,
+                0, 0, d, 0
+            );
         }
 
         /// <summary>
@@ -410,10 +723,13 @@ namespace Flare
             Vector3 x = Vector3.Cross(up, z).Normalize();
             Vector3 y = Vector3.Cross(z, x).Normalize();
 
-            Matrix4 matrix = new Matrix4(new Vector4(x.X, y.X, z.X, 0.0f),
-                                        new Vector4(x.Y, y.Y, z.Y, 0.0f),
-                                        new Vector4(x.Z, y.Z, z.Z, 0.0f),
-                                        Vector4.UnitW);
+            Matrix4 matrix = new Matrix4
+            (
+                x.X, y.X, z.X, 0,
+                x.Y, y.Y, z.Y, 0,
+                x.Z, y.Z, z.Z, 0,
+                0, 0, 0, 1
+            );
 
             return Matrix4.CreateTranslation(-eye) * matrix;
         }
@@ -424,10 +740,13 @@ namespace Flare
         /// <returns>A Matrix4 object that contains the transposed matrix</returns>
         public Matrix4 Transpose()
         {
-            return new Matrix4(new Vector4(this[0].X, this[1].X, this[2].X, this[3].X),
-                new Vector4(this[0].Y, this[1].Y, this[2].Y, this[3].Y),
-                new Vector4(this[0].Z, this[1].Z, this[2].Z, this[3].Z),
-                new Vector4(this[0].W, this[1].W, this[2].W, this[3].W));
+            return new Matrix4
+            (
+                M11, M21, M31, M41,
+                M12, M22, M32, M42,
+                M13, M23, M33, M43,
+                M14, M24, M34, M44
+            );
         }
 
         /// <summary>
@@ -445,25 +764,25 @@ namespace Flare
             {
                 k = j;    // row with largest pivot cadence
                 for (int i = j + 1; i < 4; i++)
-                    if (System.Math.Abs(original[i][j]) > System.Math.Abs(original[k][j])) k = i;
+                    if (System.Math.Abs(original[i, j]) > System.Math.Abs(original[k, j])) k = i;
 
                 original.SwapRows(k, j);
                 identity.SwapRows(k, j);
                 //Vector4.Swap(ref original[k], ref original[j]);
                 //Vector4.Swap(ref identity[k], ref identity[j]);
 
-                if (original[j][j] == 0.0f) 
+                if (original[j, j] == 0.0f)
                     throw new Exception("Matrix4 was a singular matrix and cannot be inverted.");
 
-                identity[j] /= original[j][j];
-                original[j] /= original[j][j];
+                identity[j] /= original[j, j];
+                original[j] /= original[j, j];
 
                 for (int i = 0; i < 4; i++)
                 {
                     if (i != j)
                     {
-                        identity[i] -= original[i][j] * identity[j];
-                        original[i] -= original[i][j] * original[j];
+                        identity[i] -= original[i, j] * identity[j];
+                        original[i] -= original[i, j] * original[j];
                     }
                 }
             }
@@ -477,9 +796,19 @@ namespace Flare
         /// <param name="j">Second row to switch</param>
         public void SwapRows(int i, int j)
         {
-            Vector4 temp = this[i];
-            this[i] = this[j];
-            this[j] = temp;
+            if (i < 0 || i > 3)
+                throw new ArgumentOutOfRangeException("i");
+            if (j < 0 || j > 3)
+                throw new ArgumentOutOfRangeException("j");
+            if (i == j)
+                return;
+
+            for (int k = 0; k < 4; k++)
+            {
+                float temp = this[i, k];
+                this[i, k] = this[j, k];
+                this[j, k] = temp;
+            }
         }
 
         /// <summary>
@@ -487,17 +816,22 @@ namespace Flare
         /// </summary>
         /// <param name="i">First column to switch</param>
         /// <param name="j">Second column to switch</param>
-        /*public void SwapCols(int i, int j)
+        public void SwapCols(int i, int j)
         {
-            // TODO: This does not work with the new Matrix4 format
-            float temp;
+            if (i < 0 || i > 3)
+                throw new ArgumentOutOfRangeException("i");
+            if (j < 0 || j > 3)
+                throw new ArgumentOutOfRangeException("j");
+            if (i == j)
+                return;
+
             for (int k = 0; k < 4; k++)
             {
-                temp = Matrix[k][i];
-                Matrix[k][i] = Matrix[k][j];
-                Matrix[k][j] = temp;
+                float temp = this[k, i];
+                this[k, i] = this[k, j];
+                this[k, j] = temp;
             }
-        }*/
+        }
 
         /// <summary>
         /// Returns a floating array that represents the Matrix4.
@@ -505,8 +839,13 @@ namespace Flare
         /// <returns>Floating array that represents that Matrix4</returns>
         public float[] ToFloat()
         {
-            return new float[] { this[0].X, this[0].Y, this[0].Z, this[0].W, this[1].X, this[1].Y, this[1].Z, this[1].W,
-                this[2].X, this[2].Y, this[2].Z, this[2].W, this[3].X, this[3].Y, this[3].Z, this[3].W };
+            return new float[]
+            {
+                M11, M12, M13, M14,
+                M21, M22, M23, M24,
+                M31, M32, M33, M34,
+                M41, M42, M43, M44
+            };
         }
 
         /// <summary>
@@ -519,6 +858,27 @@ namespace Flare
             Vector4 axisangle = rotation.ToAxisAngle();
             return CreateFromAxisAngle(axisangle.Xyz, rotation.w);
         }
+
+        public void SetMatrix(Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
+        {
+            this.M11 = v0.X;
+            this.M12 = v0.Y;
+            this.M13 = v0.Z;
+            this.M14 = v0.W;
+            this.M21 = v1.X;
+            this.M22 = v1.Y;
+            this.M23 = v1.Z;
+            this.M24 = v1.W;
+            this.M31 = v2.X;
+            this.M32 = v2.Y;
+            this.M33 = v2.Z;
+            this.M34 = v2.W;
+            this.M41 = v3.X;
+            this.M42 = v3.Y;
+            this.M43 = v3.Z;
+            this.M44 = v3.W;
+        }
+
         #endregion
     }
 }

@@ -46,12 +46,12 @@ namespace Flare
         /// <param name="clipMatrix">The combined projection and view matrix (usually from the camera).</param>
         public void UpdateFrustum(Matrix4 clipMatrix)
         {
-            planes[0].Set(clipMatrix[3].W - clipMatrix[3].X, new Vector3(clipMatrix[0].W - clipMatrix[0].X, clipMatrix[1].W - clipMatrix[1].X, clipMatrix[2].W - clipMatrix[2].X));
-            planes[1].Set(clipMatrix[3].W + clipMatrix[3].X, new Vector3(clipMatrix[0].W + clipMatrix[0].X, clipMatrix[1].W + clipMatrix[1].X, clipMatrix[2].W + clipMatrix[2].X));
-            planes[2].Set(clipMatrix[3].W + clipMatrix[3].Y, new Vector3(clipMatrix[0].W + clipMatrix[0].Y, clipMatrix[1].W + clipMatrix[1].Y, clipMatrix[2].W + clipMatrix[2].Y));
-            planes[3].Set(clipMatrix[3].W - clipMatrix[3].Y, new Vector3(clipMatrix[0].W - clipMatrix[0].Y, clipMatrix[1].W - clipMatrix[1].Y, clipMatrix[2].W - clipMatrix[2].Y));
-            planes[4].Set(clipMatrix[3].W - clipMatrix[3].Z, new Vector3(clipMatrix[0].W - clipMatrix[0].Z, clipMatrix[1].W - clipMatrix[1].Z, clipMatrix[2].W - clipMatrix[2].Z));
-            planes[5].Set(clipMatrix[3].W + clipMatrix[3].Z, new Vector3(clipMatrix[0].W + clipMatrix[0].Z, clipMatrix[1].W + clipMatrix[1].Z, clipMatrix[2].W + clipMatrix[2].Z));
+            planes[0].Set(clipMatrix.M44 - clipMatrix.M41, new Vector3(clipMatrix.M14 - clipMatrix.M11, clipMatrix.M24 - clipMatrix.M21, clipMatrix.M34 - clipMatrix.M31));
+            planes[1].Set(clipMatrix.M44 + clipMatrix.M41, new Vector3(clipMatrix.M14 + clipMatrix.M11, clipMatrix.M24 + clipMatrix.M21, clipMatrix.M34 + clipMatrix.M31));
+            planes[2].Set(clipMatrix.M44 + clipMatrix.M42, new Vector3(clipMatrix.M14 + clipMatrix.M12, clipMatrix.M24 + clipMatrix.M22, clipMatrix.M34 + clipMatrix.M32));
+            planes[3].Set(clipMatrix.M44 - clipMatrix.M42, new Vector3(clipMatrix.M14 - clipMatrix.M12, clipMatrix.M24 - clipMatrix.M22, clipMatrix.M34 - clipMatrix.M32));
+            planes[4].Set(clipMatrix.M44 - clipMatrix.M43, new Vector3(clipMatrix.M14 - clipMatrix.M13, clipMatrix.M24 - clipMatrix.M23, clipMatrix.M34 - clipMatrix.M33));
+            planes[5].Set(clipMatrix.M44 + clipMatrix.M43, new Vector3(clipMatrix.M14 + clipMatrix.M13, clipMatrix.M24 + clipMatrix.M23, clipMatrix.M34 + clipMatrix.M33));
 
             for (int i = 0; i < 6; i++)
             {

@@ -492,11 +492,8 @@ namespace Flare.Graphics.GL4
         public static void UniformMatrix4fv(int location, Matrix4 param)
         {
             // use the statically allocated float[] for setting the uniform
-            matrixFloat[0] = param[0].X; matrixFloat[1] = param[0].Y; matrixFloat[2] = param[0].Z; matrixFloat[3] = param[0].W;
-            matrixFloat[4] = param[1].X; matrixFloat[5] = param[1].Y; matrixFloat[6] = param[1].Z; matrixFloat[7] = param[1].W;
-            matrixFloat[8] = param[2].X; matrixFloat[9] = param[2].Y; matrixFloat[10] = param[2].Z; matrixFloat[11] = param[2].W;
-            matrixFloat[12] = param[3].X; matrixFloat[13] = param[3].Y; matrixFloat[14] = param[3].Z; matrixFloat[15] = param[3].W;
-
+            for (int i = 0; i < 16; i++)
+                matrixFloat[i] = param[i];
             GL.UniformMatrix4fv(location, 1, false, matrixFloat);
         }
     }
