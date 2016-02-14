@@ -225,19 +225,22 @@ namespace Flare
         {
             return new Vector4
             (
-                m1.M11 * v.X + m1.M21 * v.Y + m1[0].Z * v.Z + m1[0].W * v.W,
-                m1[1].X * v.X + m1[1].Y * v.Y + m1[1].Z * v.Z + m1[1].W * v.W,
-                m1[2].X * v.X + m1[2].Y * v.Y + m1[2].Z * v.Z + m1[2].W * v.W,
-                m1[3].X * v.X + m1[3].Y * v.Y + m1[3].Z * v.Z + m1[3].W * v.W
+                m1.M11 * v.X + m1.M12 * v.Y + m1.M13 * v.Z + m1.M14 * v.W,
+                m1.M21 * v.X + m1.M22 * v.Y + m1.M23 * v.Z + m1.M24 * v.W,
+                m1.M31 * v.X + m1.M32 * v.Y + m1.M33 * v.Z + m1.M34 * v.W,
+                m1.M41 * v.X + m1.M42 * v.Y + m1.M43 * v.Z + m1.M44 * v.W
             );
         }
 
         public static Vector4 operator *(Vector4 v, Matrix4 m1)
         {
-            return new Vector4(v.X * m1[0].X + v.Y * m1[1].X + v.Z * m1[2].X + v.W * m1[3].X,
-                v.X * m1[0].Y + v.Y * m1[1].Y + v.Z * m1[2].Y + v.W * m1[3].Y,
-                v.X * m1[0].Z + v.Y * m1[1].Z + v.Z * m1[2].Z + v.W * m1[3].Z,
-                v.X * m1[0].W + v.Y * m1[1].W + v.Z * m1[2].W + v.W * m1[3].W);
+            return new Vector4
+            (
+                v.X * m1.M11 + v.Y * m1.M21 + v.Z * m1.M31 + v.W * m1.M41,
+                v.X * m1.M12 + v.Y * m1.M22 + v.Z * m1.M32 + v.W * m1.M42,
+                v.X * m1.M13 + v.Y * m1.M23 + v.Z * m1.M33 + v.W * m1.M43,
+                v.X * m1.M14 + v.Y * m1.M24 + v.Z * m1.M34 + v.W * m1.M44
+            );
         }
 
         public float this[int index]

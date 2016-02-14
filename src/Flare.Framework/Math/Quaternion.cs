@@ -362,9 +362,12 @@ namespace Flare
         public Vector3[] ToAxis()
         {
             Matrix4 rotationMatrix = this.Matrix4;
-            return new Vector3[] { new Vector3(rotationMatrix[0].X, rotationMatrix[1].X, rotationMatrix[2].X),
-                new Vector3(rotationMatrix[0].Y, rotationMatrix[1].Y, rotationMatrix[2].Y),
-                new Vector3(rotationMatrix[0].Z, rotationMatrix[1].Z, rotationMatrix[2].Z) };
+            return new Vector3[]
+            {
+                new Vector3(rotationMatrix.M11, rotationMatrix.M21, rotationMatrix.M31),
+                new Vector3(rotationMatrix.M12, rotationMatrix.M22, rotationMatrix.M32),
+                new Vector3(rotationMatrix.M13, rotationMatrix.M23, rotationMatrix.M33)
+            };
         }
 
         /// <summary>
@@ -419,7 +422,7 @@ namespace Flare
             // Algorithm from Ken Shoemake's article in 1987 SIGGRAPH course notes
             // "Quaternion Calculus and Fast Animation"
 
-            float t_trace = Rotation[0][0] + Rotation[1][1] + Rotation[2][2];
+            float t_trace = Rotation[0, 0] + Rotation[1, 1] + Rotation[2, 2];
             float t_root = 0.0f;
 
             if (t_trace > 0.0)
@@ -428,9 +431,9 @@ namespace Flare
                 t_root = (float)System.Math.Sqrt(t_trace + 1.0);
                 t_return.w = 0.5f * t_root;
                 t_root = 0.5f / t_root;
-                t_return.x = (Rotation[2][1] - Rotation[1][2]) * t_root;
-                t_return.y = (Rotation[0][2] - Rotation[2][0]) * t_root;
-                t_return.z = (Rotation[1][0] - Rotation[0][1]) * t_root;
+                t_return.x = (Rotation[2, 1] - Rotation[1, 2]) * t_root;
+                t_return.y = (Rotation[0, 2] - Rotation[2, 0]) * t_root;
+                t_return.z = (Rotation[1, 0] - Rotation[0, 1]) * t_root;
                 return t_return;
             }
             else
@@ -438,17 +441,17 @@ namespace Flare
                 Quaternion t_return = Quaternion.Zero;
 
                 int i = 0;
-                if (Rotation[1][1] > Rotation[0][0]) i = 1;
-                if (Rotation[2][2] > Rotation[i][i]) i = 2;
+                if (Rotation[1, 1] > Rotation[0, 0]) i = 1;
+                if (Rotation[2, 2] > Rotation[i, i]) i = 2;
                 int j = rotationLookup[i];
                 int k = rotationLookup[j];
 
-                t_root = (float)System.Math.Sqrt(Rotation[i][i] - Rotation[j][j] - Rotation[k][k] + 1.0f);
+                t_root = (float)System.Math.Sqrt(Rotation[i, i] - Rotation[j, j] - Rotation[k, k] + 1.0f);
                 t_return[i] = 0.5f * t_root;
                 t_root = 0.5f / t_root;
-                t_return.w = (Rotation[k][j] - Rotation[j][k]) * t_root;
-                t_return[j] = (Rotation[j][i] + Rotation[i][j]) * t_root;
-                t_return[k] = (Rotation[k][i] + Rotation[i][k]) * t_root;
+                t_return.w = (Rotation[k, j] - Rotation[j, k]) * t_root;
+                t_return[j] = (Rotation[j, i] + Rotation[i, j]) * t_root;
+                t_return[k] = (Rotation[k, i] + Rotation[i, k]) * t_root;
                 return t_return;
             }
         }
