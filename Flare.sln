@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flare.Framework", "src\Flar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL2-CS", "lib\SDL2-CS\SDL2-CS.csproj", "{85480198-8711-4355-830E-72FD794AD3F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flare.Samples", "Flare.Samples\Flare.Samples.csproj", "{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,18 +41,6 @@ Global
 		{85480198-8711-4355-830E-72FD794AD3F6}.Release|x64.Build.0 = Release|x64
 		{85480198-8711-4355-830E-72FD794AD3F6}.Release|x86.ActiveCfg = Release|x86
 		{85480198-8711-4355-830E-72FD794AD3F6}.Release|x86.Build.0 = Release|x86
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Debug|x64.Build.0 = Debug|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Debug|x86.Build.0 = Debug|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Release|x64.ActiveCfg = Release|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Release|x64.Build.0 = Release|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Release|x86.ActiveCfg = Release|Any CPU
-		{A04643B7-2ABE-4DA1-A047-7CC694B98CAE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
