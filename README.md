@@ -30,6 +30,7 @@ We are still in need of samples and more advanced documentation. In the future, 
 #### Features
 
 Note: See FEATURES.md for older changelogs.
+
 v2.0.0
  - Complete refactor!
    - New features include the following:
