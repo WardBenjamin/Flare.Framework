@@ -19,12 +19,13 @@ Flare is a work in progress. New classes are added as soon as they have been tes
 
 #### Usage
 
-To use Flare, just download the Nuget package that you want and add it to a C# project. The easiest way to use Flare after that is to write a base class and entry point similar the examples that follow: 
+To use Flare, just download the Nuget package that you want and add it to a C# project. The easiest way to use Flare after that is to write a base class and entry point similar to this:
 
--- TODO ---
-Readd this based on new API
+            Game game = new Game("Game1", 800, 600);
+            game.IsMouseVisible = true;
+            game.Run();
 
-Basic samples will be located in the Flare.Examples repository; at the moment these do not have full coverage of the API but they will be improved and more samples will be added as I have more time for development. Documentation will be available at that point.
+We are still in need of samples and more advanced documentation. In the future, once the API is more well documented, there will be online documentation available as well as sample applications.
 
 #### Features
 
@@ -35,8 +36,9 @@ v2.0.0
      - Switch over to a pure SDL2 backend, using SDL2#.
      - Complete API change, moving to a more XNA-like structure for ease of use
      - Custom math library, including vector and matrix functionality
-     - Removed sprite and text rendering, as they were generally unextensible and not useful. A different form of text rendering, as well as mesh loading support, will be added in a later release.
+     - Removed sprite and text rendering, as they were generally unextensible and not useful. A different form of text rendering, as well as mesh and texture loading support, will be added in a later release.
      - Removed deprecated OpenGL bindings, and updated to use minimum OpenGL 3.0+ Core, equivalent to OpenGL 3.3+. OpenGL 4+ functionality also available.
+     - Icons will automatically load based on the window title. If SDL2-image is present, these can be PNGs, otherwise only bitmaps are supported.
 
 #### Development Policy
 
