@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Flare - A framework by developers, for developers.
  * Copyright 2016 Benjamin Ward
  * 
@@ -207,17 +207,6 @@ namespace Flare
         public override string ToString()
         {
             return "{" + X + ", " + Y + ", " + Z + ", " + W + "}";
-        }
-
-        /// <summary>
-        /// Parses a JSON stream and produces a Vector4 struct.
-        /// </summary>
-        public static Vector4 Parse(string text)
-        {
-            string[] split = text.Trim(new char[] { '{', '}' }).Split(',');
-            if (split.Length != 4) return Vector4.Zero;
-
-            return new Vector4(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]), float.Parse(split[3]));
         }
 
         public float this[int a]

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Flare - A framework by developers, for developers.
  * Copyright 2016 Benjamin Ward
  * 
@@ -225,17 +225,6 @@ namespace Flare
             return "{" + X + ", " + Y + ", " + Z + "}";
         }
 
-        /// <summary>
-        /// Parses a JSON stream and produces a Vector3 struct.
-        /// </summary>
-        public static Vector3 Parse(string text)
-        {
-            string[] split = text.Trim(new char[] { '{', '}' }).Split(',');
-            if (split.Length != 3) return Vector3.Zero;
-
-            return new Vector3(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]));
-        }
-
         public float this[int a]
         {
             get { return (a == 0) ? X : (a == 1) ? Y : Z; }
@@ -443,7 +432,7 @@ namespace Flare
                 if (t_axis.SquaredLength < (1e-12)) // pick another if colinear
                     t_axis = Vector3.UnitY.Cross(this);
                 t_axis.Normalize();
-                return Quaternion.FromAngleAxis((float)System.Math.PI, t_axis);
+                return Quaternion.FromAxisAngle(t_axis, (float)System.Math.PI);
             }
             else
             {

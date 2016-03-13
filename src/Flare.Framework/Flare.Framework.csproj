@@ -71,9 +71,6 @@
     <Compile Include="Graphics\GL4\Texture.cs" />
     <Compile Include="Graphics\GL4\VAO.cs" />
     <Compile Include="Graphics\GL4\VBO.cs" />
-    <Compile Include="Graphics\Sprite.cs" />
-    <Compile Include="Graphics\SpriteBatch.cs" />
-    <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Input\ButtonState.cs" />
     <Compile Include="Input\Gamepad.cs" />
     <Compile Include="Input\Joystick.cs" />
@@ -89,7 +86,6 @@
     <Compile Include="Math\Quaternion.cs" />
     <Compile Include="Math\Ray.cs" />
     <Compile Include="Math\Point.cs" />
-    <Compile Include="Math\Transform.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Math\Vector4.cs" />

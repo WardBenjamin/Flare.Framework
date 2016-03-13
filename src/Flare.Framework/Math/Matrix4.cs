@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* Flare - A framework by developers, for developers.
  * Copyright 2016 Benjamin Ward
  * 
@@ -599,10 +599,10 @@ namespace Flare
                                  Vector4.UnitW);
         }
 
-        /// <summary>Creates a matrix which contains information on how to scale</summary>
+        /// <summary>Creates a matrix which contains scale factor</summary>
         /// <param name="scale">Amount to scale by in the X, Y and Z direction</param>
         /// <returns>A Matrix4 object that contains the scaling matrix</returns>
-        public static Matrix4 CreateScaling(Vector3 scale)
+        public static Matrix4 CreateScale(Vector3 scale)
         {
             return new Matrix4(new Vector4(scale.X, 0.0f, 0.0f, 0.0f), new Vector4(0.0f, scale.Y, 0.0f, 0.0f), new Vector4(0.0f, 0.0f, scale.Z, 0.0f), new Vector4(0.0f, 0.0f, 0.0f, 1.0f));
         }
@@ -856,10 +856,10 @@ namespace Flare
         /// </summary>
         /// <param name="rotation">A quaternion representation of the rotation.</param>
         /// <returns>A rotation matrix</returns>
-        public static Matrix4 Rotate(Quaternion rotation)
+        public static Matrix4 CreateFromQuaternion(Quaternion rotation)
         {
             Vector4 axisangle = rotation.ToAxisAngle();
-            return CreateFromAxisAngle(axisangle.Xyz, rotation.w);
+            return CreateFromAxisAngle(axisangle.Xyz, rotation.W);
         }
 
         public void SetMatrix(Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3)
