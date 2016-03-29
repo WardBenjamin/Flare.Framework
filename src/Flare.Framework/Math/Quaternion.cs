@@ -91,7 +91,7 @@ namespace Flare
         public static Quaternion operator /(Quaternion q, float scalar)
         {
             float invScalar = 1.0f / scalar;
-            return new Quaternion(q.X * invScalar, q.Y + invScalar, q.Z * invScalar, q.W * invScalar);
+            return new Quaternion(q.X * invScalar, q.Y * invScalar, q.Z * invScalar, q.W * invScalar);
         }
 
         public static Quaternion operator /(Quaternion q1, Quaternion q2)
