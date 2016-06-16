@@ -1,6 +1,8 @@
 # Flare
 ###### "Make a game, not an engine"
 
+###*Note: Flare has been superseded by the [Shift Engine](https://github.com/WardBenjamin/Shift).*
+
 Flare is an open source game development framework written in C#, designed to allow the user to focus exclusively on their game design rather than basic engine functionality. This lets developers make their game, instead of spending time creating their own engine. Flare directly exposes native OpenGL 3 Core methods, with support for OpenGL 4+ functionality as well. Additionally, Flare handles window management and input handling for you, using SDL2 as a backend, with functionality for both mouse and keyboard input.
 
 Additionally, plans are in place for controller input, using SDL2's controller backend, as well as audio, where there is no current planned backend, but which will tentatively use OpenAL.
